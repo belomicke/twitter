@@ -10,7 +10,7 @@ class UserService
     public function create(string $username, string $email, string $password, string $birth): User|null
     {
         return User::create([
-            'firstName' => $username,
+            'name' => $username,
             'username' => $username,
             'email' => $email,
             'email_verified_at' => now(),
