@@ -1,0 +1,15 @@
+.x-button.large {
+    --el-button-size: 40px;
+    height: var(--el-button-size);
+    padding: 12px 19px;
+    font-size: var(--x-font-size-large);
+    border-radius: var(--x-border-radius-base);
+}
+
+.x-button.small {
+    --el-button-size: 24px;
+    height: var(--el-button-size);
+    padding: 5px 11px;
+    font-size: 12px;
+    border-radius: calc(var(--x-border-radius-base) - 1px);
+}

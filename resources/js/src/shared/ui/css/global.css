@@ -1,0 +1,14 @@
+@import 'fonts.css';
+
+*, *:after, *:before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--x-color-black);
+    color: var(--x-color-white);
+    height: 100%;
+}

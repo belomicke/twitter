@@ -1,0 +1,55 @@
+.x-alert.x-alert--success {
+    --x-alert-bg-color: var(--x-color-success-light-9);
+}
+
+.x-alert.x-alert--info {
+    --x-alert-bg-color: var(--x-color-info-light-9);
+}
+
+.x-alert.x-alert--warning {
+    --x-alert-bg-color: var(--x-color-warning-light-9);
+}
+
+.x-alert.x-alert--error {
+    --x-alert-bg-color: var(--x-color-error-light-9);
+}
+
+.x-alert.x-alert--success.is-light {
+    background-color: var(--x-alert-bg-color);
+    color: var(--x-color-success);
+}
+
+.x-alert.x-alert--success.is-dark {
+    background-color: var(--x-color-success);
+    color: var(--x-color-white);
+}
+
+.x-alert.x-alert--info.is-light {
+    background-color: var(--x-alert-bg-color);
+    color: var(--x-color-info);
+}
+
+.x-alert.x-alert--info.is-dark {
+    background-color: var(--x-color-info);
+    color: var(--x-color-white);
+}
+
+.x-alert.x-alert--warning.is-light {
+    background-color: var(--x-alert-bg-color);
+    color: var(--x-color-warning);
+}
+
+.x-alert.x-alert--warning.is-dark {
+    background-color: var(--x-color-warning);
+    color: var(--x-color-white);
+}
+
+.x-alert.x-alert--error.is-light {
+    background-color: var(--x-alert-bg-color);
+    color: var(--x-color-error);
+}
+
+.x-alert.x-alert--error.is-dark {
+    background-color: var(--x-color-error);
+    color: var(--x-color-white);
+}

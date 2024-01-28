@@ -1,0 +1,47 @@
+@font-face {
+    font-family: TwitterChirp;
+    src: url('fonts/Chirp-Light.woff2') format('woff2'), url('./fonts/Chirp-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: 'normal';
+    font-display: 'swap';
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url('fonts/Chirp-Regular.woff2') format('woff2'), url('./fonts/Chirp-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: 'normal';
+    font-display: 'swap';
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url('./fonts/Chirp-Medium.woff2') format('woff2'), url('./fonts/Chirp-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: 'normal';
+    font-display: 'swap';
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url('./fonts/Chirp-Bold.woff2') format('woff2'), url('./fonts/Chirp-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: 'normal';
+    font-display: 'swap';
+}
+
+@font-face {
+    font-family: TwitterChirp;
+    src: url('./fonts/Chirp-Heavy.woff2') format('woff2'), url('./fonts/Chirp-Heavy.woff') format('woff');
+    font-weight: 800;
+    font-style: 'normal';
+    font-display: 'swap';
+}
+
+@font-face {
+    font-family: TwitterChirpExtendedHeavy;
+    src: url('./fonts/chirp-extended-heavy-web.woff2') format('woff2'), url('./fonts/chirp-extended-heavy-web.woff') format('woff');
+    font-weight: 800;
+    font-style: 'normal';
+    font-display: 'swap';
+}

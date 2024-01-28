@@ -1,0 +1,41 @@
+<script setup lang="ts">
+import XButton from '@/shared/ui/XButton/XButton.vue'
+
+defineEmits(['close'])
+</script>
+
+<template>
+    <div class="x-modal-header">
+        <div class="button">
+            <x-button
+                icon="cross"
+                @click="$emit('close')"
+                circle
+                text
+            />
+        </div>
+        <div class="content">
+            <slot></slot>
+        </div>
+    </div>
+</template>
+
+<style scoped>
+.x-modal-header {
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    height: 53px;
+    width: 100%;
+    position: relative;
+}
+
+.button {
+    position: absolute;
+}
+
+.content {
+    margin-left: 36px;
+}
+</style>
