@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import BirthForm from './ui/BirthForm.vue'
+import EmailInput from '@/features/account/EmailInput/EmailInput.vue'
+import UsernameInput from '@/features/account/UsernameInput/UsernameInput.vue'
 import XButton from '@/shared/ui/XButton/XButton.vue'
-import XInput from '@/shared/ui/XInput/XInput.vue'
+import XInput from '@/shared/ui/XInput'
 import CreateAccountDTO from '@/shared/api/types/DTO/auth/CreateAccountDTO'
 import XModalContainer from '@/shared/ui/modal/XModalContainer/XModalContainer.vue'
-import BirthForm from '@/widgets/AuthForm/ui/SignUpForm/steps/FirstStep/ui/BirthForm.vue'
-import EmailInput from '@/features/account/EmailInput/EmailInput.vue'
 import { useSendVerificationCode } from '@/shared/api/hook/auth/useSendVerificationCode'
-import UsernameInput from '@/features/account/UsernameInput/UsernameInput.vue'
+import AuthFormFooter from '@/entities/Auth/ui/AuthFormFooter.vue'
 
 const username = ref<string>('')
 const email = ref<string>('')
@@ -39,7 +40,7 @@ function submit() {
         username: username.value,
         email: email.value,
         password: password.value,
-        verification_code: 0,
+        code: 0,
         birth: `${selectedYear.value}-${selectedMonth.value}-${selectedDay.value}`
     }
 
@@ -92,7 +93,7 @@ function close() {
                     />
                 </div>
             </div>
-            <div class="footer">
+            <auth-form-footer>
                 <x-button
                     type="info"
                     size="large"
@@ -104,7 +105,7 @@ function close() {
                 >
                     Далее
                 </x-button>
-            </div>
+            </auth-form-footer>
         </template>
     </x-modal-container>
 </template>
@@ -142,10 +143,5 @@ function close() {
     display: flex;
     flex-direction: column;
     grid-gap: 30px;
-}
-
-.footer {
-    padding: 24px 80px;
-    box-shadow: rgba(255, 255, 255, 0.2) 0 0 7px, rgba(255, 255, 255, 0.15) 0 1px 3px 1px;
 }
 </style>

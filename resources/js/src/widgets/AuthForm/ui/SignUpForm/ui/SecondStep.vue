@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, PropType, ref } from 'vue'
 import XButton from '@/shared/ui/XButton/XButton.vue'
-import XInput from '@/shared/ui/XInput/XInput.vue'
+import XInput from '@/shared/ui/XInput'
 import XModalContainer from '@/shared/ui/modal/XModalContainer/XModalContainer.vue'
 import CreateAccountDTO from '@/shared/api/types/DTO/auth/CreateAccountDTO'
 import { useCreateAccount } from '@/shared/api/hook/auth/useCreateAccount'
 import XAlert from '@/shared/ui/XAlert/XAlert.vue'
+import AuthFormFooter from '@/entities/Auth/ui/AuthFormFooter.vue'
 
 const { credentials } = defineProps({
     credentials: {
@@ -84,7 +85,7 @@ function submit() {
                     </div>
                 </div>
             </div>
-            <div class="footer">
+            <auth-form-footer>
                 <x-button
                     type="info"
                     size="large"
@@ -96,7 +97,7 @@ function submit() {
                 >
                     Далее
                 </x-button>
-            </div>
+            </auth-form-footer>
         </template>
     </x-modal-container>
 </template>
@@ -151,10 +152,5 @@ function submit() {
     word-wrap: break-word;
     margin-bottom: 15px;
     color: rgb(113, 118, 123);
-}
-
-.footer {
-    padding: 24px 80px;
-    box-shadow: rgba(255, 255, 255, 0.2) 0 0 7px, rgba(255, 255, 255, 0.15) 0 1px 3px 1px;
 }
 </style>

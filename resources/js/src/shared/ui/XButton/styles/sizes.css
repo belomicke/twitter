@@ -13,3 +13,14 @@
     font-size: 12px;
     border-radius: calc(var(--x-border-radius-base) - 1px);
 }
+
+.x-button.extra-large {
+    --el-button-size: 50px;
+    font-size: 20px;
+    height: var(--el-button-size);
+}
+
+.x-button.is-circle.large {
+    width: var(--el-button-size);
+    height: var(--el-button-size);
+}

@@ -39,6 +39,7 @@ class CreateAccessTokenController extends Controller
             $authWasSucceeded = Auth::attempt($credentials, true);
 
             if ($authWasSucceeded) {
+                $user->tokens()->delete();
                 $token = $user->createToken('token')->plainTextToken;
 
                 return response()->json([

@@ -17,6 +17,8 @@ defineProps({
     }
 })
 
+defineEmits(['click'])
+
 defineExpose({
     open,
     close

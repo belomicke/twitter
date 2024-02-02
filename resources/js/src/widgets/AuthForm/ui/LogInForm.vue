@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import XModalContainer from '@/shared/ui/modal/XModalContainer/XModalContainer.vue'
-import XModal from '@/shared/ui/XModal/XModal.vue'
-import XInput from '@/shared/ui/XInput/XInput.vue'
-import XButton from '@/shared/ui/XButton/XButton.vue'
-import SvgLogo from '@/shared/ui/svg/Logo.vue'
 import { useCreateAccessToken } from '@/shared/api/hook/auth/useCreateAccessToken'
+import XModal from '@/shared/ui/XModal/XModal.vue'
+import XInput from '@/shared/ui/XInput'
+import XButton from '@/shared/ui/XButton/XButton.vue'
 import XAlert from '@/shared/ui/XAlert/XAlert.vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
+import XIcon from '@/shared/ui/XIcon/XIcon.vue'
+import AuthFormFooter from '@/entities/Auth/ui/AuthFormFooter.vue'
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -66,8 +64,6 @@ function submit() {
                 isLoading.value = false
                 alert.value?.open()
             }
-
-            router.push(`/profile/${username.value}`)
         },
         onError() {
             isLoading.value = false
@@ -98,7 +94,10 @@ function submit() {
                 <div class="container">
                     <div class="body">
                         <div class="logo-container">
-                            <svg-logo :size="120"/>
+                            <x-icon
+                                icon="logo"
+                                :size="120"
+                            />
                         </div>
                         <div class="form">
                             <x-input
@@ -115,13 +114,12 @@ function submit() {
                             <x-alert
                                 title="Неверное имя пользователя или пароль"
                                 type="error"
-                                @click="$refs.alert?.close()"
                                 ref="alert"
                             />
                         </div>
                     </div>
                 </div>
-                <div class="footer">
+                <auth-form-footer>
                     <x-button
                         type="info"
                         size="large"
@@ -133,7 +131,7 @@ function submit() {
                     >
                         Войти
                     </x-button>
-                </div>
+                </auth-form-footer>
             </template>
         </x-modal-container>
     </x-modal>
@@ -175,10 +173,5 @@ function submit() {
 .logo-container {
     margin: 0 auto;
     padding-top: 20px;
-}
-
-.footer {
-    padding: 24px 80px;
-    box-shadow: rgba(255, 255, 255, 0.2) 0 0 7px, rgba(255, 255, 255, 0.15) 0 1px 3px 1px;
 }
 </style>

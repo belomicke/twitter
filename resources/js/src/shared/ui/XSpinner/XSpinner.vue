@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Spinner from '@/shared/ui/svg/Spinner.vue'
+import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 
 defineProps({
     size: {
@@ -18,7 +18,9 @@ defineProps({
             'height': `${size}px`
         }"
     >
-        <spinner/>
+        <x-icon
+            icon="spinner"
+        />
     </div>
 </template>
 

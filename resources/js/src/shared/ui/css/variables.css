@@ -5,7 +5,7 @@
     /* border radius */
     --x-border-radius-base: 4px;
     --x-border-radius-small: 2px;
-    --x-border-radius-round: 20px;
+    --x-border-radius-round: 9999px;
     --x-border-radius-circle: 100%;
 
     /* font weight */
@@ -20,10 +20,53 @@
     --x-font-size-base: 14px;
     --x-font-size-small: 13px;
     --x-font-size-extra-small: 12px;
+
+    --x-user-avatar-default-size: 132px;
+}
+
+.blue {
+    --color: 30, 155, 240;
+    --color-hover: 20, 145, 230;
+    --color-pressed: 10, 135, 220;
+
+    --x-color-primary: rgb(var(--color));
+    --x-color-primary-opacity-1: rgba(var(--color), .1);
+    --x-color-primary-opacity-2: rgba(var(--color), .2);
+    --x-color-primary-opacity-3: rgba(var(--color), .3);
+    --x-color-primary-opacity-4: rgba(var(--color), .4);
+    --x-color-primary-opacity-5: rgba(var(--color), .5);
+    --x-color-primary-opacity-6: rgba(var(--color), .6);
+    --x-color-primary-opacity-7: rgba(var(--color), .7);
+    --x-color-primary-opacity-8: rgba(var(--color), .8);
+    --x-color-primary-opacity-9: rgba(var(--color), .9);
+
+    --x-color-primary-hover: rgb(var(--color-hover));
+
+    --x-color-primary-pressed: rgb(var(--color-pressed));
+}
+
+.purple {
+    --color: 120, 85, 255;
+    --color-hover: 110, 75, 245;
+    --color-pressed: 100, 65, 235;
+
+    --x-color-primary: rgb(var(--color));
+    --x-color-primary-opacity-1: rgba(var(--color), .1);
+    --x-color-primary-opacity-2: rgba(var(--color), .2);
+    --x-color-primary-opacity-3: rgba(var(--color), .3);
+    --x-color-primary-opacity-4: rgba(var(--color), .4);
+    --x-color-primary-opacity-5: rgba(var(--color), .5);
+    --x-color-primary-opacity-6: rgba(var(--color), .6);
+    --x-color-primary-opacity-7: rgba(var(--color), .7);
+    --x-color-primary-opacity-8: rgba(var(--color), .8);
+    --x-color-primary-opacity-9: rgba(var(--color), .9);
+
+    --x-color-primary-hover: rgb(var(--color-hover));
+
+    --x-color-primary-pressed: rgb(var(--color-pressed));
 }
 
 .dark {
-    --x-color-primary: #409eff;
     --x-color-primary-light-3: #3375b9;
     --x-color-primary-light-5: #2a598a;
     --x-color-primary-light-7: #213d5b;

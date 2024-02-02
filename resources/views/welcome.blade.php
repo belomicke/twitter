@@ -6,6 +6,11 @@
           content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
     <title>X</title>
 
+    <meta
+            name="csrf-token"
+            content="{{ csrf_token() }}"
+    />
+
     <link rel="shortcut icon" href="//abs.twimg.com/favicons/twitter.3.ico">
 
     @vitereactrefresh
