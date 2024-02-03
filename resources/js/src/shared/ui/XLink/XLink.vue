@@ -35,7 +35,7 @@ function linkClickHandler(e: MouseEvent) {
 <style scoped>
 .x-link {
     cursor: pointer;
-    color: rgb(var(--x-color-primary));
+    color: var(--x-color-primary);
     font-size: 15px;
 }
 
