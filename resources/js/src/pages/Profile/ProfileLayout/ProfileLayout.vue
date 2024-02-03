@@ -6,6 +6,7 @@ import ProfileBanner from './ui/ProfileBanner.vue'
 import ProfileInfo from './ui/ProfileInfo.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import IUser from '@/shared/api/types/models/User'
+import ProfileActions from "@/pages/Profile/ProfileLayout/ui/ProfileActions/ProfileActions.vue";
 
 defineProps({
     user: {
@@ -30,6 +31,9 @@ defineProps({
                     rounded
                 />
             </div>
+            <profile-actions
+                :user="user"
+            />
         </div>
         <profile-info
             :user="user"

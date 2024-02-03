@@ -13,9 +13,7 @@ class EditAccountPublicData extends Controller
 {
     public function __construct(
         private readonly UserService $userService
-    )
-    {
-    }
+    ) {}
 
     public function __invoke(EditAccountPublicDataRequest $request): JsonResponse
     {
@@ -43,7 +41,10 @@ class EditAccountPublicData extends Controller
         $user->save();
 
         return response()->json([
-            'success' => true
+            'success' => true,
+            'data' => [
+                'user' => $user
+            ]
         ]);
     }
 

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import IUser from '@/shared/api/types/models/User'
 import { api } from '@/shared/api/methods'
 import { computed, ref } from 'vue'
+import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
 
 export const useUserStore = defineStore('users', () => {
     // store
@@ -21,6 +22,17 @@ export const useUserStore = defineStore('users', () => {
         }
     }
 
+    function editUser(id: number, data: EditViewerPublicDataDTO) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.name = data.name
+        user.bio = data.bio ?? user.bio
+        user.location = data.location ?? user.location
+        user.link = data.link ?? user.link
+    }
+
     async function fetchUser(username: string) {
         const user = users.value.find(item => item.username === username)
 
@@ -38,5 +50,6 @@ export const useUserStore = defineStore('users', () => {
         getUserByUsername,
         addUser,
         fetchUser,
+        editUser,
     }
 })

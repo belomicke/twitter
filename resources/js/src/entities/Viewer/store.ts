@@ -3,6 +3,7 @@ import IUser from '@/shared/api/types/models/User'
 import { ref } from 'vue'
 import { api } from '@/shared/api/methods'
 import { useUserStore } from '@/entities/User/store'
+import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
 
 export const useViewerStore = defineStore('viewer', () => {
     // store
@@ -15,7 +16,7 @@ export const useViewerStore = defineStore('viewer', () => {
             isLoading.value = false
             return
         }
-        
+
         if (!viewer.value) {
             try {
                 const res = await api.account.getViewer()
@@ -33,9 +34,23 @@ export const useViewerStore = defineStore('viewer', () => {
         }
     }
 
+    function editViewer(data: EditViewerPublicDataDTO) {
+        if (!viewer.value) return
+
+        const userStore = useUserStore()
+
+        userStore.editUser(viewer.value.id, data)
+
+        viewer.value = {
+            ...viewer.value,
+            ...data,
+        }
+    }
+
     return {
         viewer,
         isLoading,
-        fetchViewer
+        fetchViewer,
+        editViewer,
     }
 })
