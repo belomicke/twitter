@@ -90,6 +90,7 @@ function clickHandler(e: MouseEvent) {
 
             'extra-large': size === 'extra-large',
             'large': size === 'large',
+            'medium': size === 'default',
             'small': size === 'small',
 
             'text-start': textAlign === 'start',

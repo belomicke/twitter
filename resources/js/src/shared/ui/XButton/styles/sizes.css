@@ -14,6 +14,15 @@
     border-radius: calc(var(--x-border-radius-base) - 1px);
 }
 
+.x-button.medium {
+    min-height: 36px;
+    min-width: 36px;
+    padding: 0 16px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
 .x-button.extra-large {
     --el-button-size: 50px;
     font-size: 20px;
