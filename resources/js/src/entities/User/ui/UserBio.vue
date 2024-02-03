@@ -2,8 +2,8 @@
 defineProps({
     bio: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 })
 </script>
 
@@ -18,6 +18,7 @@ defineProps({
     color: rgb(231, 233, 234);
     line-height: 20px;
     word-wrap: break-word;
+    white-space: pre-wrap;
     font-size: 15px;
     font-weight: 400;
 }
