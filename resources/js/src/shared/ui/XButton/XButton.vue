@@ -4,70 +4,75 @@ import { IconNames, XIcon } from '@/shared/ui/XIcon'
 
 const props = defineProps({
     type: {
-        type: String as PropType<'default' | 'primary' | 'info'>,
+        type: String as PropType<'default' | 'primary' | 'info' | 'danger'>,
         required: false,
-        default: 'default'
+        default: 'default',
     },
     size: {
         type: String as PropType<'small' | 'default' | 'large' | 'extra-large'>,
         required: false,
-        default: 'default'
+        default: 'default',
     },
     rounded: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     active: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     disabled: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     bold: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     block: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     circle: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     text: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     icon: {
         type: String as PropType<IconNames>,
         required: false,
-        default: ''
+        default: '',
     },
     iconSize: {
         type: Number,
         required: false,
-        default: 24
+        default: 24,
     },
     iconIsFilled: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     textAlign: {
         type: String as PropType<'start' | 'center' | 'end'>,
         required: false,
-        default: 'center'
-    }
+        default: 'center',
+    },
+    noBorder: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 })
 
 const emit = defineEmits(['click'])
@@ -87,6 +92,7 @@ function clickHandler(e: MouseEvent) {
             'default': type === 'default',
             'primary': type === 'primary',
             'info': type === 'info',
+            'danger': type === 'danger',
 
             'extra-large': size === 'extra-large',
             'large': size === 'large',
@@ -95,6 +101,7 @@ function clickHandler(e: MouseEvent) {
 
             'text-start': textAlign === 'start',
             'text-end': textAlign === 'end',
+            'no-border': noBorder,
 
             'active': active,
 
@@ -165,7 +172,7 @@ function clickHandler(e: MouseEvent) {
 .x-button.active:hover {
     color: var(--x-button-pressed-text-color);
     border-color: var(--x-button-pressed-border-color);
-    background-color: var(--x-button-active-bg-color);
+    background-color: var(--x-button-pressed-bg-color);
 }
 
 .x-button.is-disabled,
@@ -181,6 +188,10 @@ function clickHandler(e: MouseEvent) {
 .x-button > svg {
     color: var(--x-button-text-color) !important;
     transition: color .15s;
+}
+
+.x-button.no-border {
+    border: 0;
 }
 
 .x-button:hover {
@@ -206,7 +217,7 @@ function clickHandler(e: MouseEvent) {
 
 .x-button.is-circle {
     border-radius: 50%;
-    padding: 8px;
+    padding: 0;
 }
 
 .x-button.text-start {
