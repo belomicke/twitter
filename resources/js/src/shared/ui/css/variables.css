@@ -112,7 +112,7 @@
     --x-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, .72);
     --x-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, .72);
     --x-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, .72), 0px 12px 32px #000000, 0px 8px 16px -8px #000000;
-    --x-bg-color-page: #0a0a0a;
+    --x-bg-color-page: #000;
     --x-bg-color: #141414;
     --x-bg-color-overlay: #1d1e1f;
     --x-text-color-primary: #E5EAF3;
