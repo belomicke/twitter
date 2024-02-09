@@ -13,5 +13,7 @@ type IconNames =
     | 'profile'
     | 'other'
     | 'spinner'
+    | 'add-photo'
+    | 'trash-bin'
 
 export default IconNames

@@ -10,8 +10,8 @@ import XDropdown from '@/shared/ui/XDropdown/XDropdown.vue'
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
-    }
+        required: true,
+    },
 })
 </script>
 
@@ -20,7 +20,7 @@ defineProps({
         <div class="footer">
             <div class="footer-avatar">
                 <user-avatar
-                    :path="user.profile_picture ?? ''"
+                    :username="user.username"
                     :size="40"
                     rounded
                 />

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useUserStore } from '@/entities/User/store'
 import { computed } from 'vue'
+import { useUserStore } from '@/entities/User/store'
 
 const { size, username } = defineProps({
     username: {
@@ -10,7 +10,7 @@ const { size, username } = defineProps({
     size: {
         type: Number,
         required: false,
-        default: 128,
+        default: 200,
     },
     rounded: {
         type: Boolean,
@@ -27,37 +27,31 @@ const user = computed(() => {
 const path = computed(() => {
     if (!user.value) return ''
 
-    if (size <= 128) {
-        return user.value.profile_picture.small
-    } else if (size <= 200) {
-        return user.value.profile_picture.default
-    } else {
-        return user.value.profile_picture.large
+    if (size <= 200) {
+        return user.value.profile_banner.default
+    } else if (size > 200) {
+        return user.value.profile_banner.large
     }
 })
 </script>
 
 <template>
     <div
-        class="user-avatar"
-        :class="{
-            'rounded': rounded,
-        }"
+        class="banner"
         :style="{
             'background-image': `url(${path})`,
-            'width': `${size}px`,
             'height': `${size}px`
         }"
-    />
+    >
+        <slot></slot>
+    </div>
 </template>
 
 <style scoped>
-.user-avatar {
+.banner {
+    position: relative;
     background-size: cover;
     background-position: center center;
-}
-
-.user-avatar.rounded {
-    border-radius: 50%;
+    background-color: rgb(50, 50, 50);
 }
 </style>

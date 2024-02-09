@@ -1,9 +1,20 @@
+export interface ProfilePictures {
+    large: string
+    default: string
+    small: string
+}
+
+export interface ProfileBanners {
+    large: string
+    default: string
+}
+
 export default interface IUser {
     id: number
     name: string
     username: string
-    profile_picture: string
-    profile_banner: string
+    profile_picture: ProfilePictures
+    profile_banner: ProfileBanners
     birth: string
     bio: string
     location: string

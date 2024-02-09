@@ -2,17 +2,17 @@
 import { PropType } from 'vue'
 import 'moment/locale/ru'
 import ProfilePageHeader from './ui/ProfilePageHeader.vue'
-import ProfileBanner from './ui/ProfileBanner.vue'
 import ProfileInfo from './ui/ProfileInfo.vue'
+import ProfileActions from './ui/ProfileActions/ProfileActions.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import IUser from '@/shared/api/types/models/User'
-import ProfileActions from "@/pages/Profile/ProfileLayout/ui/ProfileActions/ProfileActions.vue";
+import UserBanner from '@/entities/User/ui/UserBanner.vue'
 
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
-    }
+        required: true,
+    },
 })
 </script>
 
@@ -20,14 +20,14 @@ defineProps({
     <profile-page-header
         :user="user"
     />
-    <profile-banner
-        :path="user.profile_banner"
+    <user-banner
+        :username="user.username"
     />
     <div class="container">
         <div class="top-info">
             <div class="avatar-container">
                 <user-avatar
-                    :path="user.profile_picture"
+                    :username="user.username"
                     rounded
                 />
             </div>

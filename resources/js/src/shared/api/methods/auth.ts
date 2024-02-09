@@ -13,7 +13,7 @@ const sendVerificationCode = async (email: string): Promise<EmptyResponse> => {
 }
 
 const createAccessToken = async (data: CreateAccessTokenDTO): Promise<CreateAccessTokenResponse> => {
-    return await makeRequest.post('/api/auth/create_access_token', data)
+    return await makeRequest.post('/api/auth/access_token', data)
 }
 
 export const deleteViewerAccessToken = async (): Promise<EmptyResponse> => {

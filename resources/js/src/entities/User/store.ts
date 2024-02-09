@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import IUser from '@/shared/api/types/models/User'
+import IUser, { ProfileBanners, ProfilePictures } from '@/shared/api/types/models/User'
 import { api } from '@/shared/api/methods'
 import { computed, ref } from 'vue'
 import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
@@ -46,10 +46,28 @@ export const useUserStore = defineStore('users', () => {
         }
     }
 
+    function changeProfilePicture(id: number, pictures: ProfilePictures) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.profile_picture = pictures
+    }
+
+    function changeProfileBanner(id: number, banner: ProfileBanners) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.profile_banner = banner
+    }
+
     return {
         getUserByUsername,
         addUser,
         fetchUser,
         editUser,
+        changeProfilePicture,
+        changeProfileBanner,
     }
 })

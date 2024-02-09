@@ -7,6 +7,9 @@ import XInput from '@/shared/ui/XInput/XInput.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
 import XTextarea from '@/shared/ui/XTextarea/XTextarea.vue'
 import { useEditViewerPublicData } from '@/shared/api/hook/account/useEditViewerPublicData'
+import AvatarChanger from './ui/AvatarChanger/AvatarChanger.vue'
+import BannerChanger
+    from '@/pages/Profile/ProfileLayout/ui/ProfileActions/ui/ViewerActions/ui/EditPublicDataModal/ui/BannerChanger/BannerChanger.vue'
 
 const emit = defineEmits(['close'])
 
@@ -75,7 +78,7 @@ function submit() {
         centered
         ref="modal"
     >
-        <x-modal-container>
+        <x-modal-container @close="close">
             <template #header>
                 <div class="header-content">
                     <div class="header-title">Изменить профиль</div>
@@ -89,32 +92,36 @@ function submit() {
                     </x-button>
                 </div>
             </template>
-            <div class="content">
-                <div class="form">
-                    <x-input
-                        placeholder="Имя"
-                        v-model="credentials.name"
-                        maxlength="50"
-                        show-word-limit
-                    />
-                    <x-input
-                        placeholder="Местоположение"
-                        v-model="credentials.location"
-                        maxlength="30"
-                        show-word-limit
-                    />
-                    <x-input
-                        placeholder="Веб-сайт"
-                        v-model="credentials.link"
-                        maxlength="100"
-                        show-word-limit
-                    />
-                    <x-textarea
-                        placeholder="О себе"
-                        v-model="credentials.bio"
-                        maxlength="160"
-                        show-word-limit
-                    />
+            <div class="body">
+                <banner-changer/>
+                <div class="content">
+                    <avatar-changer/>
+                    <div class="form">
+                        <x-input
+                            placeholder="Имя"
+                            v-model="credentials.name"
+                            maxlength="50"
+                            show-word-limit
+                        />
+                        <x-input
+                            placeholder="Местоположение"
+                            v-model="credentials.location"
+                            maxlength="30"
+                            show-word-limit
+                        />
+                        <x-input
+                            placeholder="Веб-сайт"
+                            v-model="credentials.link"
+                            maxlength="100"
+                            show-word-limit
+                        />
+                        <x-textarea
+                            placeholder="О себе"
+                            v-model="credentials.bio"
+                            maxlength="160"
+                            show-word-limit
+                        />
+                    </div>
                 </div>
             </div>
         </x-modal-container>
@@ -135,14 +142,19 @@ function submit() {
     margin-left: 10px;
 }
 
-.content {
+.body {
     overflow: auto;
+}
+
+.content {
+    position: relative;
+    transform: translateY(-62px);
 }
 
 .form {
     display: flex;
     flex-direction: column;
     grid-gap: 20px;
-    padding: 20px 50px;
+    padding: 20px 15px;
 }
 </style>

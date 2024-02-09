@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\User\UserHelpers;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,8 +15,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property string $username
  * @property string $email
- * @property string $profile_picture_path
- * @property string $profile_banner_path
+ * @property string $profile_picture_filename
+ * @property string $profile_banner_filename
  * @property string $bio
  * @property string $location
  * @property string $link
@@ -58,8 +59,8 @@ class User extends Authenticatable
         'updated_at',
         'password',
         'remember_token',
-        'profile_picture_path',
-        'profile_banner_path'
+        'profile_picture_filename',
+        'profile_banner_filename'
     ];
 
     /**
@@ -77,17 +78,19 @@ class User extends Authenticatable
         'profile_banner'
     ];
 
-    public function getProfilePictureAttribute(): string
+    public function getProfilePictureAttribute(): array
     {
-        $path = $this->profile_picture_path;
-
-        return $path ? "/storage/$this->profile_picture_path" : '';
+        return UserHelpers::getProfilePicturePaths(
+            id: $this->id,
+            filename: $this->profile_picture_filename
+        );
     }
 
-    public function getProfileBannerAttribute(): string
+    public function getProfileBannerAttribute(): array
     {
-        $path = $this->profile_banner_path;
-
-        return $path ? "/storage/$this->profile_banner_path" : '';
+        return UserHelpers::getProfileBannerPaths(
+            id: $this->id,
+            filename: $this->profile_banner_filename
+        );
     }
 }

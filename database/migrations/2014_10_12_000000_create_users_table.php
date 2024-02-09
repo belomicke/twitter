@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->date('birth');
 
-            $table->string('profile_picture_path')->default('/profile_images/default-profile-picture.png');
-            $table->string('profile_banner_path')->default('');
+            $table->string('profile_picture_filename')->default('default-profile-picture.png');
+            $table->string('profile_banner_filename')->default('');
 
             $table->string('bio', 160)->default('');
             $table->string('location', 30)->default('');

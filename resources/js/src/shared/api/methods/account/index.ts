@@ -2,6 +2,8 @@ import { EntityExistsResponse } from '@/shared/api/types/response/global/EntityE
 import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
 import { UserResponse } from '@/shared/api/types/response/user/UserResponse'
 import { makeRequest } from '@/shared/api/makeRequest'
+import { profile_picture } from './profile_picture'
+import { profile_banner } from './profile_banner'
 
 const checkEmail = async (email: string): Promise<EntityExistsResponse> => {
     return await makeRequest.get(`/api/account/email_exists`, { params: { email } })
@@ -24,4 +26,6 @@ export const account = {
     checkUsername,
     getViewer,
     editPublicData,
+    profile_picture,
+    profile_banner,
 }
