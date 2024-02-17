@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import XInput from '@/shared/ui/XInput/XInput.vue'
+import XInput from '@/shared/ui/XInput'
 import { useCheckEmail } from '@/shared/api/hook/account/useCheckEmail'
 import { checkEmailIsValid } from '@/shared/helpers/checkEmailIsValid'
 import _ from 'lodash'
@@ -11,7 +11,6 @@ const emailErrorMessage = ref('')
 const checkedEmails = ref([] as { email: string, status: boolean }[])
 
 const {
-    email,
     emailIsValid
 } = defineProps({
     email: {
@@ -98,7 +97,3 @@ watch(value, (newValue) => {
         placeholder="Адрес электронной почты"
     />
 </template>
-
-<style scoped>
-
-</style>

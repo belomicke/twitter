@@ -15,7 +15,7 @@
             r="14"
             stroke-width="4"
             style="
-                stroke: rgb(29, 155, 240);
+                stroke: rgb(var(--x-color-primary));
                 opacity: 0.2;
             "
         />
@@ -26,14 +26,10 @@
             r="14"
             stroke-width="4"
             style="
-                stroke: rgb(29, 155, 240);
+                stroke: rgb(var(--x-color-primary));
                 stroke-dasharray: 80;
                 stroke-dashoffset: 60;
             "
         />
     </svg>
 </template>
-
-<style scoped>
-
-</style>

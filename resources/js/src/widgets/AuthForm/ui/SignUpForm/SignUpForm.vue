@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import XModal from '@/shared/ui/XModal/XModal.vue'
-import FirstStep from '@/widgets/AuthForm/ui/SignUpForm/steps/FirstStep/FirstStep.vue'
-import SecondStep from '@/widgets/AuthForm/ui/SignUpForm/steps/SecondStep.vue'
+import FirstStep from './ui/FirstStep/FirstStep.vue'
+import SecondStep from './ui/SecondStep.vue'
 import CreateAccountDTO from '@/shared/api/types/DTO/auth/CreateAccountDTO'
 import { useCreateAccessToken } from '@/shared/api/hook/auth/useCreateAccessToken'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
+import XModal from '@/shared/ui/XModal/XModal.vue'
 
 const step = ref(1)
 const credentials = ref<CreateAccountDTO | undefined>(undefined)
@@ -48,11 +45,7 @@ function secondStepSubmitHandler() {
         password: credentials.value?.password ?? ''
     }
 
-    createAccessToken(data, {
-        onSuccess() {
-            router.push(`/profile/${credentials.value?.username}`)
-        },
-    })
+    createAccessToken(data)
 }
 </script>
 
@@ -71,7 +64,7 @@ function secondStepSubmitHandler() {
             :credentials="credentials"
             @submit="secondStepSubmitHandler"
             @close="close"
-            v-if="step === 2"
+            v-if="step === 2 && credentials"
         />
     </x-modal>
 </template>

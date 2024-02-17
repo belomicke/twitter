@@ -1,0 +1,19 @@
+.is-text {
+    --x-button-font-weight: 500;
+    --x-button-hover-bg-color: var(--x-color-primary-opacity-2);
+    --x-button-pressed-bg-color: var(--x-color-primary-opacity-3);
+    --x-button-active-bg-color: var(--x-color-primary);
+    --x-button-disabled-bg-color: var(--x-color-primary-opacity-2);
+}
+
+.is-text.active {
+    --x-button-font-weight: 600;
+}
+
+.primary.is-text {
+    --x-button-text-color: var(--x-color-white);
+    --x-button-hover-text-color: var(--x-color-white);
+    --x-button-pressed-test-color: var(--x-color-white);
+    --x-button-active-text-color: var(--x-color-white);
+    --x-button-disabled-text-color: var(--x-color-white);
+}

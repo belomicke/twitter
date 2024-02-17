@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import XInput from '@/shared/ui/XInput/XInput.vue'
+import XInput from '@/shared/ui/XInput'
 import { useCheckUsername } from '@/shared/api/hook/account/useCheckUsername'
 import { checkUsernameIsValid } from '@/shared/helpers/checkUsernameIsValid'
 import _ from 'lodash'
@@ -9,7 +9,10 @@ const usernameIsLoading = ref(false)
 const usernameErrorMessage = ref('')
 const checkedUsernames = ref([] as { username: string, status: boolean }[])
 
-const { username, usernameIsValid } = defineProps({
+const {
+    username,
+    usernameIsValid
+} = defineProps({
     username: {
         type: String,
         required: true

@@ -81,7 +81,7 @@ function containerClickHandler() {
 }
 
 .x-select-container:focus-within .label {
-    color: rgb(29, 155, 240);
+    color: rgb(var(--x-color-primary));
 }
 
 .select {

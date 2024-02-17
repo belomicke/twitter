@@ -9,7 +9,7 @@ const props = defineProps({
         default: 'default'
     },
     size: {
-        type: String as PropType<'small' | 'default' | 'large'>,
+        type: String as PropType<'small' | 'default' | 'large' | 'extra-large'>,
         required: false,
         default: 'default'
     },
@@ -52,12 +52,28 @@ const props = defineProps({
         type: String as PropType<IconNames>,
         required: false,
         default: ''
+    },
+    iconSize: {
+        type: Number,
+        required: false,
+        default: 24
+    },
+    iconIsFilled: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    textAlign: {
+        type: String as PropType<'start' | 'center' | 'end'>,
+        required: false,
+        default: 'center'
     }
 })
 
 const emit = defineEmits(['click'])
 
-function clickHandler() {
+function clickHandler(e: MouseEvent) {
+    e.preventDefault()
     if (props.disabled) return
 
     emit('click')
@@ -72,13 +88,18 @@ function clickHandler() {
             'primary': type === 'primary',
             'info': type === 'info',
 
+            'extra-large': size === 'extra-large',
             'large': size === 'large',
             'small': size === 'small',
+
+            'text-start': textAlign === 'start',
+            'text-end': textAlign === 'end',
+
+            'active': active,
 
             'is-round': rounded,
             'is-disabled': disabled,
             'bold': bold,
-            'is-active': active,
             'block': block,
             'is-circle': circle,
             'is-text': text
@@ -88,6 +109,8 @@ function clickHandler() {
     >
         <x-icon
             :icon="icon"
+            :size="iconSize"
+            :filled="iconIsFilled"
             v-if="icon"
         />
         <slot></slot>
@@ -97,11 +120,13 @@ function clickHandler() {
 <style scoped>
 @import './styles/types.css';
 @import './styles/sizes.css';
+@import './styles/text.css';
 
 .x-button {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    grid-gap: 10px;
     line-height: 1;
     height: 32px;
     white-space: nowrap;
@@ -126,24 +151,44 @@ function clickHandler() {
     color: var(--x-button-hover-text-color);
     border-color: var(--x-button-hover-border-color);
     background-color: var(--x-button-hover-bg-color);
-    outline: none;
 }
 
-.x-button:active, .x-button.is-active {
-    color: var(--x-button-active-text-color);
-    border-color: var(--x-button-active-border-color);
+.x-button:active,
+.x-button:active:hover {
+    color: var(--x-button-pressed-text-color);
+    border-color: var(--x-button-pressed-border-color);
+    background-color: var(--x-button-pressed-bg-color);
+}
+
+.x-button.active,
+.x-button.active:hover {
+    color: var(--x-button-pressed-text-color);
+    border-color: var(--x-button-pressed-border-color);
     background-color: var(--x-button-active-bg-color);
-    outline: none;
 }
 
 .x-button.is-disabled,
 .x-button.is-disabled:hover,
 .x-button.is-disabled:focus {
-    color: var(--x-button-disabled-text-color);
     cursor: not-allowed;
-    background-image: none;
+    opacity: .8;
+    color: var(--x-button-disabled-text-color);
     background-color: var(--x-button-disabled-bg-color);
     border-color: var(--x-button-disabled-border-color);
+}
+
+.x-button > svg {
+    color: var(--x-button-text-color) !important;
+    transition: color .15s;
+}
+
+.x-button:hover {
+    outline: none;
+}
+
+.x-button.is-text {
+    --x-button-bg-color: transparent;
+    border: 0;
 }
 
 .x-button.block {
@@ -159,23 +204,15 @@ function clickHandler() {
 }
 
 .x-button.is-circle {
-    width: 34px;
-    height: 34px;
     border-radius: 50%;
     padding: 8px;
 }
 
-.x-button.is-text {
-    color: var(--x-button-text-color);
-    border: 0 solid transparent;
-    background-color: transparent;
+.x-button.text-start {
+    justify-content: start;
 }
 
-.x-button.is-text:not(.is-disabled):hover {
-    background-color: var(--x-fill-color-light);
-}
-
-.x-button.is-text:not(.is-disabled):active {
-    background-color: var(--x-fill-color-lighter);
+.x-button.text-end {
+    justify-content: end;
 }
 </style>

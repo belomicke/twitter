@@ -9,6 +9,7 @@ defineEmits(['close'])
         <div class="button">
             <x-button
                 icon="cross"
+                size="large"
                 @click="$emit('close')"
                 circle
                 text
@@ -29,6 +30,7 @@ defineEmits(['close'])
     height: 53px;
     width: 100%;
     position: relative;
+    border-bottom: 1px solid var(--x-border-color);
 }
 
 .button {

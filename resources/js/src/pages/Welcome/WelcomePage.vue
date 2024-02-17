@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AuthForm from '@/widgets/AuthForm/AuthForm.vue'
-import SvgLogo from '@/shared/ui/svg/Logo.vue'
+import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 </script>
 
 <template>
@@ -8,7 +8,9 @@ import SvgLogo from '@/shared/ui/svg/Logo.vue'
         <div class="container">
             <auth-form/>
             <div class="logo-container">
-                <svg-logo></svg-logo>
+                <x-icon
+                    icon="logo"
+                />
             </div>
         </div>
     </div>
@@ -46,13 +48,13 @@ import SvgLogo from '@/shared/ui/svg/Logo.vue'
     color: rgba(231, 233, 234, 1.00);
     vertical-align: text-bottom;
     max-height: 380px;
-    height: 100%;
     fill: currentColor;
     user-select: none;
     max-width: 100%;
     position: relative;
     padding: 32px;
     margin: auto 0;
-    width: 100%;
+    height: 100% !important;
+    width: 100% !important;
 }
 </style>

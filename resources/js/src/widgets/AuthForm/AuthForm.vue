@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import XButton from '@/shared/ui/XButton/XButton.vue'
-import SignUpForm from '@/widgets/AuthForm/ui/SignUpForm/SignUpForm.vue'
+import LogInForm from './ui/LogInForm.vue'
+import SignUpForm from './ui/SignUpForm/SignUpForm.vue'
 import XDivider from '@/shared/ui/XDivider/XDivider.vue'
-import LogInForm from '@/widgets/AuthForm/ui/LogInForm.vue'
+import XButton from '@/shared/ui/XButton/XButton.vue'
 
 const activeModal = ref<'' | 'log-in' | 'sign-up'>('')
 

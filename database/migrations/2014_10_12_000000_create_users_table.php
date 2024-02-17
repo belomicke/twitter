@@ -16,6 +16,18 @@ return new class extends Migration {
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->date('birth');
+
+            $table->string('profile_picture_path')->default('/profile_images/default-profile-picture.png');
+            $table->string('profile_banner_path')->default('');
+
+            $table->string('bio', 160)->default('');
+            $table->string('location', 30)->default('');
+            $table->string('link', 100)->default('');
+
+            $table->integer('posts_count')->default(0);
+            $table->integer('follows_count')->default(0);
+            $table->integer('followers_count')->default(0);
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

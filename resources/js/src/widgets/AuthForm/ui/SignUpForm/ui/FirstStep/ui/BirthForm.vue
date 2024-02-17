@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import XSelect from '@/shared/ui/XSelect/XSelect.vue'
 import moment from 'moment/moment'
+import XSelect from '@/shared/ui/XSelect/XSelect.vue'
 
 const {
     month
