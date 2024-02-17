@@ -49,11 +49,7 @@ function load() {
 
 <template>
     <x-virtual-scroll
-<<<<<<< HEAD
         v-if="feed && feed.data.items.length !== 0 && feed.data.total !== 0"
-=======
-        v-if="feed && feed.data.items.length && feed.data.total"
->>>>>>> c500ec6a499656536a9b61ca66ea38a5e035d318
         :count="feed.data.items.length"
         :total="feed.data.total"
         :window="window"
