@@ -3,10 +3,13 @@
 namespace Tests\Feature\Controllers\Account;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CheckEmailExistsControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_when_user_exists(): void
     {
         $user = User::factory()->create();

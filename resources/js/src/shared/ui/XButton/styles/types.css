@@ -2,19 +2,16 @@
     --x-button-text-color: var(--x-text-color-regular);
     --x-button-hover-text-color: var(--x-color-primary);
     --x-button-pressed-text-color: var(--x-color-primary);
-    --x-button-active-text-color: var(--x-button-hover-text-color);
     --x-button-disabled-text-color: var(--x-color-primary);
 
     --x-button-bg-color: var(--x-fill-color-blank);
     --x-button-hover-bg-color: var(--x-color-primary-opacity-2);
     --x-button-pressed-bg-color: var(--x-color-primary-opacity-3);
-    --x-button-active-bg-color: var(--x-button-hover-bg-color);
     --x-button-disabled-bg-color: var(--x-button-hover-bg-color);
 
     --x-button-border-color: var(--x-border-color);
     --x-button-hover-border-color: var(--x-color-primary-opacity-5);
     --x-button-pressed-border-color: var(--x-color-primary-opacity-5);
-    --x-button-active-border-color: var(--x-color-primary);
     --x-button-disabled-border-color: var(--x-button-hover-bg-color);
 }
 
@@ -22,19 +19,16 @@
     --x-button-text-color: var(--x-color-white);
     --x-button-hover-text-color: var(--x-color-white);
     --x-button-pressed-test-color: var(--x-color-white);
-    --x-button-active-text-color: var(--x-color-white);
     --x-button-disabled-text-color: var(--x-color-white);
 
     --x-button-bg-color: var(--x-color-primary);
     --x-button-hover-bg-color: var(--x-color-primary-hover);
     --x-button-pressed-bg-color: var(--x-color-primary-pressed);
-    --x-button-active-bg-color: var(--x-color-primary-dark-2);
     --x-button-disabled-bg-color: var(--x-color-primary);
 
     --x-button-border-color: var(--x-color-primary);
     --x-button-hover-border-color: var(--x-color-primary-hover);
     --x-button-pressed-border-color: var(--x-color-primary-pressed);
-    --x-button-active-border-color: var(--x-color-primary-dark-2);
     --x-button-disabled-border-color: var(--x-color-primary);
 }
 
@@ -42,18 +36,32 @@
     --x-button-text-color: var(--x-color-black);
     --x-button-hover-text-color: var(--x-color-black);
     --x-button-pressed-text-color: var(--x-color-black);
-    --x-button-active-text-color: var(--x-color-black);
     --x-button-disabled-text-color: var(--x-color-black);
 
     --x-button-bg-color: var(--x-color-white);
     --x-button-hover-bg-color: rgb(220, 220, 220);
     --x-button-pressed-bg-color: rgb(200, 200, 200);
-    --x-button-active-bg-color: rgb(255, 255, 255);
     --x-button-disabled-bg-color: rgb(180, 180, 180);
 
     --x-button-border-color: var(--x-color-white);
     --x-button-hover-border-color: rgb(220, 220, 220);
     --x-button-pressed-border-color: rgb(200, 200, 200);
-    --x-button-active-border-color: rgb(255, 255, 255);
     --x-button-disabled-border-color: rgb(200, 200, 200);
+}
+
+.danger {
+    --x-button-text-color: var(--x-color-white);
+    --x-button-hover-text-color: var(--x-color-white);
+    --x-button-pressed-text-color: var(--x-color-white);
+    --x-button-disabled-text-color: var(--x-color-white);
+
+    --x-button-bg-color: #f56c6c;
+    --x-button-hover-bg-color: #b25252;
+    --x-button-pressed-bg-color: #f78989;
+    --x-button-disabled-bg-color: #854040;
+
+    --x-button-border-color: #f56c6c;
+    --x-button-hover-border-color: #b25252;
+    --x-button-pressed-border-color: #f78989;
+    --x-button-disabled-border-color: #854040;
 }

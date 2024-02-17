@@ -38,6 +38,7 @@ defineEmits(['close'])
 }
 
 .content {
-    margin-left: 36px;
+    width: 100%;
+    margin-left: 40px;
 }
 </style>

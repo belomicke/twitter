@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
-import IUser from '@/shared/api/types/models/User'
+import IUser, { ProfileBanners, ProfilePictures } from '@/shared/api/types/models/User'
 import { api } from '@/shared/api/methods'
 import { computed, ref } from 'vue'
+import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
 
 export const useUserStore = defineStore('users', () => {
     // store
@@ -14,11 +15,32 @@ export const useUserStore = defineStore('users', () => {
         }
     })
 
+    const getUserById = computed(() => {
+        return (id: number) => {
+            return users.value.find(user => user.id === id)
+        }
+    })
+
     // actions
     function addUser(user: IUser) {
         if (!users.value.find(item => item.username === user.username)) {
             users.value.push(user)
         }
+    }
+
+    function addUsers(items: IUser[]) {
+        items.forEach(item => addUser(item))
+    }
+
+    function editUser(id: number, data: EditViewerPublicDataDTO) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.name = data.name
+        user.bio = data.bio ?? user.bio
+        user.location = data.location ?? user.location
+        user.link = data.link ?? user.link
     }
 
     async function fetchUser(username: string) {
@@ -34,9 +56,30 @@ export const useUserStore = defineStore('users', () => {
         }
     }
 
+    function changeProfilePicture(id: number, pictures: ProfilePictures) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.profile_picture = pictures
+    }
+
+    function changeProfileBanner(id: number, banner: ProfileBanners) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.profile_banner = banner
+    }
+
     return {
         getUserByUsername,
+        getUserById,
         addUser,
+        addUsers,
         fetchUser,
+        editUser,
+        changeProfilePicture,
+        changeProfileBanner,
     }
 })

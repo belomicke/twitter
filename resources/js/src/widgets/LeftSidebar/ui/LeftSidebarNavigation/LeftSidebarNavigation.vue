@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
+import { computed, PropType, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import PostCreatorModal from './ui/PostCreatorModal.vue'
 import LeftSidebarNavigationItem from './ui/LeftSidebarNavigationItem.vue'
 import IUser from '@/shared/api/types/models/User'
 import { IconNames } from '@/shared/ui/XIcon'
+import XButton from '@/shared/ui/XButton/XButton.vue'
 
 interface ILink {
     id: number
@@ -16,9 +18,11 @@ interface ILink {
 const { user } = defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
-    }
+        required: true,
+    },
 })
+
+const creator = ref<InstanceType<typeof PostCreatorModal> | null>(null)
 
 const router = useRouter()
 const route = useRoute()
@@ -32,7 +36,7 @@ const links = computed((): ILink[] => {
             active: route.fullPath === '/',
             clickHandler: () => {
                 router.push('/')
-            }
+            },
         },
         {
             id: 2,
@@ -41,10 +45,14 @@ const links = computed((): ILink[] => {
             active: route.fullPath === `/profile/${user?.username}`,
             clickHandler: () => {
                 router.push(`/profile/${user?.username}`)
-            }
-        }
+            },
+        },
     ]
 })
+
+function openPostCreator() {
+    creator.value?.open()
+}
 </script>
 
 <template>
@@ -57,7 +65,18 @@ const links = computed((): ILink[] => {
             v-for="link in links"
             :key="link.id"
         />
+        <x-button
+            type="primary"
+            size="extra-large"
+            @click="openPostCreator"
+            bold
+        >
+            Опубликовать пост
+        </x-button>
     </div>
+    <post-creator-modal
+        ref="creator"
+    />
 </template>
 
 <style scoped>

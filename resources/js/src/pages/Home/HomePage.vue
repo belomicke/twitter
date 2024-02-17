@@ -1,52 +1,42 @@
 <script setup lang="ts">
-import LeftSidebar from '@/widgets/LeftSidebar/LeftSidebar.vue'
+import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
+import PostCreator from '@/widgets/PostCreator/PostCreator.vue'
+import MyFollowingsPostsFeed from '@/widgets/Feed/MyFollowingsPostsFeed.vue'
 </script>
 
 <template>
-    <div class="wrapper">
-        <div class="container">
-            <div class="sidebar-container">
-                <div class="sidebar">
-                    <LeftSidebar/>
+    <div>
+        <div class="header">
+            <x-page-header>
+                <div class="header-title">
+                    Главная
                 </div>
-            </div>
-            <div class="page">
-                <router-view/>
-            </div>
-            <div class="sidebar-container">
-                <div class="sidebar"></div>
-            </div>
+            </x-page-header>
         </div>
+        <div class="post-creator-container">
+            <post-creator />
+        </div>
+        <my-followings-posts-feed />
     </div>
 </template>
 
 <style scoped>
-.wrapper {
+.header {
     display: flex;
-    justify-content: center;
-    height: 100vh;
-    overflow-y: scroll;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: 300px 1fr 300px;
-    width: 100%;
-    max-width: 1280px;
-}
-
-.sidebar-container {
-    position: relative;
-}
-
-.sidebar {
-    position: fixed;
-    width: 300px;
-}
-
-.page {
-    border-left: 1px solid var(--x-border-color);
-    border-right: 1px solid var(--x-border-color);
+    align-items: center;
     height: 100%;
+    border-bottom: 1px solid var(--x-border-color);
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    height: 100%;
+    font-weight: 700;
+}
+
+.post-creator-container {
+    border-bottom: 1px solid var(--x-border-color);
 }
 </style>

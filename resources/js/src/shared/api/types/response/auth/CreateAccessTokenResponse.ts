@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios'
 import { ApiResponse } from '@/shared/api/types/response'
 
-export type CreateAccessTokenResponse = AxiosResponse<ApiResponse<{ token: string }>>
+export type CreateAccessTokenResponse = ApiResponse<{ token: string }>

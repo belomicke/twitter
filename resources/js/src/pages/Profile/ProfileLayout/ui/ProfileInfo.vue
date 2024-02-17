@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
 import { PropType } from 'vue'
-import IUser from '@/shared/api/types/models/User'
+
 import UserBio from '@/entities/User/ui/UserBio.vue'
 import UserData from '@/entities/User/ui/UserData.vue'
 import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserStats from '@/entities/User/ui/UserStats.vue'
+import IUser from '@/shared/api/types/models/User'
 
 const { user } = defineProps({
     user: {
@@ -23,7 +23,10 @@ const { user } = defineProps({
                 :font-size="20"
             />
         </div>
-        <div class="info-block" v-if="user.bio">
+        <div
+            v-if="user.bio"
+            class="info-block"
+        >
             <user-bio
                 :bio="user.bio"
             />

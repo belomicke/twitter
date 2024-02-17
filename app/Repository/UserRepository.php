@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRepository
 {
+    public function getUserById(int $id): User|Model|Builder|null
+    {
+        return User::query()->where('id', $id)->first();
+    }
+
     public function getUserByUsername(string $username): User|Model|Builder|null
     {
         return User::query()->where('username', $username)->first();

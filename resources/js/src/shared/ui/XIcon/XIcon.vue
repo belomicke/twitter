@@ -15,22 +15,24 @@ import HomeIcon from '@/shared/ui/XIcon/icons/HomeIcon.vue'
 import ProfileIcon from '@/shared/ui/XIcon/icons/ProfileIcon.vue'
 import OtherIcon from '@/shared/ui/XIcon/icons/OtherIcon.vue'
 import SpinnerIcon from '@/shared/ui/XIcon/icons/SpinnerIcon.vue'
+import AddPhotoIcon from '@/shared/ui/XIcon/icons/AddPhotoIcon.vue'
+import TrashBinIcon from '@/shared/ui/XIcon/icons/TrashBinIcon.vue'
 
 const { icon } = defineProps({
     icon: {
         type: String as PropType<IconNames>,
-        required: true
+        required: true,
     },
     size: {
         type: Number,
         required: false,
-        default: 20
+        default: 20,
     },
     color: {
         type: String,
         required: false,
-        default: 'rgb(255, 255, 255)'
-    }
+        default: 'rgb(255, 255, 255)',
+    },
 })
 
 const icons = {
@@ -47,7 +49,9 @@ const icons = {
     'home-icon': HomeIcon,
     'profile-icon': ProfileIcon,
     'other-icon': OtherIcon,
-    'spinner-icon': SpinnerIcon
+    'spinner-icon': SpinnerIcon,
+    'add-photo-icon': AddPhotoIcon,
+    'trash-bin-icon': TrashBinIcon,
 }
 </script>
 

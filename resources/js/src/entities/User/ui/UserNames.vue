@@ -6,28 +6,62 @@ import UserName from '@/entities/User/ui/UserName.vue'
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
+        required: true,
     },
     fontSize: {
         type: Number as PropType<15 | 20>,
         required: false,
-        default: 15
-    }
+        default: 15,
+    },
+    inline: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    links: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 })
 </script>
 
 <template>
-    <div class="user-names">
-        <user-name
-            :user="user"
-            :font-size="fontSize"
-        />
-        <div class="username">@{{ user.username }}</div>
-    </div>
+    <component
+        :is="links ? 'router-link' : 'div'"
+        :to="`/profile/${user.username}`"
+        class="user-names"
+        :class="{ inline: inline }"
+    >
+        <div
+            class="name"
+            :class="{ link: links }"
+        >
+            <user-name
+                :user="user"
+                :font-size="fontSize"
+            />
+        </div>
+        <div class="username">
+            @{{ user.username }}
+        </div>
+    </component>
 </template>
 
 <style scoped>
+.user-names.inline {
+    display: flex;
+    grid-gap: 10px;
+}
 
+.user-names {
+    text-decoration: none;
+}
+
+.name.link:hover {
+    text-decoration: underline;
+    text-decoration-color: white;
+}
 
 .username {
     color: rgb(113, 118, 123);

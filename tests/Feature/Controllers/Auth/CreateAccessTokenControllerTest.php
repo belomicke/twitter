@@ -10,8 +10,8 @@ class CreateAccessTokenControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    const CREATE_ACCESS_TOKEN_URL = '/api/auth/create_access_token';
-    const CURRENT_USER_URL = '/api/account/current_user';
+    const CREATE_ACCESS_TOKEN_URL = '/api/auth/access_token';
+    const CURRENT_USER_URL = '/api/account/viewer';
 
     public function test_created_token_is_correct(): void
     {
