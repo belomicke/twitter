@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
 import PostCreator from '@/widgets/PostCreator/PostCreator.vue'
-import MyFollowingsPostsFeed from '@/widgets/Feed/MyFollowingsPostsFeed.vue'
 </script>
 
 <template>
@@ -16,7 +15,6 @@ import MyFollowingsPostsFeed from '@/widgets/Feed/MyFollowingsPostsFeed.vue'
         <div class="post-creator-container">
             <post-creator />
         </div>
-        <my-followings-posts-feed />
     </div>
 </template>
 

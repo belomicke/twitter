@@ -6,7 +6,6 @@ import {
 import { defineStore } from 'pinia'
 
 import { usePostStore } from '@/entities/Post/store'
-import { useUserStore } from '@/entities/User/store'
 import { api } from '@/shared/api/methods'
 import { IFeed } from '@/shared/api/types/models/Feed'
 
@@ -33,43 +32,7 @@ export const useFeedStore = defineStore('feeds', () => {
             feed.data.items.push(...items)
         }
     }
-
-    async function fetchMyFollowingsPostsFeed() {
-        const id = 'my-followings-posts'
-        const feed = feeds.value.find(item => item.id === id)
-
-        const offset = feed ? feed.data.items.length : 0
-
-        if (feed && offset > feed.data.total || feed && !feed.data.hasNextPage) return
-
-        const res = await api.feed.getFollowingsPosts({ offset, limit: 50 })
-        const data = res.data
-
-        if (data.success) {
-            const items = data.data.items
-
-            const postStore = usePostStore()
-            postStore.addPosts(items.map(item => item.post))
-
-            const userStore = useUserStore()
-            userStore.addUsers(items.map(item => item.user))
-
-            if (feed) {
-                addItemsToFeed(id, items.map(item => item.post.id))
-            } else {
-                const feedData = {
-                    id,
-                    data: {
-                        ...data.data,
-                        items: items.map(item => item.post.id),
-                    },
-                }
     
-                addFeed(feedData)
-            }
-        }
-    }
-
     async function fetchUserPostsFeed(username: string) {
         const id = `user:${username}:posts`
         const feed = feeds.value.find(item => item.id === id)
@@ -105,7 +68,6 @@ export const useFeedStore = defineStore('feeds', () => {
 
     return {
         getFeedById,
-        fetchMyFollowingsPostsFeed,
         fetchUserPostsFeed,
     }
 })
