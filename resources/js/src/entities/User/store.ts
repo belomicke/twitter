@@ -15,11 +15,21 @@ export const useUserStore = defineStore('users', () => {
         }
     })
 
+    const getUserById = computed(() => {
+        return (id: number) => {
+            return users.value.find(user => user.id === id)
+        }
+    })
+
     // actions
     function addUser(user: IUser) {
         if (!users.value.find(item => item.username === user.username)) {
             users.value.push(user)
         }
+    }
+
+    function addUsers(items: IUser[]) {
+        items.forEach(item => addUser(item))
     }
 
     function editUser(id: number, data: EditViewerPublicDataDTO) {
@@ -64,7 +74,9 @@ export const useUserStore = defineStore('users', () => {
 
     return {
         getUserByUsername,
+        getUserById,
         addUser,
+        addUsers,
         fetchUser,
         editUser,
         changeProfilePicture,

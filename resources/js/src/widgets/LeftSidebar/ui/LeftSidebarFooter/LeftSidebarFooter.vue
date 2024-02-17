@@ -48,7 +48,6 @@ defineProps({
 .footer {
     display: flex;
     border-radius: 9999px;
-    margin-bottom: 20px;
     padding: 12px;
     cursor: pointer;
     transition: background-color .15s;

@@ -11,4 +11,5 @@ body {
     background-color: var(--x-color-black);
     color: var(--x-color-white);
     height: 100%;
+    color-scheme: dark;
 }

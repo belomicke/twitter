@@ -22,6 +22,5 @@ export default interface IUser {
     posts_count: number
     follows_count: number
     followers_count: number
-    updated_at: string
     created_at: string
 }

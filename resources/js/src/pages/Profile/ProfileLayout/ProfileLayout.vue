@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { PropType } from 'vue'
 import 'moment/locale/ru'
-import ProfilePageHeader from './ui/ProfilePageHeader.vue'
-import ProfileInfo from './ui/ProfileInfo.vue'
-import ProfileActions from './ui/ProfileActions/ProfileActions.vue'
+
+import { PropType } from 'vue'
+
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
-import IUser from '@/shared/api/types/models/User'
 import UserBanner from '@/entities/User/ui/UserBanner.vue'
+import ProfileTabs from '@/pages/Profile/ProfileLayout/ui/ProfileTabs.vue'
+import IUser from '@/shared/api/types/models/User'
+
+import ProfileActions from './ui/ProfileActions/ProfileActions.vue'
+import ProfileInfo from './ui/ProfileInfo.vue'
+import ProfilePageHeader from './ui/ProfilePageHeader.vue'
 
 defineProps({
     user: {
@@ -35,10 +39,13 @@ defineProps({
                 :user="user"
             />
         </div>
-        <profile-info
-            :user="user"
-        />
+        <div class="info">
+            <profile-info
+                :user="user"
+            />
+        </div>
     </div>
+    <router-view />
 </template>
 
 <style scoped>
@@ -46,6 +53,7 @@ defineProps({
     width: 100%;
     position: relative;
     padding: 0 15px;
+    border-bottom: 1px solid var(--x-border-color);
 }
 
 .top-info {
@@ -60,5 +68,9 @@ defineProps({
     border-radius: 50%;
     border: 4px solid rgb(0, 0, 0);
     transform: translateY(-66px);
+}
+
+.info {
+    padding-bottom: 15px;
 }
 </style>

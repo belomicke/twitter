@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
+import {
+    nextTick,
+    onMounted,
+    ref,
+    watch,
+} from 'vue'
 
 const { modelValue } = defineProps({
     modelValue: {
@@ -8,9 +13,15 @@ const { modelValue } = defineProps({
     },
     placeholder: {
         type: String,
-        required: true,
+        required: false,
+        default: '',
     },
     showWordLimit: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    noWrapper: {
         type: Boolean,
         required: false,
         default: false,
@@ -53,7 +64,10 @@ onMounted(() => resize())
 </script>
 
 <template>
-    <div class="wrapper">
+    <div
+        v-if="!noWrapper"
+        class="wrapper"
+    >
         <div
             class="container"
             :class="{
@@ -67,24 +81,34 @@ onMounted(() => resize())
             <div class="textarea-wrapper">
                 <div class="textarea-container">
                     <textarea
+                        v-bind="$attrs"
+                        ref="textarea"
                         class="textarea"
                         :value="modelValue"
-                        @input="textareaHandler"
-                        v-bind="$attrs"
                         :maxRows="160"
                         :minRows="1"
-                        ref="textarea"
+                        @input="textareaHandler"
                     />
                 </div>
             </div>
             <div
-                class="textarea-word-limit"
                 v-if="showWordLimit && $attrs.maxlength && modelValue"
+                class="textarea-word-limit"
             >
                 {{ modelValue.length }} / {{ $attrs.maxlength }}
             </div>
         </div>
     </div>
+    <textarea
+        v-else
+        v-bind="$attrs"
+        ref="textarea"
+        class="textarea"
+        :value="modelValue"
+        :maxRows="160"
+        :minRows="1"
+        @input="textareaHandler"
+    />
 </template>
 
 <style scoped>
@@ -161,7 +185,7 @@ onMounted(() => resize())
     background-color: rgba(0, 0, 0, 0);
     word-wrap: break-word;
     white-space: pre-wrap;
-    overflow: hidden;
+    overflow: auto;
     min-height: 60px;
 }
 

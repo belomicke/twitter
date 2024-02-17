@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\User\UserHelpers;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Date;
@@ -92,5 +93,10 @@ class User extends Authenticatable
             id: $this->id,
             filename: $this->profile_banner_filename
         );
+    }
+
+    public function posts(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'id', 'user_id');
     }
 }

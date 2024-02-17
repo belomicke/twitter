@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import {
+    computed,
+    onMounted,
+} from 'vue'
+
 import { useRoute } from 'vue-router'
+
 import { useUserStore } from '@/entities/User/store'
-import { computed, onMounted } from 'vue'
 import ProfileLayout from '@/pages/Profile/ProfileLayout/ProfileLayout.vue'
 
 const route = useRoute()
@@ -22,7 +27,7 @@ onMounted(() => {
 
 <template>
     <profile-layout
-        :user="user"
         v-if="user"
+        :user="user"
     />
 </template>

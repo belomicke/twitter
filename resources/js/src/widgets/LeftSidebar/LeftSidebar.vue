@@ -2,7 +2,6 @@
 import { storeToRefs } from 'pinia'
 import LeftSidebarFooter from './ui/LeftSidebarFooter/LeftSidebarFooter.vue'
 import LeftSidebarNavigation from './ui/LeftSidebarNavigation/LeftSidebarNavigation.vue'
-import LeftSidebarLogo from './ui/LeftSidebarLogo.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
 
 const viewerStore = useViewerStore()
@@ -11,9 +10,11 @@ const { viewer } = storeToRefs(viewerStore)
 </script>
 
 <template>
-    <div class="left-sidebar" v-if="viewer">
+    <div
+        v-if="viewer"
+        class="left-sidebar"
+    >
         <div class="body">
-            <left-sidebar-logo/>
             <left-sidebar-navigation
                 :user="viewer"
             />
@@ -30,7 +31,7 @@ const { viewer } = storeToRefs(viewerStore)
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
-    padding-right: 10px;
+    padding: 10px 10px 10px 0;
     width: 100%;
 }
 
