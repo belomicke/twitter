@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import PostFeed from '@/entities/Feed/ui/PostFeed.vue'
 
-import { useFeedStore } from '../../entities/Feed/store'
+import { useFeedStore } from '@/entities/Feed/store'
 
 const props = defineProps({
     username: {
         type: String,
         required: true,
-    }
+    },
 })
 
 const feedStore = useFeedStore()

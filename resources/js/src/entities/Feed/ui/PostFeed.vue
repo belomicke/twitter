@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import 'v3-infinite-loading/lib/style.css'
 
-import {
-    computed,
-    onMounted,
-} from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
 import { storeToRefs } from 'pinia'
 
@@ -13,16 +10,16 @@ import XVirtualScroll from '@/shared/ui/XVirtualScroll/XVirtualScroll.vue'
 
 import { useFeedStore } from '../store'
 
-const { id } = defineProps({
+const props = defineProps({
     id: {
         type: String,
-        required: true
+        required: true,
     },
     window: {
         type: Boolean,
         required: false,
-        default: false
-    }
+        default: false,
+    },
 })
 
 const emit = defineEmits(['fetch'])
@@ -31,7 +28,11 @@ const feedStore = useFeedStore()
 const { getFeedById } = storeToRefs(feedStore)
 
 const feed = computed(() => {
-    return getFeedById.value(id)
+    return getFeedById.value(props.id)
+})
+
+watch(() => props.id, () => {
+    emit('fetch')
 })
 
 onMounted(() => {
@@ -51,7 +52,7 @@ function load() {
     <x-virtual-scroll
         v-if="feed && feed.data.items.length !== 0 && feed.data.total !== 0"
         :count="feed.data.items.length"
-        :total="feed.data.total"
+        :total="feed.data.total ?? 0"
         :window="window"
         @fetch-next-page="load"
     >

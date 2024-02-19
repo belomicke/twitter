@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useUserStore } from '@/entities/User/store'
 
-const { size, username } = defineProps({
+const props = defineProps({
     username: {
         type: String,
         required: true,
@@ -21,16 +21,16 @@ const { size, username } = defineProps({
 
 const userStore = useUserStore()
 const user = computed(() => {
-    return userStore.getUserByUsername(username)
+    return userStore.getUserByUsername(props.username)
 })
 
 const path = computed(() => {
     if (!user.value) return ''
 
-    if (size <= 200) {
-        return user.value.profile_banner.default
-    } else if (size > 200) {
+    if (props.size > 200) {
         return user.value.profile_banner.large
+    } else {
+        return user.value.profile_banner.default
     }
 })
 </script>
@@ -43,7 +43,7 @@ const path = computed(() => {
             'height': `${size}px`
         }"
     >
-        <slot></slot>
+        <slot />
     </div>
 </template>
 

@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import {
-    computed,
-    inject,
-} from 'vue'
+import { computed, inject } from 'vue'
 
 import { useCreatePost } from '@/shared/api/hook/posts/useCreatePost'
 import XButton from '@/shared/ui/XButton/XButton.vue'
 import FillableCircle from '@/widgets/PostCreator/FillableCircle.vue'
 import { PostBodyDefaultValue } from '@/widgets/PostCreator/types'
+
+const emit = defineEmits(['publish'])
 
 const postBody = inject('postBody', PostBodyDefaultValue)
 
@@ -18,11 +17,12 @@ const formIsValid = computed(() => {
 const { mutate: createPost } = useCreatePost()
 
 function publish() {
-    const formatedText = postBody.text.replace(/\n+/g, '\n\n')
+    const formattedText = postBody.text.replace(/\n+/g, '\n\n')
 
     createPost({
-        text: formatedText
+        text: formattedText,
     })
+    emit('publish')
 }
 </script>
 
@@ -53,21 +53,21 @@ function publish() {
 
 <style scoped>
 .footer {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	padding-top: 10px;
-	border-top: 1px solid var(--x-border-color);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-top: 10px;
+    border-top: 1px solid var(--x-border-color);
 }
 
 .footer-right-block {
-	display: flex;
-	align-items: center;
-	grid-gap: 10px;
-	margin-left: auto;
+    display: flex;
+    align-items: center;
+    grid-gap: 10px;
+    margin-left: auto;
 }
 
 .publish {
-	display: flex;
+    display: flex;
 }
 </style>

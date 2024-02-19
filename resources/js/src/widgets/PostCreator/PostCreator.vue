@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-    provide,
-    reactive,
-} from 'vue'
+import { provide, reactive } from 'vue'
 
 import { useRouter } from 'vue-router'
 
@@ -24,8 +21,12 @@ provide('postBody', postBody)
 
 function goToProfile() {
     if (!viewer) return
-    
+
     router.push(`/profile/${viewer.username}`)
+}
+
+function publishHandler() {
+    postBody.text = ''
 }
 </script>
 
@@ -50,7 +51,9 @@ function goToProfile() {
                     :max-length="280"
                 />
             </div>
-            <post-creator-footer />
+            <post-creator-footer
+                @publish="publishHandler"
+            />
         </div>
     </div>
 </template>
@@ -60,7 +63,7 @@ function goToProfile() {
     --avatar-width: 40px;
     --gap: 10px;
     --horizontal-padding: 16px;
-    
+
     display: flex;
     grid-gap: 10px;
     padding: 12px 16px 8px;

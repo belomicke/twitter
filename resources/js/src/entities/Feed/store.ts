@@ -1,7 +1,4 @@
-import {
-    computed,
-    ref,
-} from 'vue'
+import { computed, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
@@ -25,14 +22,27 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
-    function addItemsToFeed(id: string, items: number[]) {
+    function addItemToFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
         if (feed) {
-            feed.data.items.push(...items)
+            feed.data.items.push(item)
         }
     }
-    
+
+    function addItemToStartOfFeed(id: string, item: number) {
+        const feed = feeds.value.find(item => item.id === id)
+
+        if (feed) {
+            feed.data.items.unshift(item)
+            feed.data.total += 1
+        }
+    }
+
+    function addItemsToFeed(id: string, items: number[]) {
+        items.forEach((item) => addItemToFeed(id, item))
+    }
+
     async function fetchUserPostsFeed(username: string) {
         const id = `user:${username}:posts`
         const feed = feeds.value.find(item => item.id === id)
@@ -68,6 +78,8 @@ export const useFeedStore = defineStore('feeds', () => {
 
     return {
         getFeedById,
+        addItemToFeed,
+        addItemToStartOfFeed,
         fetchUserPostsFeed,
     }
 })
