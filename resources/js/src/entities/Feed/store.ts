@@ -1,12 +1,8 @@
-import {
-    computed,
-    ref,
-} from 'vue'
+import { computed, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
 import { usePostStore } from '@/entities/Post/store'
-import { useUserStore } from '@/entities/User/store'
 import { api } from '@/shared/api/methods'
 import { IFeed } from '@/shared/api/types/models/Feed'
 
@@ -26,48 +22,25 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
-    function addItemsToFeed(id: string, items: number[]) {
+    function addItemToFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
         if (feed) {
-            feed.data.items.push(...items)
+            feed.data.items.push(item)
         }
     }
 
-    async function fetchMyFollowingsPostsFeed() {
-        const id = 'my-followings-posts'
+    function addItemToStartOfFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
-        const offset = feed ? feed.data.items.length : 0
-
-        if (feed && offset > feed.data.total || feed && !feed.data.hasNextPage) return
-
-        const res = await api.feed.getFollowingsPosts({ offset, limit: 50 })
-        const data = res.data
-
-        if (data.success) {
-            const items = data.data.items
-
-            const postStore = usePostStore()
-            postStore.addPosts(items.map(item => item.post))
-
-            const userStore = useUserStore()
-            userStore.addUsers(items.map(item => item.user))
-
-            if (feed) {
-                addItemsToFeed(id, items.map(item => item.post.id))
-            } else {
-                const feedData = {
-                    id,
-                    data: {
-                        ...data.data,
-                        items: items.map(item => item.post.id),
-                    },
-                }
-    
-                addFeed(feedData)
-            }
+        if (feed) {
+            feed.data.items.unshift(item)
+            feed.data.total += 1
         }
+    }
+
+    function addItemsToFeed(id: string, items: number[]) {
+        items.forEach((item) => addItemToFeed(id, item))
     }
 
     async function fetchUserPostsFeed(username: string) {
@@ -105,7 +78,8 @@ export const useFeedStore = defineStore('feeds', () => {
 
     return {
         getFeedById,
-        fetchMyFollowingsPostsFeed,
+        addItemToFeed,
+        addItemToStartOfFeed,
         fetchUserPostsFeed,
     }
 })

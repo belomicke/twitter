@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import '@/shared/ui/css/variables.css'
 import '@/shared/ui/css/global.css'
-import { useViewerStore } from '@/entities/Viewer/store'
+
+import { onMounted } from 'vue'
+
 import { storeToRefs } from 'pinia'
+
+import { useViewerStore } from '@/entities/Viewer/store'
 import LoadingPage from '@/pages/Loading/LoadingPage.vue'
 
 const viewerStore = useViewerStore()
@@ -11,11 +14,22 @@ const viewerStore = useViewerStore()
 const { isLoading } = storeToRefs(viewerStore)
 
 onMounted(() => {
-    const mode = localStorage.getItem('mode') ?? 'light'
-    const theme = localStorage.getItem('theme') ?? 'blue'
+    const mode = localStorage.getItem('mode')
+    const theme = localStorage.getItem('theme')
 
-    document.body.classList.add(mode)
-    document.body.classList.add(theme)
+    if (!mode || !['light', 'dark'].includes(mode)) {
+        localStorage.setItem('mode', 'dark')
+        document.body.classList.add('dark')
+    } else {
+        document.body.classList.add(mode)
+    }
+
+    if (!theme || !['blue', 'purple'].includes(theme)) {
+        localStorage.setItem('theme', 'blue')
+        document.body.classList.add('blue')
+    } else {
+        document.body.classList.add(theme)
+    }
 
     viewerStore.fetchViewer()
 })
@@ -26,10 +40,10 @@ onMounted(() => {
         v-if="isLoading"
     />
     <div
-        class="container"
         v-else
+        class="container"
     >
-        <router-view/>
+        <router-view />
     </div>
 </template>
 

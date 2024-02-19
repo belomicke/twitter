@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-    computed,
-    onMounted,
-    ref,
-} from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import InfiniteLoading from 'v3-infinite-loading'
 
@@ -12,16 +8,16 @@ import { useVirtualizer } from '@tanstack/vue-virtual'
 const props = defineProps({
     count: {
         type: Number,
-        required: true
+        required: true,
     },
     total: {
         type: Number,
-        required: true
+        required: true,
     },
     window: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
 })
 
@@ -122,26 +118,21 @@ function fetchNextPage() {
 
 <style scoped>
 .post-feed {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 .post-feed.scroll {
-    height: 100%;
-    overflow-y: auto;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .post {
-    border-bottom: 1px solid var(--x-border-color);
+  border-bottom: 1px solid var(--x-border-color);
 }
 
 .loader {
-    display: flex;
-    justify-content: center;
-    padding-top: 14px;
-}
-
-.spinner {
-    display: flex;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 14px;
 }
 </style>

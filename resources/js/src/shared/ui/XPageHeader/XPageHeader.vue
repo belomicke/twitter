@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import XButton from '@/shared/ui/XButton/XButton.vue'
 import { useRouter } from 'vue-router'
+
+import XButton from '@/shared/ui/XButton/XButton.vue'
 
 const router = useRouter()
 
@@ -21,8 +22,8 @@ function goToBackHandler() {
     <div class="x-page-header-wrapper">
         <div class="x-page-header">
             <div
-                class="go-to-back-button"
                 v-if="withGoToBackButton"
+                class="go-to-back-button"
             >
                 <x-button
                     icon="arrow-left"
@@ -34,7 +35,7 @@ function goToBackHandler() {
                 />
             </div>
             <div class="content">
-                <slot/>
+                <slot />
             </div>
         </div>
     </div>
@@ -48,6 +49,7 @@ function goToBackHandler() {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
 }
 
 .x-page-header {

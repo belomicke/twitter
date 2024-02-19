@@ -2,7 +2,7 @@
 import { useUserStore } from '@/entities/User/store'
 import { computed } from 'vue'
 
-const { size, username } = defineProps({
+const props = defineProps({
     username: {
         type: String,
         required: true,
@@ -21,15 +21,15 @@ const { size, username } = defineProps({
 
 const userStore = useUserStore()
 const user = computed(() => {
-    return userStore.getUserByUsername(username)
+    return userStore.getUserByUsername(props.username)
 })
 
 const path = computed(() => {
     if (!user.value) return ''
 
-    if (size <= 128) {
+    if (props.size <= 128) {
         return user.value.profile_picture.small
-    } else if (size <= 200) {
+    } else if (props.size <= 200) {
         return user.value.profile_picture.default
     } else {
         return user.value.profile_picture.large

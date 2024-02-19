@@ -30,6 +30,7 @@
         "@tanstack/vue-virtual": "^3.0.4",
         "@vitejs/plugin-vue": "^5.0.3",
         "@vueup/vue-quill": "^1.2.0",
+        "autoprefixer": "^10.4.17",
         "lodash": "^4.17.21",
         "lodash.debounce": "^4.0.8",
         "moment": "^2.30.1",

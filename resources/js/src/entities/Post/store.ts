@@ -43,6 +43,7 @@ export const usePostStore = defineStore('posts', () => {
     }
 
     return {
+        addPost,
         addPosts,
         getPostById,
         fetchPostById,

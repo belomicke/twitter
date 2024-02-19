@@ -15,11 +15,16 @@ class CreatePostController extends Controller
         $text = $request->input('text');
         $formattedText = preg_replace("/\n+/", "\n\n", $text);
 
+        $user = Auth::user();
+
         $post = Post::create([
             'text' => $formattedText,
-            'user_id' => Auth::id()
+            'user_id' => $user->id
         ]);
         $post->save();
+
+        $user->posts_count += 1;
+        $user->save();
 
         return response()->json([
             'success' => true,
