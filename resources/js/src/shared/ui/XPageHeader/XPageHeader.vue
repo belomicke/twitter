@@ -5,16 +5,24 @@ import XButton from '@/shared/ui/XButton/XButton.vue'
 
 const router = useRouter()
 
-defineProps({
+const props = defineProps({
     withGoToBackButton: {
         type: Boolean,
         required: false,
-        default: false
-    }
+        default: false,
+    },
+    onBack: {
+        type: Function,
+        default: null,
+    },
 })
 
+const emit = defineEmits(['back'])
+
 function goToBackHandler() {
-    router.go(-1)
+    if (!props.onBack) router.go(-1)
+
+    emit('back')
 }
 </script>
 

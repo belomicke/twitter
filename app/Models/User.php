@@ -6,9 +6,13 @@ use App\Services\User\UserHelpers;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -21,9 +25,12 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $bio
  * @property string $location
  * @property string $link
+ * @property bool $following
  * @property int $posts_count
  * @property int $follows_count
  * @property int $followers_count
+ * @property Collection $follows
+ * @property Collection $followers
  * @property Date $birth
  * @property string $password
  * @property DateTime $created_at
@@ -56,6 +63,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'email',
+        'pivot',
         'email_verified_at',
         'updated_at',
         'password',
@@ -76,7 +84,8 @@ class User extends Authenticatable
 
     protected $appends = [
         'profile_picture',
-        'profile_banner'
+        'profile_banner',
+        'following'
     ];
 
     public function getProfilePictureAttribute(): array
@@ -95,8 +104,40 @@ class User extends Authenticatable
         );
     }
 
+    public function getFollowingAttribute(): bool
+    {
+        return DB::table('follows')
+            ->where('follower_id', Auth::id())
+            ->where('follow_id', $this->id)
+            ->exists();
+    }
+
     public function posts(): BelongsTo
     {
-        return $this->belongsTo(Post::class, 'id', 'user_id');
+        return $this->belongsTo(
+            Post::class,
+            'id',
+            'user_id'
+        );
+    }
+
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'follows',
+            'follow_id',
+            'follower_id',
+        );
+    }
+
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'follows',
+            'follower_id',
+            'follow_id',
+        );
     }
 }

@@ -5,7 +5,6 @@ import { PropType } from 'vue'
 
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import UserBanner from '@/entities/User/ui/UserBanner.vue'
-import ProfileTabs from '@/pages/Profile/ProfileLayout/ui/ProfileTabs.vue'
 import IUser from '@/shared/api/types/models/User'
 
 import ProfileActions from './ui/ProfileActions/ProfileActions.vue'
@@ -45,7 +44,7 @@ defineProps({
             />
         </div>
     </div>
-    <router-view />
+    <slot />
 </template>
 
 <style scoped>
