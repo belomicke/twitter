@@ -128,7 +128,7 @@ class User extends Authenticatable
             'follows',
             'follow_id',
             'follower_id',
-        );
+        )->withTimestamps();
     }
 
     public function follows(): BelongsToMany
@@ -138,6 +138,6 @@ class User extends Authenticatable
             'follows',
             'follower_id',
             'follow_id',
-        );
+        )->withTimestamps();
     }
 }
