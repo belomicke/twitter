@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import UserPostsFeed from '@/widgets/Feed/UserPostsFeed.vue'
-import ProfileLayout from '@/pages/Profile/ProfileLayout/ProfileLayout.vue'
 import { PropType } from 'vue/dist/vue'
 import IUser from '@/shared/api/types/models/User'
 
@@ -19,9 +18,7 @@ const username = computed(() => {
 </script>
 
 <template>
-    <profile-layout :user="user">
-        <user-posts-feed :username="username" />
-    </profile-layout>
+    <user-posts-feed :username="username" />
 </template>
 
 <style scoped>
