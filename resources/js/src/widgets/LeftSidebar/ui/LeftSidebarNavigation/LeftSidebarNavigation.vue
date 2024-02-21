@@ -42,7 +42,7 @@ const links = computed((): ILink[] => {
             id: 2,
             icon: 'profile',
             text: 'Профиль',
-            active: route.fullPath === `/profile/${user?.username}`,
+            active: route.fullPath.startsWith(`/profile/${user?.username}`),
             clickHandler: () => {
                 router.push(`/profile/${user?.username}`)
             },
@@ -58,18 +58,18 @@ function openPostCreator() {
 <template>
     <div class="nav">
         <left-sidebar-navigation-item
+            v-for="link in links"
+            :key="link.id"
             :active="link.active"
             :icon="link.icon"
             :text="link.text"
             @click="link.clickHandler"
-            v-for="link in links"
-            :key="link.id"
         />
         <x-button
             type="primary"
             size="extra-large"
-            @click="openPostCreator"
             bold
+            @click="openPostCreator"
         >
             Опубликовать пост
         </x-button>

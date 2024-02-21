@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useRoute } from 'vue-router'
-
 import UserPostsFeed from '@/widgets/Feed/UserPostsFeed.vue'
+import { PropType } from 'vue/dist/vue'
+import IUser from '@/shared/api/types/models/User'
 
-const route = useRoute()
+const props = defineProps({
+    user: {
+        type: Object as PropType<IUser>,
+        required: true,
+    },
+})
 
 const username = computed(() => {
-    return String(route.params.username)
+    return String(props.user?.username)
 })
 </script>
 

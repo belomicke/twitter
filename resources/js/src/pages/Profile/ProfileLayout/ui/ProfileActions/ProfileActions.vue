@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { PropType } from "vue";
-import ViewerActions from "./ui/ViewerActions/ViewerActions.vue";
-import { useViewerStore } from "@/entities/Viewer/store";
-import IUser from "@/shared/api/types/models/User";
+import { PropType } from 'vue'
+import ViewerActions from './ui/ViewerActions/ViewerActions.vue'
+import { useViewerStore } from '@/entities/Viewer/store'
+import IUser from '@/shared/api/types/models/User'
+import UserFollowButton from '@/features/user/FollowButton/UserFollowButton.vue'
 
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
-    }
+        required: true,
+    },
 })
 
 const viewerStore = useViewerStore()
@@ -16,9 +17,15 @@ const viewer = viewerStore.viewer
 </script>
 
 <template>
-    <div class="profile-actions" v-if="viewer">
-        <viewer-actions v-if="viewer.id === user.id"/>
-        <div v-else>hello</div>
+    <div
+        v-if="viewer"
+        class="profile-actions"
+    >
+        <viewer-actions v-if="viewer.id === user.id" />
+        <user-follow-button
+            v-else
+            :username="user.username"
+        />
     </div>
 </template>
 

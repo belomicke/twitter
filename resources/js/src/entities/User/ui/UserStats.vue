@@ -5,8 +5,8 @@ import IUser from '@/shared/api/types/models/User'
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
-    }
+        required: true,
+    },
 })
 </script>
 
@@ -30,15 +30,10 @@ defineProps({
 }
 
 .user-stat {
-    cursor: pointer;
     white-space: pre;
     line-height: 16px;
     font-size: 14px;
     word-wrap: break-word;
-}
-
-.user-stat:hover {
-    text-decoration: underline;
 }
 
 .user-stat-value {

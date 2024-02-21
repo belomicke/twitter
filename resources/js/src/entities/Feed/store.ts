@@ -78,7 +78,6 @@ export const useFeedStore = defineStore('feeds', () => {
 
     return {
         getFeedById,
-        addItemToFeed,
         addItemToStartOfFeed,
         fetchUserPostsFeed,
     }

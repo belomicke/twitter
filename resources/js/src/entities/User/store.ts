@@ -43,6 +43,38 @@ export const useUserStore = defineStore('users', () => {
         user.link = data.link ?? user.link
     }
 
+    function incrementFollowersCount(username: string) {
+        const user = users.value.find(item => item.username === username)
+
+        if (!user) return
+
+        user.followers_count += 1
+    }
+
+    function decrementFollowersCount(username: string) {
+        const user = users.value.find(item => item.username === username)
+
+        if (!user) return
+
+        user.followers_count -= 1
+    }
+
+    function incrementFollowsCount(username: string) {
+        const user = users.value.find(item => item.username === username)
+
+        if (!user) return
+
+        user.follows_count += 1
+    }
+
+    function decrementFollowsCount(username: string) {
+        const user = users.value.find(item => item.username === username)
+
+        if (!user) return
+
+        user.follows_count -= 1
+    }
+
     async function fetchUser(username: string) {
         const user = users.value.find(item => item.username === username)
 
@@ -81,5 +113,10 @@ export const useUserStore = defineStore('users', () => {
         editUser,
         changeProfilePicture,
         changeProfileBanner,
+
+        incrementFollowersCount,
+        decrementFollowersCount,
+        incrementFollowsCount,
+        decrementFollowsCount,
     }
 })

@@ -29,5 +29,7 @@ onMounted(() => {
     <profile-layout
         v-if="user"
         :user="user"
-    />
+    >
+        <router-view :user="user" />
+    </profile-layout>
 </template>
