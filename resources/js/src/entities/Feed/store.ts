@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 import { usePostStore } from '@/entities/Post/store'
 import { api } from '@/shared/api/methods'
 import { IFeed } from '@/shared/api/types/models/Feed'
+import { useUserStore } from '@/entities/User/store'
 
 export const useFeedStore = defineStore('feeds', () => {
     // store
@@ -76,9 +77,47 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
+    async function fetchTimelineFeed() {
+        const id = `timeline`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+
+        if (feed && offset > feed.data.total || feed && !feed.data.hasNextPage) return
+
+        const res = await api.feed.getTimeline({ offset, limit: 50 })
+        const data = res.data
+
+        if (data.success) {
+            const items = data.data.items
+
+            const userStore = useUserStore()
+            userStore.addUsers(items.map(item => item.user))
+
+            const postStore = usePostStore()
+            postStore.addPosts(items.map(item => item.post))
+
+            if (feed) {
+                addItemsToFeed(id, items.map(item => item.post.id))
+            } else {
+                const feedData = {
+                    id,
+                    data: {
+                        ...data.data,
+                        items: items.map(item => item.post.id),
+                    },
+                }
+
+                addFeed(feedData)
+            }
+        }
+    }
+
+
     return {
         getFeedById,
         addItemToStartOfFeed,
         fetchUserPostsFeed,
+        fetchTimelineFeed,
     }
 })

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
 import PostCreator from '@/widgets/PostCreator/PostCreator.vue'
+import TimelineFeed from '@/widgets/Feed/TimelineFeed.vue'
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import PostCreator from '@/widgets/PostCreator/PostCreator.vue'
         <div class="post-creator-container">
             <post-creator />
         </div>
+        <timeline-feed />
     </div>
 </template>
 

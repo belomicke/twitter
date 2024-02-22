@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
 import { usePostStore } from '@/entities/Post/store'
 import { useUserStore } from '@/entities/User/store'
 import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { useRouter } from 'vue-router'
 
-const { id } = defineProps({
+const props = defineProps({
     id: {
         type: Number,
         required: true,
@@ -19,7 +19,7 @@ const postStore = usePostStore()
 const userStore = useUserStore()
 
 const post = computed(() => {
-    return postStore.getPostById(id)
+    return postStore.getPostById(props.id)
 })
 
 const author = computed(() => {
@@ -29,7 +29,7 @@ const author = computed(() => {
 })
 
 function goToPostPage() {
-    router.push(`/post/${id}`)
+    router.push(`/post/${props.id}`)
 }
 
 function mouseUpHandler() {
