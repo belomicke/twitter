@@ -1,17 +1,13 @@
-import {
-    createRouter,
-    createWebHistory,
-    RouteRecordRaw,
-} from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import AppLayout from '@/pages/AppLayout/AppLayout.vue'
 import HomePage from '@/pages/Home/HomePage.vue'
 import PostPage from '@/pages/Post/PostPage.vue'
-import ProfilePosts
-    from '@/pages/Profile/ProfileLayout/pages/Posts/ProfilePosts.vue'
+import ProfilePosts from '@/pages/Profile/ProfileLayout/pages/Posts/ProfilePosts.vue'
 import ProfilePage from '@/pages/Profile/ProfilePage.vue'
 
 import WelcomePage from './Welcome/WelcomePage.vue'
+import ProfileLikedPosts from '@/pages/Profile/ProfileLayout/pages/Posts/ProfileLikedPosts.vue'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -29,7 +25,11 @@ const routes: RouteRecordRaw[] = [
                     {
                         path: '',
                         component: ProfilePosts,
-                    }
+                    },
+                    {
+                        path: 'liked',
+                        component: ProfileLikedPosts,
+                    },
                 ],
             },
             {

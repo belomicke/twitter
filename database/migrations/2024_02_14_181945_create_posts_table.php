@@ -21,6 +21,14 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table
+                ->integer('likes_count')
+                ->default(0);
+
+            $table
+                ->boolean('is_deleted')
+                ->default(false);
+
             $table->timestamps();
         });
     }

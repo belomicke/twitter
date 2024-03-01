@@ -21,14 +21,17 @@ function close() {
 
 <template>
     <x-modal
+        ref="modal"
         centered
         @close="close"
-        ref="modal"
     >
         <div class="wrapper">
-            <div class="background" @click="close"/>
+            <div
+                class="background"
+                @click="close"
+            />
             <div class="container">
-                <post-creator/>
+                <post-creator :height="96" />
             </div>
         </div>
     </x-modal>

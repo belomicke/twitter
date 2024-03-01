@@ -73,6 +73,11 @@ const props = defineProps({
         required: false,
         default: false,
     },
+    noPadding: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
 })
 
 const emit = defineEmits(['click'])
@@ -102,6 +107,7 @@ function clickHandler(e: MouseEvent) {
             'text-start': textAlign === 'start',
             'text-end': textAlign === 'end',
             'no-border': noBorder,
+            'no-padding': noPadding,
 
             'active': active,
 
@@ -112,16 +118,16 @@ function clickHandler(e: MouseEvent) {
             'is-circle': circle,
             'is-text': text
         }"
-        @click="clickHandler"
         v-bind="$attrs"
+        @click="clickHandler"
     >
         <x-icon
+            v-if="icon"
             :icon="icon"
             :size="iconSize"
             :filled="iconIsFilled"
-            v-if="icon"
         />
-        <slot></slot>
+        <slot />
     </button>
 </template>
 
@@ -192,6 +198,10 @@ function clickHandler(e: MouseEvent) {
 
 .x-button.no-border {
     border: 0;
+}
+
+.x-button.no-padding {
+    padding: 0 !important;
 }
 
 .x-button:hover {

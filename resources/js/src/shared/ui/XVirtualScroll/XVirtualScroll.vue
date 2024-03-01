@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, PropType, ref } from 'vue'
 
 import InfiniteLoading from 'v3-infinite-loading'
 
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
 const props = defineProps({
+    items: {
+        type: Array as PropType<number[]>,
+        required: true,
+    },
     count: {
         type: Number,
         required: true,
@@ -60,6 +64,10 @@ onMounted(() => {
     parentOffsetRef.value = parentRef.value?.offsetTop ?? 0
 })
 
+const hasNextPage = computed(() => {
+    return props.count < props.total
+})
+
 function fetchNextPage() {
     if (props.count === props.total) return
 
@@ -95,7 +103,7 @@ function fetchNextPage() {
             >
                 <div
                     v-for="virtualRow in virtualRows"
-                    :key="virtualRow.key"
+                    :key="items[virtualRow.key]"
                     :ref="measureElement"
                     :data-index="virtualRow.index"
                     class="post"
@@ -108,7 +116,7 @@ function fetchNextPage() {
             </div>
         </div>
         <div
-            v-if="count !== total"
+            v-if="hasNextPage"
             class="loader"
         >
             <infinite-loading @infinite="fetchNextPage" />
@@ -118,21 +126,21 @@ function fetchNextPage() {
 
 <style scoped>
 .post-feed {
-  padding-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .post-feed.scroll {
-  height: 100%;
-  overflow-y: auto;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .post {
-  border-bottom: 1px solid var(--x-border-color);
+    border-bottom: 1px solid var(--x-border-color);
 }
 
 .loader {
-  display: flex;
-  justify-content: center;
-  padding-top: 14px;
+    display: flex;
+    justify-content: center;
+    padding-top: 14px;
 }
 </style>

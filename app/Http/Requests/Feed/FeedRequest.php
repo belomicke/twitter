@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Feed;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FeedRequest extends FormRequest
@@ -17,13 +18,12 @@ class FeedRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'offset' => 'required|min:0',
-            'limit' => 'required|min:1|max:50'
+            'last_post_id' => 'required|min:0',
         ];
     }
 }

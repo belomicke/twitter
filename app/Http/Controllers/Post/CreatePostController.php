@@ -29,7 +29,7 @@ class CreatePostController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'post' => $post
+                'post' => $post->fresh()
             ]
         ]);
     }

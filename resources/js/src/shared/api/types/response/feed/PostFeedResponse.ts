@@ -9,6 +9,5 @@ export interface PostFeedResponseItem {
 
 export type PostFeedResponse = ApiResponse<{
     items: PostFeedResponseItem[]
-    hasNextPage: boolean
     total: number
 }>

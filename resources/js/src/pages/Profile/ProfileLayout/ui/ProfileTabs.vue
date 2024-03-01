@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import {
-    useRoute,
-    useRouter,
-} from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import XTabs from '@/shared/ui/XTabs/XTabs.vue'
 
@@ -18,10 +15,15 @@ const username = computed(() => {
 const tabs = computed(() => {
     return [
         {
-            text: "Посты",
+            text: 'Посты',
             active: route.fullPath === `/profile/${username.value}`,
-            onClick: () => router.push(`/profile/${username.value}`)
-        }
+            onClick: () => router.push(`/profile/${username.value}`),
+        },
+        {
+            text: 'Понравившиеся',
+            active: route.fullPath === `/profile/${username.value}/liked`,
+            onClick: () => router.push(`/profile/${username.value}/liked`),
+        },
     ]
 })
 </script>

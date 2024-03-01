@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import XTextarea from '@/shared/ui/XTextarea/XTextarea.vue'
 
-const { modelValue, maxLength } = defineProps({
+const props = defineProps({
     modelValue: {
         type: String,
         required: true,
@@ -17,11 +16,14 @@ const { modelValue, maxLength } = defineProps({
         required: false,
         default: 0,
     },
+    height: {
+        type: Number,
+        required: false,
+        default: 68,
+    },
 })
 
 const emit = defineEmits(['update:modelValue'])
-
-const editor = ref<HTMLDivElement | null>(null)
 
 function onInput(value: string) {
     emit('update:modelValue', value)
@@ -29,20 +31,23 @@ function onInput(value: string) {
 </script>
 
 <template>
-    <div class="textarea-container">
+    <div
+        class="textarea-container"
+        :style="{ 'min-height': `${height}px` }"
+    >
         <x-textarea
             class="textarea"
             maxlength="280"
             :model-value="modelValue"
-            @update:model-value="onInput"
             no-wrapper
+            @update:model-value="onInput"
         />
         <div
+            v-if="placeholder.length"
             class="placeholder"
             :class="{
                 'visible': modelValue.length === 0
             }"
-            v-if="placeholder.length"
         >
             {{ placeholder }}
         </div>
@@ -53,7 +58,7 @@ function onInput(value: string) {
 .textarea-container {
     display: flex;
     position: relative;
-    min-height: 96px;
+    min-height: 68px;
     max-height: 720px;
 }
 

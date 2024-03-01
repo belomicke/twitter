@@ -1,10 +1,9 @@
 export interface IFeedData<T> {
-	items: T[]
-	hasNextPage: boolean
-	total: number
+    items: T[]
+    total: number
 }
 
 export interface IFeed<T> {
-	id: string
-	data: IFeedData<T>
+    id: string
+    data: IFeedData<T>
 }

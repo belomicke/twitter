@@ -17,6 +17,7 @@ import OtherIcon from '@/shared/ui/XIcon/icons/OtherIcon.vue'
 import SpinnerIcon from '@/shared/ui/XIcon/icons/SpinnerIcon.vue'
 import AddPhotoIcon from '@/shared/ui/XIcon/icons/AddPhotoIcon.vue'
 import TrashBinIcon from '@/shared/ui/XIcon/icons/TrashBinIcon.vue'
+import HeartIcon from '@/shared/ui/XIcon/icons/HeartIcon.vue'
 
 const { icon } = defineProps({
     icon: {
@@ -52,18 +53,19 @@ const icons = {
     'spinner-icon': SpinnerIcon,
     'add-photo-icon': AddPhotoIcon,
     'trash-bin-icon': TrashBinIcon,
+    'heart-icon': HeartIcon,
 }
 </script>
 
 <template>
     <component
+        :is="icons[`${icon}-icon`]"
         class="x-icon"
         :style="{
             'width': `${size}px`,
             'height': `${size}px`,
             'color': color
         }"
-        :is="icons[`${icon}-icon`]"
         v-bind="$attrs"
     />
 </template>

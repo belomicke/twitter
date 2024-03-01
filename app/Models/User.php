@@ -121,6 +121,16 @@ class User extends Authenticatable
         );
     }
 
+    public function liked_posts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'liked_posts',
+            'user_id',
+            'post_id',
+        )->withTimestamps();
+    }
+
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(

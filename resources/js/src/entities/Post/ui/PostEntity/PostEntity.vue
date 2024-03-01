@@ -4,7 +4,7 @@ import { usePostStore } from '@/entities/Post/store'
 import { useUserStore } from '@/entities/User/store'
 import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
-import { useRouter } from 'vue-router'
+import PostActions from '@/entities/Post/ui/PostEntity/ui/PostActions/PostActions.vue'
 
 const props = defineProps({
     id: {
@@ -12,8 +12,6 @@ const props = defineProps({
         required: true,
     },
 })
-
-const router = useRouter()
 
 const postStore = usePostStore()
 const userStore = useUserStore()
@@ -27,25 +25,12 @@ const author = computed(() => {
 
     return userStore.getUserById(post.value.user_id)
 })
-
-function goToPostPage() {
-    router.push(`/post/${props.id}`)
-}
-
-function mouseUpHandler() {
-    const selection = window.getSelection()
-
-    if (selection && !selection.toString()) {
-        goToPostPage()
-    }
-}
 </script>
 
 <template>
     <div
         v-if="post && author"
         class="post-entity"
-        @mouseup="mouseUpHandler"
     >
         <div class="avatar">
             <user-avatar
@@ -61,10 +46,13 @@ function mouseUpHandler() {
                     inline
                     links
                 />
+            </div>
+            <div class="body">
                 <div class="text">
                     {{ post.text }}
                 </div>
             </div>
+            <post-actions :post="post" />
         </div>
     </div>
 </template>
@@ -80,6 +68,17 @@ function mouseUpHandler() {
 
 .post-entity:hover {
     background-color: rgba(255, 255, 255, 0.03);
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .text {

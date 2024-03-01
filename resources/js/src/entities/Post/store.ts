@@ -26,6 +26,24 @@ export const usePostStore = defineStore('posts', () => {
         items.forEach(item => addPost(item))
     }
 
+    function likePost(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.liked = true
+        post.likes_count += 1
+    }
+
+    function unlikePost(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.liked = false
+        post.likes_count -= 1
+    }
+
     async function fetchPostById(id: number) {
         const post = posts.value.find(item => item.id === id)
 
@@ -47,5 +65,7 @@ export const usePostStore = defineStore('posts', () => {
         addPosts,
         getPostById,
         fetchPostById,
+        likePost,
+        unlikePost,
     }
 })

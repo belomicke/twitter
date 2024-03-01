@@ -2,6 +2,7 @@
 import PostFeed from '@/entities/Feed/ui/PostFeed.vue'
 
 import { useFeedStore } from '@/entities/Feed/store'
+import UserPostsEmptyFeed from '@/widgets/Feed/UserPostsFeed/UserPostsEmptyFeed.vue'
 
 const props = defineProps({
     username: {
@@ -22,5 +23,7 @@ function fetch() {
         :id="`user:${username}:posts`"
         window
         @fetch="fetch"
-    />
+    >
+        <user-posts-empty-feed :username="username" />
+    </post-feed>
 </template>

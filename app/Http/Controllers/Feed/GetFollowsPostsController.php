@@ -15,12 +15,10 @@ class GetFollowsPostsController extends Controller
 
     public function __invoke(Request $request): JsonResponse
     {
-        $offset = $request->input('offset');
-        $limit = $request->input('limit');
+        $lastPostId = $request->input('last_post_id');
 
         $data = $this->feedService->getFollowsPosts(
-            offset: $offset,
-            limit: $limit
+            lastPostId: $lastPostId
         );
 
         return response()->json([

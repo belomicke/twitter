@@ -16,13 +16,11 @@ class GetUserPostsController extends Controller
 
     public function __invoke(FeedRequest $request, User $user): JsonResponse
     {
-        $offset = $request->input('offset');
-        $limit = $request->input('limit');
+        $lastPostId = $request->input('last_post_id');
 
         $data = $this->feedService->getUserPosts(
             username: $user->username,
-            offset: $offset,
-            limit: $limit
+            lastPostId: $lastPostId
         );
 
         return response()->json([

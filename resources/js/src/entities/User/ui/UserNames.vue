@@ -51,7 +51,7 @@ defineProps({
 <style scoped>
 .user-names.inline {
     display: flex;
-    grid-gap: 10px;
+    grid-gap: 5px;
 }
 
 .user-names {

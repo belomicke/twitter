@@ -8,6 +8,14 @@ import { useViewerStore } from '@/entities/Viewer/store'
 import PostCreatorTextarea from '@/widgets/PostCreator/PostCreatorTextarea.vue'
 import PostCreatorFooter from '@/widgets/PostCreator/ui/PostCreatorFooter.vue'
 
+defineProps({
+    height: {
+        type: Number,
+        required: false,
+        default: 68,
+    },
+})
+
 const router = useRouter()
 
 const viewerStore = useViewerStore()
@@ -48,6 +56,7 @@ function publishHandler() {
                 <post-creator-textarea
                     v-model="postBody.text"
                     placeholder="Что происходит?!"
+                    :height="height"
                     :max-length="280"
                 />
             </div>
@@ -72,6 +81,8 @@ function publishHandler() {
 }
 
 .avatar {
+    display: flex;
+    height: 40px;
     cursor: pointer;
 }
 
@@ -84,8 +95,5 @@ function publishHandler() {
 .content {
     width: calc(598px - var(--horizontal-padding) * 2 - var(--gap) - var(--avatar-width));
     overflow: auto;
-    min-height: 96px;
 }
-
-
 </style>

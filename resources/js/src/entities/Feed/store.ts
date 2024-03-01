@@ -6,6 +6,7 @@ import { usePostStore } from '@/entities/Post/store'
 import { api } from '@/shared/api/methods'
 import { IFeed } from '@/shared/api/types/models/Feed'
 import { useUserStore } from '@/entities/User/store'
+import { PostFeedResponse } from '@/shared/api/types/response/feed/PostFeedResponse'
 
 export const useFeedStore = defineStore('feeds', () => {
     // store
@@ -48,11 +49,11 @@ export const useFeedStore = defineStore('feeds', () => {
         const id = `user:${username}:posts`
         const feed = feeds.value.find(item => item.id === id)
 
-        const offset = feed ? feed.data.items.length : 0
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
 
-        if (feed && offset > feed.data.total || feed && !feed.data.hasNextPage) return
+        if (feed && feed.data.items.length >= feed.data.total) return
 
-        const res = await api.feed.user.getPosts(username, { offset, limit: 50 })
+        const res = await api.feed.user.getPosts(username, lastPostId)
         const data = res.data
 
         if (data.success) {
@@ -63,6 +64,7 @@ export const useFeedStore = defineStore('feeds', () => {
 
             if (feed) {
                 addItemsToFeed(id, items.map(item => item.id))
+                feed.data.total = data.data.total
             } else {
                 const feedData = {
                     id,
@@ -77,15 +79,34 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
+    async function fetchUserLikedPostsFeed(username: string) {
+        const id = `user:${username}:liked_posts`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && feed.data.items.length >= feed.data.total) return
+
+        const res = await api.feed.user.getLikedPosts(username, lastPostId)
+        postsWithUserResponseHandler(id, res)
+    }
+
     async function fetchTimelineFeed() {
         const id = `timeline`
         const feed = feeds.value.find(item => item.id === id)
 
         const offset = feed ? feed.data.items.length : 0
 
-        if (feed && offset > feed.data.total || feed && !feed.data.hasNextPage) return
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
 
-        const res = await api.feed.getTimeline({ offset, limit: 50 })
+        if (feed && offset > feed.data.total) return
+
+        const res = await api.feed.getTimeline(lastPostId)
+        postsWithUserResponseHandler(id, res)
+    }
+
+    function postsWithUserResponseHandler(id: string, res: PostFeedResponse) {
+        const feed = feeds.value.find(item => item.id === id)
         const data = res.data
 
         if (data.success) {
@@ -99,6 +120,7 @@ export const useFeedStore = defineStore('feeds', () => {
 
             if (feed) {
                 addItemsToFeed(id, items.map(item => item.post.id))
+                feed.data.total = data.data.total
             } else {
                 const feedData = {
                     id,
@@ -113,11 +135,11 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
-
     return {
         getFeedById,
         addItemToStartOfFeed,
         fetchUserPostsFeed,
         fetchTimelineFeed,
+        fetchUserLikedPostsFeed,
     }
 })

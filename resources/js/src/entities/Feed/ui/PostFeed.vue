@@ -5,7 +5,7 @@ import { computed, onMounted, watch } from 'vue'
 
 import { storeToRefs } from 'pinia'
 
-import PostEntity from '@/entities/Post/ui/PostEntity.vue'
+import PostEntity from '@/entities/Post/ui/PostEntity/PostEntity.vue'
 import XVirtualScroll from '@/shared/ui/XVirtualScroll/XVirtualScroll.vue'
 
 import { useFeedStore } from '../store'
@@ -42,7 +42,9 @@ onMounted(() => {
 })
 
 function load() {
-    if (feed.value?.data.items.length === feed.value?.data.total) return
+    if (!feed.value) return
+
+    if (Boolean(feed.value.data.items.length >= feed.value.data.total)) return
 
     emit('fetch')
 }
@@ -51,6 +53,7 @@ function load() {
 <template>
     <x-virtual-scroll
         v-if="feed && feed.data.items.length !== 0 && feed.data.total !== 0"
+        :items="feed.data.items"
         :count="feed.data.items.length"
         :total="feed.data.total ?? 0"
         :window="window"
@@ -62,6 +65,7 @@ function load() {
             />
         </template>
     </x-virtual-scroll>
+    <slot v-else />
 </template>
 
 <style scoped>
