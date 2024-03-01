@@ -19,20 +19,18 @@ function closeModalHandler() {
 </script>
 
 <template>
-    <div>
-        <x-button
-            size="default"
-            rounded
-            :active="modalIsOpen"
-            @click="openModalHandler"
-        >
-            Изменить профиль
-        </x-button>
-        <edit-public-data-modal
-            ref="modal"
-            @close="closeModalHandler"
-        />
-    </div>
+    <x-button
+        size="default"
+        rounded
+        :active="modalIsOpen"
+        @click="openModalHandler"
+    >
+        Изменить профиль
+    </x-button>
+    <edit-public-data-modal
+        ref="modal"
+        @close="closeModalHandler"
+    />
 </template>
 
 <style scoped>

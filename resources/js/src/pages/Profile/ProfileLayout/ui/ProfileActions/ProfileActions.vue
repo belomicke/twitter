@@ -3,7 +3,8 @@ import { PropType } from 'vue'
 import ViewerActions from './ui/ViewerActions/ViewerActions.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
 import IUser from '@/shared/api/types/models/User'
-import UserFollowButton from '@/features/user/FollowButton/UserFollowButton.vue'
+import ForeignUserActions
+    from '@/pages/Profile/ProfileLayout/ui/ProfileActions/ui/ForeignUserActions/ForeignUserActions.vue'
 
 defineProps({
     user: {
@@ -22,7 +23,7 @@ const viewer = viewerStore.viewer
         class="profile-actions"
     >
         <viewer-actions v-if="viewer.id === user.id" />
-        <user-follow-button
+        <foreign-user-actions
             v-else
             :username="user.username"
         />
