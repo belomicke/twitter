@@ -18,6 +18,8 @@ import SpinnerIcon from '@/shared/ui/XIcon/icons/SpinnerIcon.vue'
 import AddPhotoIcon from '@/shared/ui/XIcon/icons/AddPhotoIcon.vue'
 import TrashBinIcon from '@/shared/ui/XIcon/icons/TrashBinIcon.vue'
 import HeartIcon from '@/shared/ui/XIcon/icons/HeartIcon.vue'
+import SearchIcon from '@/shared/ui/XIcon/icons/SearchIcon.vue'
+import LoaderIcon from '@/shared/ui/XIcon/icons/LoaderIcon.vue'
 
 const { icon } = defineProps({
     icon: {
@@ -54,6 +56,8 @@ const icons = {
     'add-photo-icon': AddPhotoIcon,
     'trash-bin-icon': TrashBinIcon,
     'heart-icon': HeartIcon,
+    'search-icon': SearchIcon,
+    'loader-icon': LoaderIcon,
 }
 </script>
 

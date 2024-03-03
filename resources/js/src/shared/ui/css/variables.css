@@ -3,7 +3,7 @@
     --x-color-black: #000000;
 
     /* border radius */
-    --x-border-radius-base: 4px;
+    --x-border-radius-base: 15px;
     --x-border-radius-small: 2px;
     --x-border-radius-round: 9999px;
     --x-border-radius-circle: 100%;

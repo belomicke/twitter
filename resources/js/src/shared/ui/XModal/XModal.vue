@@ -5,15 +5,20 @@ defineProps({
     centered: {
         type: Boolean,
         required: false,
-        default: false
-    }
+        default: false,
+    },
+    maxContentWidth: {
+        type: Number,
+        required: false,
+        default: 600,
+    },
 })
 
 defineEmits(['close'])
 
 defineExpose({
     open,
-    close
+    close,
 })
 
 const active = ref<boolean>(false)
@@ -30,7 +35,10 @@ function close() {
 <template>
     <Teleport to="#portals">
         <Transition :duration="150">
-            <div class="modal" v-if="active">
+            <div
+                v-if="active"
+                class="modal"
+            >
                 <div
                     class="background"
                     @click="$emit('close')"
@@ -40,8 +48,12 @@ function close() {
                     :class="{
                         'centered': centered
                     }"
+                    :style="{
+                        'max-width': `${maxContentWidth}px`,
+                        'width': '100%'
+                    }"
                 >
-                    <slot></slot>
+                    <slot />
                 </div>
             </div>
         </Transition>
@@ -79,7 +91,7 @@ function close() {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(calc(-50% - 32px), -50%);
 }
 
 .v-enter-active.modal,
@@ -99,11 +111,11 @@ function close() {
 
 .v-enter-from .content,
 .v-leave-to .content {
-    transform: translate(-50%, -50%) scale(.85);
+    transform: translate(calc(-50% - 32px), -50%) scale(.85);
 }
 
 .v-enter-to .content,
 .v-leave-from .content {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(calc(-50% - 32px), -50%) scale(1);
 }
 </style>

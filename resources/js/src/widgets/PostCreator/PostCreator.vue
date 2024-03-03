@@ -77,7 +77,6 @@ function publishHandler() {
     grid-gap: 10px;
     padding: 12px 16px 8px;
     width: 100%;
-    max-width: 598px;
 }
 
 .avatar {
@@ -93,7 +92,6 @@ function publishHandler() {
 }
 
 .content {
-    width: calc(598px - var(--horizontal-padding) * 2 - var(--gap) - var(--avatar-width));
     overflow: auto;
 }
 </style>

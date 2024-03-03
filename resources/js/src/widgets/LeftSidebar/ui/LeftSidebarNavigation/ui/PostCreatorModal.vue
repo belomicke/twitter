@@ -41,6 +41,8 @@ function close() {
 .wrapper {
     position: relative;
     height: 100vh;
+    max-width: 600px;
+    width: 100%;
     padding-top: 100px;
 }
 
@@ -57,6 +59,7 @@ function close() {
     display: flex;
     justify-content: center;
     max-width: 600px;
+    width: 100%;
     background-color: rgb(0, 0, 0);
     border-radius: 16px;
     padding-top: 20px;

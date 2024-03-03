@@ -16,5 +16,7 @@ type IconNames =
     | 'add-photo'
     | 'trash-bin'
     | 'heart'
+    | 'search'
+    | 'loader'
 
 export default IconNames

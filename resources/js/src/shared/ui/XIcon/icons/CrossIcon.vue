@@ -6,7 +6,6 @@
     <svg
         viewBox="0 0 24 24"
         aria-hidden="true"
-        class="icon"
         style="color: rgb(239, 243, 244);"
     >
         <g>
@@ -18,11 +17,5 @@
 </template>
 
 <style scoped>
-.icon {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-    user-select: none;
-    max-width: 100%;
-}
+
 </style>

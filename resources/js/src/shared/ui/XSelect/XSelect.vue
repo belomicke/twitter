@@ -10,11 +10,12 @@ interface Option {
 defineProps({
     label: {
         type: String,
-        required: true
+        required: true,
     },
     options: {
-        type: Array as PropType<Option[]>
-    }
+        type: Array as PropType<Option[]>,
+        required: true,
+    },
 })
 
 const selectedOptionValue = ref<number>(0)
@@ -27,27 +28,35 @@ function containerClickHandler() {
 </script>
 
 <template>
-    <div class="x-select-container" @click="containerClickHandler">
+    <div
+        class="x-select-container"
+        @click="containerClickHandler"
+    >
         <label class="label">
             <span>{{ label }}</span>
         </label>
-        <select class="select" v-bind="$attrs" ref="select">
+        <select
+            v-bind="$attrs"
+            ref="select"
+            class="select"
+        >
             <option
                 disabled
                 :selected="selectedOptionValue === 0"
                 class="option"
             />
             <option
+                v-for="option in options"
+                :key="option.value"
                 class="option"
                 :value="option.value"
                 :selected="selectedOptionValue === option.value"
-                v-for="option in options"
             >
                 {{ option.label }}
             </option>
         </select>
         <div class="icon-container">
-            <x-icon icon="chevron-down"/>
+            <x-icon icon="chevron-down" />
         </div>
     </div>
 </template>
@@ -81,7 +90,7 @@ function containerClickHandler() {
 }
 
 .x-select-container:focus-within .label {
-    color: rgb(var(--x-color-primary));
+    color: var(--x-color-primary);
 }
 
 .select {
