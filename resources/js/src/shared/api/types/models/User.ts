@@ -21,6 +21,7 @@ export default interface IUser {
 	link: string
 	following: boolean
 	posts_count: number
+	favourites_count: number
 	follows_count: number
 	followers_count: number
 	created_at: string

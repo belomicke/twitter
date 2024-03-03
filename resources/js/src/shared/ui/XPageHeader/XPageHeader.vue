@@ -53,7 +53,7 @@ function goToBackHandler() {
 .x-page-header-wrapper {
     position: sticky;
     top: 0;
-    height: 53px;
+    height: 54px;
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);

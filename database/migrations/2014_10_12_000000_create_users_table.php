@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->string('link', 100)->default('');
 
             $table->integer('posts_count')->default(0);
+            $table->integer('favourites_count')->default(0);
             $table->integer('follows_count')->default(0);
             $table->integer('followers_count')->default(0);
 

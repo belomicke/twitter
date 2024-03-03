@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import LeftSidebar from '@/widgets/LeftSidebar/LeftSidebar.vue'
+import RightSidebar from '@/widgets/RightSidebar/RightSidebar.vue'
 </script>
 
 <template>
     <div class="wrapper">
         <div class="container">
             <div class="sidebar-container">
-                <div class="sidebar">
-                    <LeftSidebar />
+                <div class="sidebar left">
+                    <left-sidebar />
                 </div>
             </div>
             <div class="page">
                 <router-view />
             </div>
             <div class="sidebar-container">
-                <div class="sidebar" />
+                <div class="sidebar right">
+                    <right-sidebar />
+                </div>
             </div>
         </div>
     </div>
@@ -30,9 +33,10 @@ import LeftSidebar from '@/widgets/LeftSidebar/LeftSidebar.vue'
 
 .container {
     display: grid;
-    grid-template-columns: 300px 1fr 300px;
+    grid-template-columns: 300px minmax(0, 600px) 350px;
+    grid-gap: 5px;
     width: 100%;
-    max-width: 1200px;
+    max-width: calc(300px + 350px + 600px + 10px);
 }
 
 .sidebar-container {
@@ -41,7 +45,14 @@ import LeftSidebar from '@/widgets/LeftSidebar/LeftSidebar.vue'
 
 .sidebar {
     position: fixed;
+}
+
+.sidebar.left {
     width: 300px;
+}
+
+.sidebar.right {
+    width: 350px;
 }
 
 .page {

@@ -1,14 +1,29 @@
 <script setup lang="ts">
 import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
-import { PropType } from 'vue'
+import { computed, PropType } from 'vue'
 import IUser from '@/shared/api/types/models/User'
 import UserName from '@/entities/User/ui/UserName.vue'
+import { useRoute } from 'vue-router'
 
-defineProps({
+const props = defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true
+        required: true,
+    },
+})
+
+const route = useRoute()
+
+const title = computed(() => {
+    const page = route.path.split('/').at(-1)
+
+    if (page === props.user.username) {
+        return `${props.user.posts_count} постов`
+    } else if (page === 'liked') {
+        return `${props.user.favourites_count} отметок «Нравится»`
     }
+
+    return ''
 })
 </script>
 
@@ -19,7 +34,9 @@ defineProps({
                 :user="user"
                 :font-size="20"
             />
-            <div class="header-subtitle">{{ user.posts_count }} постов</div>
+            <div class="header-subtitle">
+                {{ title }}
+            </div>
         </div>
     </x-page-header>
 </template>

@@ -31,7 +31,7 @@ const { viewer } = storeToRefs(viewerStore)
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
-    padding: 10px 10px 10px 0;
+    padding: 5px 0;
     width: 100%;
 }
 
