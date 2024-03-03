@@ -77,6 +77,36 @@ export const useViewerStore = defineStore('viewer', () => {
         }
     }
 
+    function incrementPostsCount() {
+        const user = viewer.value
+
+        if (!user) return
+
+        const userStore = useUserStore()
+
+        userStore.incrementPostsCount(user.id)
+    }
+
+    function incrementFavouritesCount() {
+        const user = viewer.value
+
+        if (!user) return
+
+        const userStore = useUserStore()
+
+        userStore.incrementFavouritesCount(user.id)
+    }
+
+    function decrementFavouritesCount() {
+        const user = viewer.value
+
+        if (!user) return
+
+        const userStore = useUserStore()
+
+        userStore.decrementFavouritesCount(user.id)
+    }
+
     return {
         viewer,
         isLoading,
@@ -84,5 +114,8 @@ export const useViewerStore = defineStore('viewer', () => {
         editViewer,
         changeProfilePicture,
         changeProfileBanner,
+        incrementPostsCount,
+        incrementFavouritesCount,
+        decrementFavouritesCount,
     }
 })

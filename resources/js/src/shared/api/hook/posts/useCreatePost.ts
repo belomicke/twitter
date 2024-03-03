@@ -23,6 +23,8 @@ export const useCreatePost = () => {
 
             if (!viewer) return
 
+            viewerStore.incrementPostsCount()
+
             const feedStore = useFeedStore()
             feedStore.addItemToStartOfFeed(`user:${viewer.username}:posts`, post.id)
             feedStore.addItemToStartOfFeed(`timeline`, post.id)

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 /**
  * @property int $id
@@ -27,6 +28,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $link
  * @property bool $following
  * @property int $posts_count
+ * @property int $favourites_count
  * @property int $follows_count
  * @property int $followers_count
  * @property Collection $follows
@@ -40,7 +42,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -87,6 +89,14 @@ class User extends Authenticatable
         'profile_banner',
         'following'
     ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'username' => $this->username
+        ];
+    }
 
     public function getProfilePictureAttribute(): array
     {

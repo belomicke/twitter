@@ -27,6 +27,9 @@ class PostService
             $post->likes_count += 1;
             $post->save();
 
+            $viewer->favourites_count += 1;
+            $viewer->save();
+
             return true;
         } catch (Exception $e) {
             return false;
@@ -48,6 +51,9 @@ class PostService
 
             $post->likes_count -= 1;
             $post->save();
+
+            $viewer->favourites_count -= 1;
+            $viewer->save();
 
             return true;
         } catch (Exception $e) {

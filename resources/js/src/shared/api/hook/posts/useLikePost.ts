@@ -21,6 +21,8 @@ export const useLikePost = () => {
                 const viewerStore = useViewerStore()
                 const viewer = viewerStore.viewer
 
+                viewerStore.incrementFavouritesCount()
+
                 const feedStore = useFeedStore()
                 feedStore.addItemToStartOfFeed(`user:${viewer?.username}:liked_posts`, variables)
             }

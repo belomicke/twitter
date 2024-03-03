@@ -104,6 +104,30 @@ export const useUserStore = defineStore('users', () => {
         user.profile_banner = banner
     }
 
+    function incrementPostsCount(id: number) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.posts_count += 1
+    }
+
+    function incrementFavouritesCount(id: number) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.favourites_count += 1
+    }
+
+    function decrementFavouritesCount(id: number) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.favourites_count -= 1
+    }
+
     return {
         getUserByUsername,
         getUserById,
@@ -118,5 +142,8 @@ export const useUserStore = defineStore('users', () => {
         decrementFollowersCount,
         incrementFollowsCount,
         decrementFollowsCount,
+        incrementPostsCount,
+        incrementFavouritesCount,
+        decrementFavouritesCount,
     }
 })
