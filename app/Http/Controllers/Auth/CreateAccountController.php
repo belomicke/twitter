@@ -27,12 +27,12 @@ class CreateAccountController extends Controller
             password: $password,
             birth: $birth
         );
+        
+        $user->save();
 
-        if ($user) {
-            DB::table('verification_codes')
-                ->where('email', $email)
-                ->delete();
-        }
+        DB::table('verification_codes')
+            ->where('email', $email)
+            ->delete();
 
         return response()->json([
             'success' => true
