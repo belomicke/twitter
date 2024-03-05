@@ -27,7 +27,7 @@ export const useFeedStore = defineStore('feeds', () => {
     function addItemToFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
-        if (feed) {
+        if (feed && !feed.data.items.find(fi => fi === item)) {
             feed.data.items.push(item)
         }
     }
@@ -35,7 +35,7 @@ export const useFeedStore = defineStore('feeds', () => {
     function addItemToStartOfFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
-        if (feed) {
+        if (feed && !feed.data.items.find(fi => fi === item)) {
             feed.data.items.unshift(item)
             feed.data.total += 1
         }
