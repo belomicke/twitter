@@ -50,8 +50,8 @@ function inputHandler(value: string) {
     position: relative;
     overflow: hidden;
     width: 100%;
-    background-color: rgb(32, 35, 39);
-    border: 1px solid rgb(32, 35, 39);
+    background-color: var(--x-bg-color-page);
+    border: 1px solid var(--x-border-color);
     transition: border-color .15s;
 }
 

@@ -92,7 +92,7 @@ function searchByQuery() {
 .sidebar-input-result {
     margin-top: 10px;
     border-radius: 15px;
-    box-shadow: rgba(255, 255, 255, 0.2) 0 0 15px, rgba(255, 255, 255, 0.15) 0 0 3px 1px;
+    border: 1px solid var(--x-border-color);
     min-height: 100px;
     background-color: var(--x-bg-color-page);
     overflow: hidden;
