@@ -6,6 +6,7 @@ import LeftSidebarNavigationItem from './ui/LeftSidebarNavigationItem.vue'
 import IUser from '@/shared/api/types/models/User'
 import { IconNames } from '@/shared/ui/XIcon'
 import XButton from '@/shared/ui/XButton/XButton.vue'
+import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 
 interface ILink {
     id: number
@@ -76,11 +77,15 @@ function openPostCreator() {
         />
         <x-button
             type="primary"
+            class="button"
             size="extra-large"
             bold
             @click="openPostCreator"
         >
-            Опубликовать пост
+            <span class="text">Опубликовать пост</span>
+            <span class="icon">
+                <x-icon icon="feather" />
+            </span>
         </x-button>
     </div>
     <post-creator-modal
@@ -93,5 +98,29 @@ function openPostCreator() {
     display: flex;
     flex-direction: column;
     grid-gap: 10px;
+}
+
+.icon {
+    display: none;
+}
+
+@media (max-width: 1280px) {
+    .nav {
+        align-items: end;
+    }
+    
+    .button {
+        width: 50px !important;
+        padding: 12px !important;
+        border-radius: 50%;
+    }
+
+    .icon {
+        display: block;
+    }
+
+    .text {
+        display: none;
+    }
 }
 </style>

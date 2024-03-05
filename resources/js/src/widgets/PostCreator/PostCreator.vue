@@ -16,6 +16,8 @@ defineProps({
     },
 })
 
+const emit = defineEmits(['publish'])
+
 const router = useRouter()
 
 const viewerStore = useViewerStore()
@@ -35,6 +37,7 @@ function goToProfile() {
 
 function publishHandler() {
     postBody.text = ''
+    emit('publish')
 }
 </script>
 

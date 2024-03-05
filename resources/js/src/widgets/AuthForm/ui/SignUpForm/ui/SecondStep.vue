@@ -11,8 +11,8 @@ import AuthFormFooter from '@/entities/Auth/ui/AuthFormFooter.vue'
 const { credentials } = defineProps({
     credentials: {
         type: Object as PropType<CreateAccountDTO>,
-        required: true
-    }
+        required: true,
+    },
 })
 
 const emit = defineEmits(['submit', 'close'])
@@ -36,7 +36,7 @@ function submit() {
     isLoading.value = true
     const data: CreateAccountDTO = {
         ...credentials,
-        code: Number(code.value)
+        code: Number(code.value),
     }
 
     createAccount(data, {
@@ -53,7 +53,7 @@ function submit() {
             }, 5000)
 
             isLoading.value = false
-        }
+        },
     })
 }
 </script>
@@ -61,12 +61,16 @@ function submit() {
 <template>
     <x-modal-container @close="$emit('close')">
         <template #header>
-            <div class="modal-header-title">Подтвердите учетную запись</div>
+            <div class="modal-header-title">
+                Подтвердите учетную запись
+            </div>
         </template>
         <template #default>
             <div class="container">
                 <div class="body">
-                    <div class="title">Мы отправили вам код</div>
+                    <div class="title">
+                        Мы отправили вам код
+                    </div>
                     <div class="body-info">
                         Введите код в расположенном ниже поле для подтверждения {{
                             credentials ? credentials.email : ''
@@ -78,9 +82,9 @@ function submit() {
                             placeholder="Проверочный код"
                         />
                         <x-alert
+                            ref="alert"
                             title="Неверный проверочный код"
                             type="error"
-                            ref="alert"
                         />
                     </div>
                 </div>
@@ -90,10 +94,10 @@ function submit() {
                     type="info"
                     size="large"
                     :disabled="!formIsValid"
-                    @click="submit"
                     bold
                     rounded
                     block
+                    @click="submit"
                 >
                     Далее
                 </x-button>

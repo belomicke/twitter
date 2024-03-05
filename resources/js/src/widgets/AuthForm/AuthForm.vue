@@ -42,7 +42,9 @@ function openSignUpForm() {
                     Войти
                 </x-button>
                 <x-divider>
-                    <div class="divider">или</div>
+                    <div class="divider">
+                        или
+                    </div>
                 </x-divider>
                 <x-button
                     rounded
@@ -58,14 +60,14 @@ function openSignUpForm() {
         </div>
     </div>
     <log-in-form
+        ref="logInForm"
         @open="activeModal = 'log-in'"
         @close="activeModal = ''"
-        ref="logInForm"
     />
     <sign-up-form
+        ref="signUpForm"
         @open="activeModal = 'sign-up'"
         @close="activeModal = ''"
-        ref="signUpForm"
     />
 </template>
 

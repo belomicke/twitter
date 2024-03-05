@@ -22,9 +22,12 @@ function close(e: MouseEvent) {
 </script>
 
 <template>
-    <div class="x-dropdown-container" ref="container">
+    <div
+        ref="container"
+        class="x-dropdown-container"
+    >
         <div @click="dropdownIsOpen = true">
-            <slot></slot>
+            <slot />
         </div>
         <div
             class="x-dropdown"
@@ -32,7 +35,7 @@ function close(e: MouseEvent) {
                 'visible': dropdownIsOpen
             }"
         >
-            <slot name="dropdown"></slot>
+            <slot name="dropdown" />
         </div>
     </div>
 </template>
@@ -45,13 +48,13 @@ function close(e: MouseEvent) {
 .x-dropdown {
     position: absolute;
     top: 0;
-    width: 100%;
     border-radius: 10px;
-    box-shadow: rgba(255, 255, 255, 0.2) 0 0 15px, rgba(255, 255, 255, 0.15) 0 0 3px 1px;
+    border: 1px solid var(--x-border-color);
     overflow: hidden;
     transform: scale(.85) translateY(calc(-100% - 10px));
     opacity: 0;
     transition: transform .15s, opacity .15s;
+    z-index: 1000;
     pointer-events: none;
 }
 

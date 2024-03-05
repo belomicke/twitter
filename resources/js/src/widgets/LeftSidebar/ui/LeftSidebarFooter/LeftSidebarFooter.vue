@@ -50,6 +50,7 @@ defineProps({
     border-radius: 9999px;
     padding: 12px;
     cursor: pointer;
+    position: relative;
     transition: background-color .15s;
 }
 
@@ -70,5 +71,23 @@ defineProps({
     align-items: center;
     justify-content: end;
     width: 100%;
+}
+
+@media (max-width: 1280px) {
+    .footer {
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        width: 50px;
+    }
+
+    .footer-body {
+        display: none;
+    }
+
+    .footer-icon {
+        display: none;
+    }
 }
 </style>

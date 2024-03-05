@@ -18,5 +18,6 @@ type IconNames =
     | 'heart'
     | 'search'
     | 'loader'
+    | 'feather'
 
 export default IconNames

@@ -4,8 +4,8 @@ import { useDeleteViewerAccessToken } from '@/shared/api/hook/auth/useDeleteView
 defineProps({
     active: {
         type: Boolean,
-        required: true
-    }
+        required: true,
+    },
 })
 
 const { mutate: deleteToken } = useDeleteViewerAccessToken()
@@ -38,6 +38,8 @@ function deleteTokenHandler() {
     height: 100%;
     padding: 10px 0;
     overflow: hidden;
+    background-color: var(--x-bg-color-page);
+    min-width: 260px;
 }
 
 .dropdown-item {

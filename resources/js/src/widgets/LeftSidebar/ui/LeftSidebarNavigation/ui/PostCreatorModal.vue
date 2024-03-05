@@ -31,7 +31,10 @@ function close() {
                 @click="close"
             />
             <div class="container">
-                <post-creator :height="96" />
+                <post-creator
+                    :height="96"
+                    @publish="close"
+                />
             </div>
         </div>
     </x-modal>

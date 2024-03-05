@@ -84,7 +84,13 @@ defineProps({
     transition: background-color .15s;
 }
 
-.x-icon-button:hover > .icon::after {
+.x-icon-button svg {
+    color: rgb(113, 118, 123) !important;
+    transition: color .15s;
+}
+
+.x-icon-button:hover > .icon::after,
+.x-icon-button:active > .icon::after {
     background-color: rgba(var(--x-action-color), .2);
 }
 
@@ -92,16 +98,40 @@ defineProps({
     color: rgb(var(--x-action-color)) !important;
 }
 
-.x-icon-button svg {
-    color: rgb(113, 118, 123) !important;
-    transition: color .15s;
-}
 
 .x-icon-button:hover svg {
     color: rgb(var(--x-action-color)) !important;
 }
 
-.x-icon-button:hover .count, .x-icon-button.active .count {
+.x-icon-button:hover .count,
+.x-icon-button.active .count {
     color: rgb(var(--x-action-color)) !important;
+}
+
+@media (hover: none) {
+    .x-icon-button:hover > .icon::after {
+        background-color: transparent;
+    }
+
+    .x-icon-button:active > .icon::after {
+        background-color: rgba(var(--x-action-color), .2);
+    }
+
+    .x-icon-button.active svg {
+        color: rgb(var(--x-action-color)) !important;
+    }
+
+    .x-icon-button:hover svg {
+        background-color: transparent;
+    }
+
+    .x-icon-button:active svg {
+        color: rgb(var(--x-action-color)) !important;
+    }
+
+    .x-icon-button:hover .count,
+    .x-icon-button.active .count {
+        color: rgb(var(--x-action-color)) !important;
+    }
 }
 </style>

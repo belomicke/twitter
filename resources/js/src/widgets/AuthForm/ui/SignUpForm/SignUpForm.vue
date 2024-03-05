@@ -13,7 +13,7 @@ const emit = defineEmits(['open', 'close'])
 
 defineExpose({
     open,
-    close
+    close,
 })
 
 const modal = ref<InstanceType<typeof XModal> | null>(null)
@@ -42,7 +42,7 @@ function firstStepSubmitHandler(data: CreateAccountDTO) {
 function secondStepSubmitHandler() {
     const data = {
         username: credentials.value?.username ?? '',
-        password: credentials.value?.password ?? ''
+        password: credentials.value?.password ?? '',
     }
 
     createAccessToken(data)
@@ -51,20 +51,20 @@ function secondStepSubmitHandler() {
 
 <template>
     <x-modal
-        @close="close"
-        centered
         ref="modal"
+        centered
+        @close="close"
     >
         <first-step
+            v-if="step === 1"
             @submit="firstStepSubmitHandler"
             @close="close"
-            v-if="step === 1"
         />
         <second-step
+            v-if="step === 2 && credentials"
             :credentials="credentials"
             @submit="secondStepSubmitHandler"
             @close="close"
-            v-if="step === 2 && credentials"
         />
     </x-modal>
 </template>

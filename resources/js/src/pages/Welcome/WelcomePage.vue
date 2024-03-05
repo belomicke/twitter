@@ -6,7 +6,7 @@ import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 <template>
     <div class="wrapper">
         <div class="container">
-            <auth-form/>
+            <auth-form />
             <div class="logo-container">
                 <x-icon
                     icon="logo"

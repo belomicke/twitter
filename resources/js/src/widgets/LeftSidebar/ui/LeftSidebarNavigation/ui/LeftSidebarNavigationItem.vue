@@ -25,6 +25,7 @@ defineEmits(['click'])
 <template>
     <div class="nav-item">
         <x-button
+            class="button"
             type="primary"
             size="extra-large"
             text
@@ -42,7 +43,7 @@ defineEmits(['click'])
 
             @click="$emit('click')"
         >
-            {{ text }}
+            <span class="text">{{ text }}</span>
         </x-button>
     </div>
 </template>
@@ -50,5 +51,17 @@ defineEmits(['click'])
 <style scoped>
 .nav-item {
     height: 50px;
+}
+
+@media (max-width: 1280px) {
+    .button {
+        width: 50px !important;
+        padding: 12px !important;
+        border-radius: 50%;
+    }
+
+    .text {
+        display: none;
+    }
 }
 </style>

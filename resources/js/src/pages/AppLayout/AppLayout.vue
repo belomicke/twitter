@@ -41,8 +41,8 @@ const searchPageIsCurrent = computed(() => {
 
 .container {
     display: grid;
-    grid-template-columns: 300px minmax(0, 600px) 350px;
-    grid-gap: 5px;
+    grid-template-columns: 300px minmax(300px, 600px) 350px;
+    justify-content: center;
     width: 100%;
     max-width: calc(300px + 350px + 600px + 10px);
 }
@@ -52,20 +52,59 @@ const searchPageIsCurrent = computed(() => {
 }
 
 .sidebar {
-    position: fixed;
+    position: sticky;
+    top: 0;
+    padding: 0 5px;
+    z-index: 100;
 }
 
 .sidebar.left {
-    width: 300px;
+    max-width: 300px;
+    width: 100%;
 }
 
 .sidebar.right {
-    width: 350px;
+    max-width: 350px;
+    width: 100%;
 }
 
 .page {
     border-left: 1px solid var(--x-border-color);
     border-right: 1px solid var(--x-border-color);
     height: 100%;
+}
+
+@media (max-width: 1280px) {
+    .container {
+        grid-template-columns: 60px minmax(300px, 600px) 350px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 1080px) {
+    .container {
+        grid-template-columns: 60px minmax(300px, 600px) 300px;
+    }
+
+    .sidebar.right {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        grid-template-columns: 60px minmax(300px, 600px);
+        justify-content: center;
+    }
+
+    .sidebar.right {
+        display: none;
+    }
+}
+
+@media (max-width: 660px) {
+    .page {
+        border-right: none;
+    }
 }
 </style>

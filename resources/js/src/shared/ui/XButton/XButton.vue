@@ -149,7 +149,7 @@ function clickHandler(e: MouseEvent) {
     text-align: center;
     box-sizing: border-box;
     outline: none;
-    transition: .15s;
+    transition: color .15s, background-color .15s;
     font-weight: var(--x-button-font-weight);
     user-select: none;
     vertical-align: middle;
@@ -165,6 +165,14 @@ function clickHandler(e: MouseEvent) {
     color: var(--x-button-hover-text-color);
     border-color: var(--x-button-hover-border-color);
     background-color: var(--x-button-hover-bg-color);
+}
+
+@media (hover: none) {
+    .x-button:hover {
+        color: var(--x-button-text-color);
+        border-color: var(--x-button-border-color);
+        background-color: var(--x-button-bg-color);
+    }
 }
 
 .x-button:active,

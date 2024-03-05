@@ -20,6 +20,7 @@ import TrashBinIcon from '@/shared/ui/XIcon/icons/TrashBinIcon.vue'
 import HeartIcon from '@/shared/ui/XIcon/icons/HeartIcon.vue'
 import SearchIcon from '@/shared/ui/XIcon/icons/SearchIcon.vue'
 import LoaderIcon from '@/shared/ui/XIcon/icons/LoaderIcon.vue'
+import FeatherIcon from '@/shared/ui/XIcon/icons/FeatherIcon.vue'
 
 const { icon } = defineProps({
     icon: {
@@ -58,6 +59,7 @@ const icons = {
     'heart-icon': HeartIcon,
     'search-icon': SearchIcon,
     'loader-icon': LoaderIcon,
+    'feather-icon': FeatherIcon,
 }
 </script>
 
