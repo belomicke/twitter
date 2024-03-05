@@ -6,37 +6,37 @@ import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 defineProps({
     modelValue: {
         type: String,
-        required: true
+        required: true,
     },
     placeholder: {
         type: String,
-        required: true
+        required: true,
     },
     loading: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     isValid: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     showWordLimit: {
         type: Boolean,
         required: false,
-        default: false
+        default: false,
     },
     errorMessage: {
         type: String,
         required: false,
-        default: ''
+        default: '',
     },
     password: {
         type: Boolean,
         required: false,
-        default: false
-    }
+        default: false,
+    },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -78,42 +78,52 @@ function containerClickHandler() {
             <div class="input-wrapper">
                 <div class="input-container">
                     <input
+                        v-bind="$attrs"
+                        ref="input"
                         class="input"
                         :value="modelValue"
-                        @input="inputHandler"
-                        v-bind="$attrs"
                         :type="password && !passwordIsVisible ? 'password' : 'text'"
-                        ref="input"
-                    />
+                        @input="inputHandler"
+                    >
                 </div>
             </div>
             <div
-                class="spinner"
                 v-if="loading"
+                class="spinner"
             >
-                <x-spinner :size="20"/>
+                <x-spinner :size="20" />
             </div>
             <div
-                class="is-valid"
                 v-if="isValid"
+                class="is-valid"
             >
-                <x-icon icon="check"/>
+                <x-icon icon="check" />
             </div>
             <div
+                v-if="password"
                 class="password"
-                v-if="password" @click="passwordIsVisible = !passwordIsVisible"
+                @click="passwordIsVisible = !passwordIsVisible"
             >
-                <x-icon icon="eye" v-if="!passwordIsVisible"/>
-                <x-icon icon="crossed-out-eye" v-else/>
+                <x-icon
+                    v-if="!passwordIsVisible"
+                    icon="eye"
+                />
+                <x-icon
+                    v-else
+                    icon="crossed-out-eye"
+                />
             </div>
             <div
-                class="input-word-limit"
                 v-if="showWordLimit && $attrs.maxlength"
+                class="input-word-limit"
             >
                 {{ modelValue.length }} / {{ $attrs.maxlength }}
             </div>
         </div>
-        <div class="error-message" v-if="errorMessage.length">
+        <div
+            v-if="errorMessage.length"
+            class="error-message"
+        >
             {{ errorMessage }}
         </div>
     </div>

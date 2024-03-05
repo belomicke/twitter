@@ -4,7 +4,8 @@ import { computed, ref, watch } from 'vue'
 import { useSearchStore } from '@/entities/Search/store'
 import { storeToRefs } from 'pinia'
 import UserListItem from '@/entities/User/ui/UserListItem.vue'
-import XIcon from '@/shared/ui/XIcon/XIcon.vue'
+import { useRouter } from 'vue-router'
+import XSpinner from '@/shared/ui/XSpinner/XSpinner.vue'
 
 const props = defineProps({
     query: {
@@ -14,6 +15,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+const router = useRouter()
 
 const isLoading = ref<boolean>(false)
 
@@ -35,6 +38,11 @@ watch(() => props.query, (newValue) => {
     isLoading.value = true
     debouncedFunction(newValue)
 })
+
+function searchByQuery() {
+    router.push(`/search?q=${props.query}`)
+    emit('close')
+}
 </script>
 
 <template>
@@ -49,13 +57,18 @@ watch(() => props.query, (newValue) => {
             v-if="isLoading"
             class="loader"
         >
-            <x-icon
-                icon="loader"
-                :size="80"
-                color="var(--x-color-primary)"
+            <x-spinner
+                :size="30"
             />
         </div>
         <template v-if="result && !isLoading">
+            <div
+                class="list-item"
+                @click="searchByQuery"
+            >
+                Поиск «{{ query }}»
+            </div>
+            <div class="separator" />
             <template v-if="result.result.length">
                 <user-list-item
                     v-for="item in result.result"
@@ -63,13 +76,14 @@ watch(() => props.query, (newValue) => {
                     :key="item"
                     @click="$emit('close')"
                 />
+                <div class="separator" />
             </template>
-            <span
-                v-else
-                class="empty"
+            <div
+                class="list-item"
+                @click="$router.push(`/profile/${query}`)"
             >
-                Ничего не найдено.
-            </span>
+                Перейти к @{{ query }}
+            </div>
         </template>
     </div>
 </template>
@@ -80,6 +94,7 @@ watch(() => props.query, (newValue) => {
     border-radius: 15px;
     box-shadow: rgba(255, 255, 255, 0.2) 0 0 15px, rgba(255, 255, 255, 0.15) 0 0 3px 1px;
     min-height: 100px;
+    background-color: var(--x-bg-color-page);
     overflow: hidden;
 }
 
@@ -95,6 +110,32 @@ watch(() => props.query, (newValue) => {
     font-weight: 400;
     width: 100%;
     padding: 20px 12px 12px;
+}
+
+.list-item {
+    padding: 15px;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    color: rgb(231, 233, 234);
+    word-wrap: break-word;
+    cursor: pointer;
+    transition: background-color .15s;
+}
+
+.list-item:hover {
+    background-color: rgb(22, 24, 28);
+}
+
+.list-item:active {
+    background-color: rgba(18, 21, 23, 0.7);
+}
+
+.separator {
+    height: 1px;
+    width: 100%;
+    background-color: var(--x-border-color);
+    margin: 5px 0;
 }
 
 .loader {

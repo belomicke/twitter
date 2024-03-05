@@ -24,6 +24,8 @@ function fetch() {
         window
         @fetch="fetch"
     >
-        <user-posts-empty-feed :username="username" />
+        <user-posts-empty-feed
+            :username="username"
+        />
     </post-feed>
 </template>

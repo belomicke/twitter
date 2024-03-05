@@ -33,16 +33,25 @@ const links = computed((): ILink[] => {
             id: 1,
             icon: 'home',
             text: 'Главная',
-            active: route.fullPath === '/',
+            active: route.path === '/',
             clickHandler: () => {
                 router.push('/')
             },
         },
         {
             id: 2,
+            icon: 'search',
+            text: 'Поиск',
+            active: route.path.startsWith(`/search`),
+            clickHandler: () => {
+                router.push(`/search`)
+            },
+        },
+        {
+            id: 3,
             icon: 'profile',
             text: 'Профиль',
-            active: route.fullPath.startsWith(`/profile/${user?.username}`),
+            active: route.path.startsWith(`/profile/${user?.username}`),
             clickHandler: () => {
                 router.push(`/profile/${user?.username}`)
             },

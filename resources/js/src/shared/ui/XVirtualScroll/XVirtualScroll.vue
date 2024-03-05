@@ -130,7 +130,6 @@ function fetchNextPage() {
 }
 
 .post-feed.scroll {
-    height: 100%;
     overflow-y: auto;
 }
 

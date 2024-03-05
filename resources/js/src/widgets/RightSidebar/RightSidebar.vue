@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import SidebarInput from '@/widgets/RightSidebar/ui/SidebarInput/SidebarInput.vue'
+import GlobalFinder from '@/widgets/GlobalFinder/GlobalFinder.vue'
 </script>
 
 <template>
     <div class="right-sidebar">
-        <sidebar-input />
+        <global-finder />
     </div>
 </template>
 

@@ -42,7 +42,10 @@ function goToBackHandler() {
                     @click="goToBackHandler"
                 />
             </div>
-            <div class="content">
+            <div
+                class="content"
+                :class="{'with-no-go-back-button': !withGoToBackButton}"
+            >
                 <slot />
             </div>
         </div>
@@ -79,5 +82,10 @@ function goToBackHandler() {
 .content {
     width: 100%;
     padding: 0 10px;
+}
+
+.content.with-no-go-back-button {
+    padding: 0;
+    padding-right: 10px;
 }
 </style>

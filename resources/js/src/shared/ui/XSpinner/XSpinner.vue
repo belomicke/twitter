@@ -5,8 +5,8 @@ defineProps({
     size: {
         type: Number,
         required: false,
-        default: 26
-    }
+        default: 26,
+    },
 })
 </script>
 
@@ -20,6 +20,7 @@ defineProps({
     >
         <x-icon
             icon="spinner"
+            :size="size"
         />
     </div>
 </template>

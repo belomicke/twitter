@@ -8,6 +8,7 @@ import ProfilePage from '@/pages/Profile/ProfilePage.vue'
 
 import WelcomePage from './Welcome/WelcomePage.vue'
 import ProfileLikedPosts from '@/pages/Profile/ProfileLayout/pages/Posts/ProfileLikedPosts.vue'
+import SearchPage from '@/pages/Search/SearchPage.vue'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -35,6 +36,10 @@ const routes: RouteRecordRaw[] = [
             {
                 path: '/post/:id',
                 component: PostPage,
+            },
+            {
+                path: '/search',
+                component: SearchPage,
             },
         ],
     },

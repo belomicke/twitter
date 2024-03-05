@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import LeftSidebar from '@/widgets/LeftSidebar/LeftSidebar.vue'
 import RightSidebar from '@/widgets/RightSidebar/RightSidebar.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const searchPageIsCurrent = computed(() => {
+    return route.path === '/search'
+})
 </script>
 
 <template>
@@ -16,7 +24,7 @@ import RightSidebar from '@/widgets/RightSidebar/RightSidebar.vue'
             </div>
             <div class="sidebar-container">
                 <div class="sidebar right">
-                    <right-sidebar />
+                    <right-sidebar v-if="!searchPageIsCurrent" />
                 </div>
             </div>
         </div>

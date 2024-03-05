@@ -135,11 +135,25 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
+    async function fetchPostsByQuery(query: string) {
+        const id = `search:${query}`
+
+        const feed = feeds.value.find(item => item.id === id)
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && feed.data.items.length >= feed.data.total) return
+
+        const res = await api.search.getPosts(query, lastPostId)
+        postsWithUserResponseHandler(id, res)
+    }
+
     return {
         getFeedById,
         addItemToStartOfFeed,
         fetchUserPostsFeed,
         fetchTimelineFeed,
         fetchUserLikedPostsFeed,
+        fetchPostsByQuery,
     }
 })

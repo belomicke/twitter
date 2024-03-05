@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Searchable;
 
 /**
  * @property int $id
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'text',
@@ -37,6 +38,13 @@ class Post extends Model
         'liked'
     ];
 
+    public function toSearchableArray(): array
+    {
+        return [
+            'text' => $this->text
+        ];
+    }
+
     public function getLikedAttribute(): bool
     {
         return DB::table('liked_posts')
@@ -48,7 +56,7 @@ class Post extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function likers(): BelongsToMany

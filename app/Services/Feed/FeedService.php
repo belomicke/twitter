@@ -55,6 +55,7 @@ class FeedService
 
         return $this->postsWithUserHandler(
             postsQuery: $postsQuery,
+            lastPostId: $lastPostId
         );
     }
 
@@ -81,7 +82,26 @@ class FeedService
         }
 
         return $this->postsWithUserHandler(
-            postsQuery: $postsQuery
+            postsQuery: $postsQuery,
+            lastPostId: $lastPostId
+        );
+    }
+
+    public function gePostsByQuery(string $query, int $lastPostId): array
+    {
+        $postsQuery = Post::query()
+            ->where('is_deleted', false)
+            ->where('text', 'like', '%'.$query.'%')
+            ->orWhereHas('author', function (Builder $builder) use ($query) {
+                $builder->where('username', 'like', '%'.$query.'%');
+            })
+            ->orWhereHas('author', function (Builder $builder) use ($query) {
+                $builder->where('name', 'like', '%'.$query.'%');
+            });
+
+        return $this->postsWithUserHandler(
+            postsQuery: $postsQuery,
+            lastPostId: $lastPostId
         );
     }
 
@@ -106,11 +126,12 @@ class FeedService
         ];
     }
 
-    private function postsWithUserHandler(Builder|BelongsTo|BelongsToMany $postsQuery): array
+    private function postsWithUserHandler(Builder|BelongsTo|BelongsToMany $postsQuery, int $lastPostId): array
     {
         $total = $postsQuery->count();
 
         $posts = $postsQuery
+            ->skip($lastPostId)
             ->take(50)
             ->get();
 
