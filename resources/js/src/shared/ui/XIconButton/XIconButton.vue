@@ -98,7 +98,6 @@ defineProps({
     color: rgb(var(--x-action-color)) !important;
 }
 
-
 .x-icon-button:hover svg {
     color: rgb(var(--x-action-color)) !important;
 }
