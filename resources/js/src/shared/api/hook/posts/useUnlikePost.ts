@@ -19,7 +19,7 @@ export const useUnlikePost = () => {
 
                 const viewerStore = useViewerStore()
 
-                viewerStore.incrementFavouritesCount()
+                viewerStore.decrementFavouritesCount()
             }
         },
     })
