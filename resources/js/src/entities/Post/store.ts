@@ -2,8 +2,8 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { IPost } from '@/shared/api/types/models/Post'
 import { api } from '@/shared/api/methods'
-import { useUserStore } from '@/entities/User/store'
 import { useViewerStore } from '@/entities/Viewer/store'
+import { postApiItemHandle } from '@/entities/Post/helpers/postApiItemHandle'
 
 export const usePostStore = defineStore('posts', () => {
     // store
@@ -103,10 +103,20 @@ export const usePostStore = defineStore('posts', () => {
             const data = res.data
 
             if (data.success) {
-                const userStore = useUserStore()
-                userStore.addUser(data.data.user)
+                postApiItemHandle(data.data)
+            }
+        } else {
+            if (post.retweeted_post_id) {
+                const retweet = posts.value.find(item => item.id === post.retweeted_post_id)
 
-                posts.value.push(data.data.post)
+                if (!retweet) {
+                    const res = await api.posts.getPostById(post.retweeted_post_id)
+                    const data = res.data
+
+                    if (data.success) {
+                        postApiItemHandle(data.data)
+                    }
+                }
             }
         }
     }

@@ -1,18 +1,18 @@
 <script setup lang="ts">
 
-import PostActions from '@/entities/Post/PostActions.vue'
-import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
-import UserNames from '@/entities/User/ui/UserNames.vue'
-import PostBody from '@/entities/Post/PostBody.vue'
-import { usePostStore } from '@/entities/Post/store'
-import { useUserStore } from '@/entities/User/store'
 import { computed } from 'vue'
+import { useUserStore } from '@/entities/User/store'
+import { usePostStore } from '@/entities/Post/store'
+import PostBody from '@/entities/Post/ui/PostBody.vue'
+import UserNames from '@/entities/User/ui/UserNames.vue'
+import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
+import PostActions from '@/entities/Post/ui/PostActions.vue'
 
 const props = defineProps({
     id: {
         type: Number,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const postStore = usePostStore()

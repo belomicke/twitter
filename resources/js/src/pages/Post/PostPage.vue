@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { computed, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import PostPagePost from './ui/PostPagePost.vue'
 import { usePostStore } from '@/entities/Post/store'
-import { computed, onMounted } from 'vue'
 import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
-import { useUserStore } from '@/entities/User/store'
-import PostPagePost from '@/pages/Post/ui/PostPagePost.vue'
 
-const router = useRouter()
 const route = useRoute()
 
 const id = computed(() => {
@@ -14,17 +12,8 @@ const id = computed(() => {
 })
 
 const postStore = usePostStore()
-const userStore = useUserStore()
 
-const post = computed(() => {
-    return postStore.getPostById(id.value)
-})
-
-const user = computed(() => {
-    if (!post.value) return undefined
-
-    return userStore.getUserById(post.value.user_id)
-})
+watch(() => id.value, () => postStore.fetchPostById(id.value))
 
 onMounted(() => {
     postStore.fetchPostById(id.value)
