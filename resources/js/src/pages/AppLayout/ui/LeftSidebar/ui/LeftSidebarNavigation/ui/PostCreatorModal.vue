@@ -10,7 +10,7 @@ const modal = ref<InstanceType<typeof XModal> | null>(null)
 const creator = ref<InstanceType<typeof PostCreator> | null>(null)
 
 defineExpose({
-    open,
+    open
 })
 
 const appStore = useAppStore()
@@ -37,7 +37,6 @@ function close() {
     createPostModel.setRetweetPostId(null)
     creator.value?.clear()
     modal.value?.close()
-    console.log('close')
 }
 
 </script>

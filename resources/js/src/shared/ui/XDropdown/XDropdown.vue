@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { observePosition } from '@/shared/helpers/observePositionOfElement'
 import { observeSize } from '@/shared/helpers/observeSizeOfElement'
 
 defineProps({
     modelValue: {
         type: Boolean,
-        required: false,
-    },
+        required: false
+    }
 })
 
 const emit = defineEmits(['update:modelValue'])
 
 defineExpose({
     open,
-    close,
+    close
 })
 
 const container = ref<HTMLDivElement | null>(null)
@@ -50,8 +50,6 @@ onUnmounted(() => {
     window.removeEventListener('resize', getRectOfElement)
     document.getElementById('scroll-element')?.removeEventListener('scroll', getRectOfElement)
 })
-
-watch(() => element.value?.getBoundingClientRect(), () => console.log('hello'))
 
 function getRectOfElement() {
     const el = element.value
