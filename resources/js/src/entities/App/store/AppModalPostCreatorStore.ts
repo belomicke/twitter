@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useAppStore = defineStore('app', () => {
+export const useAppModalPostCreatorStore = defineStore('app', () => {
     // store
     const modalPostCreatorIsOpen = ref<boolean>(false)
 
@@ -17,6 +17,6 @@ export const useAppStore = defineStore('app', () => {
 
     return {
         getModalPostCreatorIsOpen,
-        setModalPostCreatorIsOpen,
+        setModalPostCreatorIsOpen
     }
 })
