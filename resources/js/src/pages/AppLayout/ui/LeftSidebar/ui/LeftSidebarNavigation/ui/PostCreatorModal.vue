@@ -2,9 +2,9 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PostCreator } from '@/features/post/create-post'
-import { useAppStore } from '@/entities/App/store'
 import XModal from '@/shared/ui/XModal/XModal.vue'
 import { useCreatePostModel } from '@/features/post/create-post/model'
+import { useAppModalPostCreatorStore } from '@/entities/App/store/AppModalPostCreatorStore'
 
 const modal = ref<InstanceType<typeof XModal> | null>(null)
 const creator = ref<InstanceType<typeof PostCreator> | null>(null)
@@ -13,7 +13,7 @@ defineExpose({
     open
 })
 
-const appStore = useAppStore()
+const appStore = useAppModalPostCreatorStore()
 const { getModalPostCreatorIsOpen } = storeToRefs(appStore)
 
 const createPostModel = useCreatePostModel()

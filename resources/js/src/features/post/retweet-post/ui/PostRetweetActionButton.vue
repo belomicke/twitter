@@ -6,9 +6,9 @@ import { IPost } from '@/shared/api/types/models/Post'
 import XDropdown from '@/shared/ui/XDropdown/XDropdown.vue'
 import { useRetweetPost } from '@/features/post/retweet-post/hook/useRetweetPost'
 import { useUndoRetweetPost } from '@/features/post/retweet-post/hook/useUndoRetweetPost'
-import { useAppStore } from '@/entities/App/store'
 import { useCreatePostModel } from '@/features/post/create-post/model'
 import XIcon from '@/shared/ui/XIcon/XIcon.vue'
+import { useAppModalPostCreatorStore } from '@/entities/App/store/AppModalPostCreatorStore'
 
 const props = defineProps({
     post: {
@@ -21,7 +21,7 @@ const props = defineProps({
     }
 })
 
-const appStore = useAppStore()
+const appStore = useAppModalPostCreatorStore()
 const createPostModel = useCreatePostModel()
 
 const dropdownRef = ref<InstanceType<typeof XDropdown> | null>(null)
