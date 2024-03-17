@@ -16,6 +16,20 @@ class CreatePostController extends Controller
         $retweetedPostId = $request->input('retweeted_post_id') ?? null;
         $formattedText = preg_replace("/\n+/", "\n\n", $text);
 
+        if ($retweetedPostId !== null) {
+            $retweetExists = Post::query()
+                ->where('retweeted_post_id', $retweetedPostId)
+                ->where('text', $text)
+                ->exists();
+
+            if ($retweetExists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Вы уже писали об этом'
+                ], 500);
+            }
+        }
+
         $user = Auth::user();
 
         $post = Post::create([

@@ -3,6 +3,7 @@ import { CreatePostDTO } from '../types/CreatePostDTO'
 import { usePostStore } from '@/entities/Post/store'
 import { useFeedStore } from '@/entities/Feed/store'
 import { useViewerStore } from '@/entities/Viewer/store'
+import { useAppNotificationStore } from '@/entities/App/store/AppNotificationStore'
 import { api } from '@/shared/api/methods'
 
 export const useCreatePost = () => {
@@ -12,7 +13,11 @@ export const useCreatePost = () => {
             return await api.posts.create(data)
         },
         onSuccess(data) {
-            if (!data.data.success) return
+            if (!data.data.success) {
+                const appNotificationsStore = useAppNotificationStore()
+                appNotificationsStore.addNotification(data.data.message, 'danger')
+                return
+            }
 
             const post = data.data.data.post
 
@@ -29,6 +34,6 @@ export const useCreatePost = () => {
             const feedStore = useFeedStore()
             feedStore.addItemToStartOfFeed(`user:${viewer.username}:posts`, post.id)
             feedStore.addItemToStartOfFeed(`timeline`, post.id)
-        },
+        }
     })
 }
