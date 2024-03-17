@@ -5,16 +5,14 @@ import AuthFormFooter from '@/entities/Auth/ui/AuthFormFooter.vue'
 import XModal from '@/shared/ui/XModal/XModal.vue'
 import XInput from '@/shared/ui/XInput'
 import XButton from '@/shared/ui/XButton/XButton.vue'
-import XAlert from '@/shared/ui/XAlert/XAlert.vue'
 import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 import XModalContainer from '@/shared/ui/modal/XModalContainer/XModalContainer.vue'
+import { useAppNotificationStore } from '@/entities/App/store/AppNotificationStore'
 
 const username = ref<string>('')
 const password = ref<string>('')
 
 const isLoading = ref<boolean>(false)
-
-const alert = ref<InstanceType<typeof XAlert> | null>(null)
 
 const modal = ref<InstanceType<typeof XModal> | null>(null)
 
@@ -24,8 +22,10 @@ const emit = defineEmits(['open', 'close'])
 
 defineExpose({
     open,
-    close,
+    close
 })
+
+const appNotificationStore = useAppNotificationStore()
 
 const formIsValid = computed(() => {
     if (username.value.length < 4 || username.value.length > 32) return false
@@ -54,7 +54,7 @@ function close() {
 function submit() {
     const data = {
         username: username.value,
-        password: password.value,
+        password: password.value
     }
 
     isLoading.value = true
@@ -62,18 +62,12 @@ function submit() {
         onSuccess: (data) => {
             if (!data.data.success) {
                 isLoading.value = false
-                alert.value?.open()
             }
         },
         onError() {
             isLoading.value = false
-            alert.value?.open()
             wrongCredentials.value.push(data)
-
-            setTimeout(() => {
-                alert.value?.close()
-            }, 2500)
-        },
+        }
     })
 }
 </script>
@@ -110,11 +104,6 @@ function submit() {
                                 placeholder="Пароль"
                                 password
                                 name="password"
-                            />
-                            <x-alert
-                                ref="alert"
-                                title="Неверное имя пользователя или пароль"
-                                type="error"
                             />
                         </div>
                     </div>

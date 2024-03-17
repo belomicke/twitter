@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/vue-query'
 import CreateAccessTokenDTO from '../types/CreateAccessTokenDTO'
 import { api } from '@/shared/api/methods'
+import { useAppNotificationStore } from '@/entities/App/store/AppNotificationStore'
 
 export const useCreateAccessToken = () => {
     return useMutation({
@@ -16,5 +17,9 @@ export const useCreateAccessToken = () => {
                 window.location.reload()
             }
         },
+        onError() {
+            const appNotificationStore = useAppNotificationStore()
+            appNotificationStore.addNotification('Неверный логин или пароль', 'danger')
+        }
     })
 }
