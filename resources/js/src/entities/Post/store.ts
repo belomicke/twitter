@@ -38,8 +38,25 @@ export const usePostStore = defineStore('posts', () => {
         items.forEach(item => addPost(item))
     }
 
-    function deletePost(item: number) {
-        posts.value = posts.value.filter(post => post.id !== item)
+    function deletePost(id: number) {
+        posts.value = posts.value.filter(post => post.id !== id)
+    }
+
+    function deletePostRetweet(id: number) {
+        const viewerStore = useViewerStore()
+        const viewer = viewerStore.viewer
+
+        if (!viewer) return
+
+        const post = posts.value.find(post =>
+            post.retweeted_post_id === id &&
+            post.user_id === viewer.id &&
+            post.text.length === 0
+        )
+
+        if (!post) return
+
+        posts.value = posts.value.filter(item => item.id !== post.id)
     }
 
     function likePost(id: number) {
@@ -100,10 +117,11 @@ export const usePostStore = defineStore('posts', () => {
         addPost,
         addPosts,
         deletePost,
+        deletePostRetweet,
         fetchPostById,
         likePost,
         unlikePost,
         retweetPost,
-        undoRetweetPost,
+        undoRetweetPost
     }
 })
