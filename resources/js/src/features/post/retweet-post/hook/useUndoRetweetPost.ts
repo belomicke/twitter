@@ -30,7 +30,7 @@ export const useUndoRetweetPost = () => {
                 const feedStore = useFeedStore()
                 feedStore.removeItemFromFeed(`user:${viewer?.username}:posts`, retweet.id)
 
-                postStore.deletePostRetweet(retweet.id)
+                postStore.deletePostRetweet(variables)
             }
         }
     })

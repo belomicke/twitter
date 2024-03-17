@@ -23,7 +23,7 @@ export const usePostStore = defineStore('posts', () => {
 
             if (!viewer) return
 
-            return posts.value.find(post => post.retweeted_post_id === id && post.user_id === viewer.id)
+            return posts.value.find(post => post.retweeted_post_id === id && post.user_id === viewer.id && post.text === '')
         }
     })
 
