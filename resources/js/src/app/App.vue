@@ -5,6 +5,7 @@ import LoadingPage from '@/pages/Loading/LoadingPage.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
 import '@/shared/ui/css/variables.css'
 import '@/shared/ui/css/global.css'
+import AppNotifications from '@/pages/AppLayout/ui/AppNotifications/AppNotifications.vue'
 
 const viewerStore = useViewerStore()
 
@@ -41,6 +42,9 @@ onMounted(() => {
         class="container"
     >
         <router-view />
+        <Teleport to="#portals">
+            <app-notifications />
+        </Teleport>
     </div>
 </template>
 
