@@ -10,13 +10,13 @@ import 'v3-infinite-loading/lib/style.css'
 const props = defineProps({
     id: {
         type: String,
-        required: true,
+        required: true
     },
     window: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 
 const emit = defineEmits(['fetch'])

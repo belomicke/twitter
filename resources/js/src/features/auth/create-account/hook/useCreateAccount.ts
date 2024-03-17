@@ -7,6 +7,6 @@ export const useCreateAccount = () => {
         mutationKey: ['create-account'],
         mutationFn: async (data: CreateAccountDTO) => {
             return await api.auth.createAccount(data)
-        },
+        }
     })
 }

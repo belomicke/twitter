@@ -6,24 +6,24 @@ import PostCreatorFooter from './PostCreatorFooter.vue'
 import PostCreatorTextarea from './PostCreatorTextarea.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
-import RetweetExtensions from '@/entities/Post/RetweetExtensions.vue'
+import RetweetExtensions from '@/entities/Post/ui/RetweetExtensions.vue'
 import { useCreatePostModel } from '@/features/post/create-post/model'
 
 const props = defineProps({
     height: {
         type: Number,
         required: false,
-        default: 68,
+        default: 68
     },
     useModalData: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 
 defineExpose({
-    clear,
+    clear
 })
 
 const emit = defineEmits(['publish'])
@@ -61,7 +61,7 @@ const formattedText = computed(() => {
 const createPostData = computed(() => {
     return {
         text: formattedText.value ?? '',
-        retweeted_post_id: retweetedPostId.value ?? null,
+        retweeted_post_id: retweetedPostId.value ?? null
     }
 })
 

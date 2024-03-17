@@ -2,15 +2,15 @@
 import { computed } from 'vue'
 import { usePostStore } from '@/entities/Post/store'
 import { useUserStore } from '@/entities/User/store'
-import PostExtraStatus from '@/entities/Post/PostExtraStatus.vue'
-import PostActions from '@/entities/Post/PostActions.vue'
-import PostEntity from '@/entities/Post/PostEntity.vue'
+import PostExtraStatus from '@/entities/Post/ui/PostExtraStatus.vue'
+import PostActions from '@/entities/Post/ui/PostActions.vue'
+import PostEntity from '@/entities/Post/ui/PostEntity.vue'
 
 const props = defineProps({
     id: {
         type: Number,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const postStore = usePostStore()

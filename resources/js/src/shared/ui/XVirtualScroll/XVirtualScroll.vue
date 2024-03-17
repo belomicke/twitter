@@ -8,17 +8,17 @@ import { useVirtualizer } from '@tanstack/vue-virtual'
 const props = defineProps({
     items: {
         type: Array as PropType<number[]>,
-        required: true,
+        required: true
     },
     total: {
         type: Number,
-        required: true,
+        required: true
     },
     window: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 
 const emit = defineEmits(['fetch-next-page'])
@@ -41,7 +41,7 @@ const rowVirtualizerOptions = computed(() => {
         getScrollElement: () => element.value,
         count: count.value,
         estimateSize: () => 255,
-        scrollMargin: parentOffsetRef.value,
+        scrollMargin: parentOffsetRef.value
     }
 })
 
