@@ -7,7 +7,6 @@ export default defineConfig({
         vue(),
         laravel({
             input: [
-                'resources/css/app.css',
                 'resources/js/app.js'
             ],
             refresh: true
@@ -16,6 +15,6 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': '/resources/js/src/'
-        },
-    },
+        }
+    }
 })

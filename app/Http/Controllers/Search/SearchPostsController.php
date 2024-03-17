@@ -18,7 +18,7 @@ class SearchPostsController extends Controller
         $query = $request->input('query');
         $lastPostId = $request->input('last_post_id');
 
-        $data = $this->feedService->gePostsByQuery(
+        $data = $this->feedService->getPostsByQuery(
             query: $query,
             lastPostId: $lastPostId
         );

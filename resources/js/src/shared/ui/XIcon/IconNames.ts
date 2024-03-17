@@ -19,5 +19,7 @@ type IconNames =
     | 'search'
     | 'loader'
     | 'feather'
+    | 'retweet'
+    | 'edit'
 
 export default IconNames

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import _ from 'lodash'
 import { computed, ref, watch } from 'vue'
-import { useSearchStore } from '@/entities/Search/store'
-import { storeToRefs } from 'pinia'
-import UserListItem from '@/entities/User/ui/UserListItem.vue'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import _ from 'lodash'
+import { useSearchStore } from '@/entities/Search/store'
+import UserListItem from '@/entities/User/ui/UserListItem.vue'
 import XSpinner from '@/shared/ui/XSpinner/XSpinner.vue'
 
 const props = defineProps({

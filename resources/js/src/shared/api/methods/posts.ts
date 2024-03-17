@@ -18,9 +18,20 @@ const unlike = async (id: number): Promise<EmptyResponse> => {
     return await makeRequest.post(`/api/posts/${id}/unlike`)
 }
 
+const retweet = async (id: number): Promise<PostResponse> => {
+    return await makeRequest.post(`/api/posts/${id}/retweet`)
+}
+
+const undoRetweet = async (id: number): Promise<EmptyResponse> => {
+    return await makeRequest.delete(`/api/posts/${id}/retweet`)
+}
+
 export const posts = {
     create,
     getPostById,
     like,
     unlike,
+
+    retweet,
+    undoRetweet,
 }

@@ -28,6 +28,11 @@ defineProps({
         required: false,
         default: 0,
     },
+    size: {
+        type: Number,
+        required: false,
+        default: 18,
+    },
 })
 </script>
 
@@ -37,14 +42,17 @@ defineProps({
         :class="{
             active
         }"
-        :style="{ '--x-action-color': color }"
+        :style="{
+            '--x-action-color': color,
+            '--x-icon-size': `${size}px`
+        }"
         v-bind="$attrs"
     >
         <div class="icon">
             <x-icon
                 :icon="icon"
                 :filled="filled"
-                :size="18"
+                :size="size"
             />
         </div>
         <x-counter
@@ -57,26 +65,26 @@ defineProps({
 <style scoped>
 .x-icon-button {
     --x-action-color: 113, 118, 123;
+    --x-icon-size: 18px;
 
     display: flex;
     justify-content: center;
     align-items: center;
     grid-gap: 5px;
     position: relative;
+    cursor: pointer;
 }
 
 .icon {
     display: flex;
     position: relative;
-    height: 18px;
-    width: 18px;
     z-index: 100;
 }
 
 .icon::after {
     content: "";
-    width: 34px;
-    height: 34px;
+    width: calc(var(--x-icon-size) + 16px);
+    height: calc(var(--x-icon-size) + 16px);
     position: absolute;
     top: -8px;
     left: -8px;

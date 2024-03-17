@@ -27,12 +27,17 @@ watch(() => props.query, (newQuery) => {
 onMounted(() => {
     feedStore.fetchPostsByQuery(props.query)
 })
+
+function fetch() {
+    feedStore.fetchPostsByQuery(props.query)
+}
 </script>
 
 <template>
     <post-feed
         v-if="feed"
         :id="`search:${props.query}`"
+        @fetch="fetch"
     >
         <empty-feed
             :title="`По запросу «${query}» ничего не найдено`"

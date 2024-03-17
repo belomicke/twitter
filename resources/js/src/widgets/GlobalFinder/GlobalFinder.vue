@@ -2,7 +2,7 @@
 
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import GlobalFinderResult from '@/widgets/GlobalFinder/GlobalFinderResult.vue'
+import GlobalFinderResult from './GlobalFinderResult.vue'
 import XSearchInput from '@/shared/ui/XSearchInput/XSearchInput.vue'
 
 const route = useRoute()

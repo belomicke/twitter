@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
 import { ref } from 'vue'
+import { EditPublicDataModal } from '@/features/account/edit-public-data'
 import XButton from '@/shared/ui/XButton/XButton.vue'
-import EditPublicDataModal from './ui/EditPublicDataModal/EditPublicDataModal.vue'
 
 const modal = ref<InstanceType<typeof EditPublicDataModal> | null>(null)
 

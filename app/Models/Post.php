@@ -15,7 +15,9 @@ use Laravel\Scout\Searchable;
  * @property int $id
  * @property string $text
  * @property int $user_id
+ * @property int $retweeted_post_id
  * @property int $likes_count
+ * @property int $retweets_count
  *
  * @property Collection $likers
  *
@@ -27,15 +29,18 @@ class Post extends Model
 
     protected $fillable = [
         'text',
-        'user_id'
+        'user_id',
+        'retweeted_post_id'
     ];
 
     protected $hidden = [
-        'pivot'
+        'pivot',
+        'is_deleted'
     ];
 
     protected $appends = [
-        'liked'
+        'liked',
+        'retweeted'
     ];
 
     public function toSearchableArray(): array
@@ -54,6 +59,16 @@ class Post extends Model
             ->exists();
     }
 
+    public function getRetweetedAttribute(): bool
+    {
+        return DB::table('posts')
+            ->where('retweeted_post_id', $this->id)
+            ->where('user_id', Auth::id())
+            ->where('is_deleted', false)
+            ->where('text', '=', '')
+            ->exists();
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -69,5 +84,14 @@ class Post extends Model
         )
             ->wherePivot('is_deleted', false)
             ->withTimestamps();
+    }
+
+    public function retweet(): BelongsTo
+    {
+        return $this->belongsTo(
+            Post::class,
+            'retweeted_post_id',
+            'id',
+        );
     }
 }

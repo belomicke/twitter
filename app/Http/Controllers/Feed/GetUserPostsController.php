@@ -19,7 +19,7 @@ class GetUserPostsController extends Controller
         $lastPostId = $request->input('last_post_id');
 
         $data = $this->feedService->getUserPosts(
-            username: $user->username,
+            user: $user,
             lastPostId: $lastPostId
         );
 

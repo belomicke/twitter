@@ -3,7 +3,7 @@ import IUser, { ProfileBanners, ProfilePictures } from '@/shared/api/types/model
 import { ref } from 'vue'
 import { api } from '@/shared/api/methods'
 import { useUserStore } from '@/entities/User/store'
-import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
+import EditViewerPublicDataDTO from '@/features/account/edit-public-data/types/EditPublicDataDTO'
 
 export const useViewerStore = defineStore('viewer', () => {
     // store
@@ -87,6 +87,16 @@ export const useViewerStore = defineStore('viewer', () => {
         userStore.incrementPostsCount(user.id)
     }
 
+    function decrementPostsCount() {
+        const user = viewer.value
+
+        if (!user) return
+
+        const userStore = useUserStore()
+
+        userStore.decrementPostsCount(user.id)
+    }
+
     function incrementFavouritesCount() {
         const user = viewer.value
 
@@ -112,9 +122,13 @@ export const useViewerStore = defineStore('viewer', () => {
         isLoading,
         fetchViewer,
         editViewer,
+
         changeProfilePicture,
         changeProfileBanner,
+
         incrementPostsCount,
+        decrementPostsCount,
+
         incrementFavouritesCount,
         decrementFavouritesCount,
     }

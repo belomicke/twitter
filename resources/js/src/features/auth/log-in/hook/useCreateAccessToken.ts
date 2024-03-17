@@ -1,0 +1,20 @@
+import { useMutation } from '@tanstack/vue-query'
+import CreateAccessTokenDTO from '../types/CreateAccessTokenDTO'
+import { api } from '@/shared/api/methods'
+
+export const useCreateAccessToken = () => {
+    return useMutation({
+        mutationKey: ['create-access-token'],
+        mutationFn: async (data: CreateAccessTokenDTO) => {
+            return await api.auth.createAccessToken(data)
+        },
+        onSuccess(res) {
+            const data = res.data
+
+            if (data.success) {
+                localStorage.setItem('token', data.data.token)
+                window.location.reload()
+            }
+        },
+    })
+}

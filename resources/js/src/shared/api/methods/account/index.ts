@@ -1,5 +1,5 @@
 import { EntityExistsResponse } from '@/shared/api/types/response/global/EntityExistsResponse'
-import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
+import EditViewerPublicDataDTO from '@/features/account/edit-public-data/types/EditPublicDataDTO'
 import { UserResponse } from '@/shared/api/types/response/user/UserResponse'
 import { makeRequest } from '@/shared/api/makeRequest'
 import { profile_picture } from './profile_picture'

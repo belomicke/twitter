@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import 'v3-infinite-loading/lib/style.css'
 import { computed, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFeedStore } from '../store'
-import PostEntity from '@/entities/Post/ui/PostEntity/PostEntity.vue'
-import XVirtualScroll from '@/shared/ui/XVirtualScroll/XVirtualScroll.vue'
+import PostFeedItem from './PostFeedItem.vue'
 import XSpinner from '@/shared/ui/XSpinner/XSpinner.vue'
+import XVirtualScroll from '@/shared/ui/XVirtualScroll/XVirtualScroll.vue'
+import 'v3-infinite-loading/lib/style.css'
 
 const props = defineProps({
     id: {
@@ -55,13 +55,12 @@ function load() {
     <x-virtual-scroll
         v-if="feed && !renderSlot"
         :items="feed.data.items"
-        :count="feed.data.items.length"
         :total="feed.data.total ?? 0"
         :window="window"
         @fetch-next-page="load"
     >
         <template #item="{ virtualRow }">
-            <post-entity
+            <post-feed-item
                 :id="feed.data.items[virtualRow.index]"
             />
         </template>
@@ -81,5 +80,6 @@ function load() {
 .loader {
     display: flex;
     justify-content: center;
+    margin-top: 15px;
 }
 </style>

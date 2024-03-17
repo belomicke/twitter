@@ -21,22 +21,24 @@ import HeartIcon from '@/shared/ui/XIcon/icons/HeartIcon.vue'
 import SearchIcon from '@/shared/ui/XIcon/icons/SearchIcon.vue'
 import LoaderIcon from '@/shared/ui/XIcon/icons/LoaderIcon.vue'
 import FeatherIcon from '@/shared/ui/XIcon/icons/FeatherIcon.vue'
+import RetweetIcon from '@/shared/ui/XIcon/icons/RetweetIcon.vue'
+import EditIcon from '@/shared/ui/XIcon/icons/EditIcon.vue'
 
 const { icon } = defineProps({
     icon: {
         type: String as PropType<IconNames>,
-        required: true,
+        required: true
     },
     size: {
         type: Number,
         required: false,
-        default: 20,
+        default: 20
     },
     color: {
         type: String,
         required: false,
-        default: 'rgb(255, 255, 255)',
-    },
+        default: 'rgb(255, 255, 255)'
+    }
 })
 
 const icons = {
@@ -60,6 +62,8 @@ const icons = {
     'search-icon': SearchIcon,
     'loader-icon': LoaderIcon,
     'feather-icon': FeatherIcon,
+    'retweet-icon': RetweetIcon,
+    'edit-icon': EditIcon
 }
 </script>
 

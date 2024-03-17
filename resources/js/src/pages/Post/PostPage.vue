@@ -3,9 +3,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { usePostStore } from '@/entities/Post/store'
 import { computed, onMounted } from 'vue'
 import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
-import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { useUserStore } from '@/entities/User/store'
-import UserNames from '@/entities/User/ui/UserNames.vue'
+import PostPagePost from '@/pages/Post/ui/PostPagePost.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -38,24 +37,8 @@ onMounted(() => {
             Опубликованный пост
         </div>
     </x-page-header>
-    <div
-        v-if="post && user"
-        class="container"
-    >
-        <div class="post-header">
-            <user-avatar
-                :username="user.username"
-                :size="40"
-                rounded
-            />
-            <user-names
-                :user="user"
-                links
-            />
-        </div>
-        <div class="text">
-            {{ post.text }}
-        </div>
+    <div class="container">
+        <post-page-post :id="id" />
     </div>
 </template>
 
@@ -71,16 +54,6 @@ onMounted(() => {
 .container {
     display: flex;
     flex-direction: column;
-    grid-gap: 15px;
-    padding: 15px;
 }
 
-.post-header {
-    display: flex;
-    grid-gap: 10px;
-}
-
-.text {
-    white-space: pre-wrap;
-}
 </style>

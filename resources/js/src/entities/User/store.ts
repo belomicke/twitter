@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import IUser, { ProfileBanners, ProfilePictures } from '@/shared/api/types/models/User'
 import { api } from '@/shared/api/methods'
 import { computed, ref } from 'vue'
-import EditViewerPublicDataDTO from '@/shared/api/types/DTO/account/EditViewerPublicDataDTO'
+import EditViewerPublicDataDTO from '@/features/account/edit-public-data/types/EditPublicDataDTO'
 
 export const useUserStore = defineStore('users', () => {
     // store
@@ -112,6 +112,14 @@ export const useUserStore = defineStore('users', () => {
         user.posts_count += 1
     }
 
+    function decrementPostsCount(id: number) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.posts_count -= 1
+    }
+
     function incrementFavouritesCount(id: number) {
         const user = users.value.find(item => item.id === id)
 
@@ -140,9 +148,13 @@ export const useUserStore = defineStore('users', () => {
 
         incrementFollowersCount,
         decrementFollowersCount,
+
         incrementFollowsCount,
         decrementFollowsCount,
+
         incrementPostsCount,
+        decrementPostsCount,
+
         incrementFavouritesCount,
         decrementFavouritesCount,
     }

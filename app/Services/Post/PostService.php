@@ -60,4 +60,51 @@ class PostService
             return false;
         }
     }
+
+    public function retweet(Post $post): Post
+    {
+        $viewer = Auth::user();
+
+        $retweet = Post::create([
+            'text' => '',
+            'retweeted_post_id' => $post->id,
+            'user_id' => $viewer->id
+        ]);
+        $retweet->save();
+
+        $post->retweets_count += 1;
+        $post->save();
+
+        $viewer->posts_count += 1;
+        $viewer->save();
+
+        return $retweet;
+    }
+
+    public function undoRetweet(Post $post): bool
+    {
+        $viewer = Auth::user();
+
+        try {
+            $retweet = Post::query()
+                ->where('user_id', $viewer->id)
+                ->where('retweeted_post_id', $post->id)
+                ->where('text', '')
+                ->where('is_deleted', false)
+                ->first();
+
+            $retweet->is_deleted = true;
+            $retweet->save();
+
+            $post->retweets_count -= 1;
+            $post->save();
+
+            $viewer->posts_count -= 1;
+            $viewer->save();
+
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }

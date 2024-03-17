@@ -1,5 +1,5 @@
-import CreateAccountDTO from '@/shared/api/types/DTO/auth/CreateAccountDTO'
-import CreateAccessTokenDTO from '@/shared/api/types/DTO/auth/CreateAccessTokenDTO'
+import CreateAccountDTO from '@/features/auth/create-account/types/CreateAccountDTO'
+import CreateAccessTokenDTO from '@/features/auth/log-in/types/CreateAccessTokenDTO'
 import { CreateAccessTokenResponse } from '@/shared/api/types/response/auth/CreateAccessTokenResponse'
 import { EmptyResponse } from '@/shared/api/types/response/global/EmptyResponse'
 import { makeRequest } from '@/shared/api/makeRequest'

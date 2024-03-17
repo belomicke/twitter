@@ -22,7 +22,18 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
             $table
+                ->foreignId('retweeted_post_id')
+                ->nullable()
+                ->constrained('posts')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table
                 ->integer('likes_count')
+                ->default(0);
+
+            $table
+                ->integer('retweets_count')
                 ->default(0);
 
             $table

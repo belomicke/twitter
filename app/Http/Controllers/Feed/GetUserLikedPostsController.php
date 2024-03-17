@@ -19,7 +19,7 @@ class GetUserLikedPostsController extends Controller
         $lastPostId = $request->input('last_post_id');
 
         $data = $this->feedService->getUserLikedPosts(
-            username: $user->username,
+            user: $user,
             lastPostId: $lastPostId
         );
 

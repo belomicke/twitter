@@ -141,6 +141,16 @@ class User extends Authenticatable
         )->withTimestamps();
     }
 
+    public function retweeted_posts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'retweeted_posts',
+            'user_id',
+            'post_id',
+        )->withTimestamps();
+    }
+
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(

@@ -4,7 +4,7 @@
 
 <template>
     <div class="auth-form-footer">
-        <slot></slot>
+        <slot />
     </div>
 </template>
 

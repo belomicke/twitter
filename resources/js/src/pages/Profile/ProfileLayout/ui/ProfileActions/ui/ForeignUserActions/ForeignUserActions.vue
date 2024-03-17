@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import UserFollowButton from '@/features/user/FollowButton/UserFollowButton.vue'
+import { UserFollowButton } from '@/features/user/follow-user'
 import { useUserStore } from '@/entities/User/store'
 
 const { username } = defineProps({

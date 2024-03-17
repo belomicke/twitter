@@ -1,13 +1,10 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import LoadingPage from '@/pages/Loading/LoadingPage.vue'
+import { useViewerStore } from '@/entities/Viewer/store'
 import '@/shared/ui/css/variables.css'
 import '@/shared/ui/css/global.css'
-
-import { onMounted } from 'vue'
-
-import { storeToRefs } from 'pinia'
-
-import { useViewerStore } from '@/entities/Viewer/store'
-import LoadingPage from '@/pages/Loading/LoadingPage.vue'
 
 const viewerStore = useViewerStore()
 

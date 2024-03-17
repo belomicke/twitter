@@ -1,3 +1,0 @@
-interface CreatePostDTO {
-	text: string
-}

@@ -1,11 +1,9 @@
 import { computed, ref } from 'vue'
-
 import { defineStore } from 'pinia'
-
 import { usePostStore } from '@/entities/Post/store'
+import { useUserStore } from '@/entities/User/store'
 import { api } from '@/shared/api/methods'
 import { IFeed } from '@/shared/api/types/models/Feed'
-import { useUserStore } from '@/entities/User/store'
 import { PostFeedResponse } from '@/shared/api/types/response/feed/PostFeedResponse'
 
 export const useFeedStore = defineStore('feeds', () => {
@@ -32,6 +30,15 @@ export const useFeedStore = defineStore('feeds', () => {
         }
     }
 
+    function removeItemFromFeed(id: string, item: number) {
+        const feed = feeds.value.find(item => item.id === id)
+
+        if (!feed) return
+
+        feed.data.items = feed.data.items.filter(i => i !== item)
+        feed.data.total -= 1
+    }
+
     function addItemToStartOfFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
@@ -45,50 +52,51 @@ export const useFeedStore = defineStore('feeds', () => {
         items.forEach((item) => addItemToFeed(id, item))
     }
 
+    function addItemsOrCreateFeed(id: string, items: number[], total: number) {
+        const feed = feeds.value.find(item => item.id === id)
+
+        if (feed) {
+            addItemsToFeed(id, items)
+            feed.data.total = total
+        } else {
+            const feedData = {
+                id,
+                data: {
+                    total,
+                    items
+                }
+            }
+
+            addFeed(feedData)
+        }
+    }
+
     async function fetchUserPostsFeed(username: string) {
         const id = `user:${username}:posts`
         const feed = feeds.value.find(item => item.id === id)
 
+        const offset = feed ? feed.data.items.length : 0
+
         const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
 
-        if (feed && feed.data.items.length >= feed.data.total) return
+        if (feed && offset >= feed.data.total) return
 
         const res = await api.feed.user.getPosts(username, lastPostId)
-        const data = res.data
-
-        if (data.success) {
-            const items = data.data.items
-
-            const postStore = usePostStore()
-            postStore.addPosts(items)
-
-            if (feed) {
-                addItemsToFeed(id, items.map(item => item.id))
-                feed.data.total = data.data.total
-            } else {
-                const feedData = {
-                    id,
-                    data: {
-                        ...data.data,
-                        items: items.map(item => item.id),
-                    },
-                }
-
-                addFeed(feedData)
-            }
-        }
+        postFeedResponseHandler(id, res)
     }
 
     async function fetchUserLikedPostsFeed(username: string) {
         const id = `user:${username}:liked_posts`
         const feed = feeds.value.find(item => item.id === id)
 
+        const offset = feed ? feed.data.items.length : 0
+
         const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
 
-        if (feed && feed.data.items.length >= feed.data.total) return
+        if (feed && offset >= feed.data.total) return
 
         const res = await api.feed.user.getLikedPosts(username, lastPostId)
-        postsWithUserResponseHandler(id, res)
+        postFeedResponseHandler(id, res)
     }
 
     async function fetchTimelineFeed() {
@@ -102,58 +110,57 @@ export const useFeedStore = defineStore('feeds', () => {
         if (feed && offset > feed.data.total) return
 
         const res = await api.feed.getTimeline(lastPostId)
-        postsWithUserResponseHandler(id, res)
+        postFeedResponseHandler(id, res)
     }
 
-    function postsWithUserResponseHandler(id: string, res: PostFeedResponse) {
+    async function fetchPostsByQuery(query: string) {
+        const id = `search:${query}`
         const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset >= feed.data.total) return
+
+        const res = await api.feed.query.posts(query, lastPostId)
+        postFeedResponseHandler(id, res)
+    }
+
+    function postFeedResponseHandler(id: string, res: PostFeedResponse) {
         const data = res.data
 
         if (data.success) {
             const items = data.data.items
 
             const userStore = useUserStore()
-            userStore.addUsers(items.map(item => item.user))
-
             const postStore = usePostStore()
-            postStore.addPosts(items.map(item => item.post))
 
-            if (feed) {
-                addItemsToFeed(id, items.map(item => item.post.id))
-                feed.data.total = data.data.total
-            } else {
-                const feedData = {
-                    id,
-                    data: {
-                        ...data.data,
-                        items: items.map(item => item.post.id),
-                    },
+            items.forEach(item => {
+                postStore.addPost(item.post)
+                userStore.addUser(item.user)
+
+                if (item.extensions.retweet !== null) {
+                    postStore.addPost(item.extensions.retweet.post)
+                    userStore.addUser(item.extensions.retweet.user)
                 }
+            })
 
-                addFeed(feedData)
-            }
+            addItemsOrCreateFeed(
+                id,
+                items.map(item => item.post.id),
+                data.data.total
+            )
         }
-    }
-
-    async function fetchPostsByQuery(query: string) {
-        const id = `search:${query}`
-
-        const feed = feeds.value.find(item => item.id === id)
-
-        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
-
-        if (feed && feed.data.items.length >= feed.data.total) return
-
-        const res = await api.search.getPosts(query, lastPostId)
-        postsWithUserResponseHandler(id, res)
     }
 
     return {
         getFeedById,
         addItemToStartOfFeed,
+        removeItemFromFeed,
         fetchUserPostsFeed,
         fetchTimelineFeed,
         fetchUserLikedPostsFeed,
-        fetchPostsByQuery,
+        fetchPostsByQuery
     }
 })

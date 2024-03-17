@@ -9,6 +9,14 @@ class LikePostPolicy
 {
     public function like(User $user, Post $post): bool
     {
-        return !$post->likers->contains($user->id);
+        $allow = false;
+
+        if (!$post->likers->contains($user->id)) {
+            if ($post->text !== '') {
+                $allow = true;
+            }
+        }
+
+        return $allow;
     }
 }

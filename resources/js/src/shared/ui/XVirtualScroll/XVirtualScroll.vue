@@ -10,10 +10,6 @@ const props = defineProps({
         type: Array as PropType<number[]>,
         required: true,
     },
-    count: {
-        type: Number,
-        required: true,
-    },
     total: {
         type: Number,
         required: true,
@@ -30,6 +26,10 @@ const emit = defineEmits(['fetch-next-page'])
 const parentRef = ref<HTMLElement | null>(null)
 const parentOffsetRef = ref(0)
 
+const count = computed(() => {
+    return props.items?.length
+})
+
 const element = computed(() => {
     if (!window) return parentRef.value
 
@@ -39,7 +39,7 @@ const element = computed(() => {
 const rowVirtualizerOptions = computed(() => {
     return {
         getScrollElement: () => element.value,
-        count: props.count,
+        count: count.value,
         estimateSize: () => 255,
         scrollMargin: parentOffsetRef.value,
     }
@@ -50,7 +50,7 @@ const rowVirtualizer = useVirtualizer(rowVirtualizerOptions)
 const virtualRows = computed(() => rowVirtualizer.value.getVirtualItems())
 const totalSize = computed(() => rowVirtualizer.value.getTotalSize())
 
-const measureElement = (el) => {
+const measureElement = (el: Element | null) => {
     if (!el) {
         return
     }
@@ -65,11 +65,11 @@ onMounted(() => {
 })
 
 const hasNextPage = computed(() => {
-    return props.count < props.total
+    return count.value < props.total
 })
 
 function fetchNextPage() {
-    if (props.count === props.total) return
+    if (!hasNextPage.value) return
 
     emit('fetch-next-page')
 }
@@ -97,7 +97,7 @@ function fetchNextPage() {
                     left: 0,
                     width: '100%',
                     transform: `translateY(${
-                        virtualRows[0]?.start - rowVirtualizer.options.scrollMargin ?? 0
+                        virtualRows[0]?.start - rowVirtualizer.options.scrollMargin
                     }px)`,
                 }"
             >

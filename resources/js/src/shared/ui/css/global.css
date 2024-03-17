@@ -12,4 +12,5 @@ body {
     color: var(--x-color-white);
     height: 100%;
     color-scheme: dark;
+    overflow: hidden;
 }
