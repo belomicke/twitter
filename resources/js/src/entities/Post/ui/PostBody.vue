@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
 import { IPost } from '@/shared/api/types/models/Post'
-import RetweetExtensions from '@/entities/Post/RetweetExtensions.vue'
+import RetweetExtensions from '@/entities/Post/ui/RetweetExtensions.vue'
 
 defineProps({
     post: {
         type: Object as PropType<IPost>,
-        required: true,
+        required: true
     },
     withRetweet: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 </script>
 

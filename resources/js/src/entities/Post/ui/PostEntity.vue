@@ -4,14 +4,14 @@ import { useUserStore } from '@/entities/User/store'
 import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { IPost } from '@/shared/api/types/models/Post'
-import PostBody from '@/entities/Post/PostBody.vue'
+import PostBody from '@/entities/Post/ui/PostBody.vue'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
     post: {
         type: Object as PropType<IPost>,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const router = useRouter()

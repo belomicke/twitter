@@ -5,19 +5,19 @@ import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { usePostStore } from '@/entities/Post/store'
 import { useUserStore } from '@/entities/User/store'
 import UserNames from '@/entities/User/ui/UserNames.vue'
-import PostBody from '@/entities/Post/PostBody.vue'
+import PostBody from '@/entities/Post/ui/PostBody.vue'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
     id: {
         type: Number,
-        required: true,
+        required: true
     },
     goToPostOnClick: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 
 const router = useRouter()
