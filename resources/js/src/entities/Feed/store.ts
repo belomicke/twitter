@@ -1,10 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { usePostStore } from '@/entities/Post/store'
-import { useUserStore } from '@/entities/User/store'
 import { api } from '@/shared/api/methods'
 import { IFeed } from '@/shared/api/types/models/Feed'
 import { PostFeedResponse } from '@/shared/api/types/response/feed/PostFeedResponse'
+import { postApiItemHandle } from '@/entities/Post/helpers/postApiItemHandle'
 
 export const useFeedStore = defineStore('feeds', () => {
     // store
@@ -133,17 +132,8 @@ export const useFeedStore = defineStore('feeds', () => {
         if (data.success) {
             const items = data.data.items
 
-            const userStore = useUserStore()
-            const postStore = usePostStore()
-
             items.forEach(item => {
-                postStore.addPost(item.post)
-                userStore.addUser(item.user)
-
-                if (item.extensions.retweet !== null) {
-                    postStore.addPost(item.extensions.retweet.post)
-                    userStore.addUser(item.extensions.retweet.user)
-                }
+                postApiItemHandle(item)
             })
 
             addItemsOrCreateFeed(
