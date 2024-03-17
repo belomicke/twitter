@@ -1,6 +1,7 @@
 import { makeRequest } from '@/shared/api/makeRequest'
 import { PostResponse } from '@/shared/api/types/response/post/PostResponse'
 import { EmptyResponse } from '@/shared/api/types/response/global/EmptyResponse'
+import { CreatePostDTO } from '@/features/post/create-post/types/CreatePostDTO'
 
 const create = async (data: CreatePostDTO) => {
     return await makeRequest.post(`/api/posts/create`, data)
@@ -33,5 +34,5 @@ export const posts = {
     unlike,
 
     retweet,
-    undoRetweet,
+    undoRetweet
 }
