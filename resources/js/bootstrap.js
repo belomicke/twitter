@@ -7,7 +7,7 @@ const token = localStorage.getItem('token')
 let csrf = document.head.querySelector('meta[name="csrf-token"]')
 
 if (csrf) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf.content
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf.getAttribute('content')
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
 }
