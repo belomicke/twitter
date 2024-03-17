@@ -36,7 +36,7 @@ const monthOptions = computed(() => {
         'сентября',
         'октября',
         'ноября',
-        'декабря',
+        'декабря'
     ]
 
     for (let i = 1; i <= 12; i++) {
@@ -83,7 +83,9 @@ const dayOptions = computed(() => {
 
 <template>
     <div class="birth">
-        <div class="birth-title">Дата рождения</div>
+        <div class="birth-title">
+            Дата рождения
+        </div>
         <div class="birth-info">
             Эта информация не будет общедоступной. Подтвердите свой возраст, даже если эта
             учетная запись предназначена для компании, домашнего животного и т. д.
@@ -91,18 +93,18 @@ const dayOptions = computed(() => {
         <div class="birth-form">
             <x-select
                 label="Месяц"
-                @change="$emit('update:month', Number($event.target.value))"
                 :options="monthOptions"
+                @change="$emit('update:month', Number($event.target.value))"
             />
             <x-select
                 label="День"
-                @change="$emit('update:day', Number($event.target.value))"
                 :options="dayOptions"
+                @change="$emit('update:day', Number($event.target.value))"
             />
             <x-select
                 label="Год"
-                @change="$emit('update:year', Number($event.target.value))"
                 :options="yearOptions"
+                @change="$emit('update:year', Number($event.target.value))"
             />
         </div>
     </div>
