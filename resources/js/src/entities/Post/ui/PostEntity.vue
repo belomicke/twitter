@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, PropType } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from '@/entities/User/store'
 import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
-import { IPost } from '@/shared/api/types/models/Post'
 import PostBody from '@/entities/Post/ui/PostBody.vue'
-import { useRouter } from 'vue-router'
+import { IPost } from '@/shared/api/types/models/Post'
 
 const props = defineProps({
     post: {
@@ -49,6 +49,8 @@ function clickHandler() {
                     inline
                     links
                 />
+                <span class="separator">·</span>
+                <span>7 ч.</span>
             </div>
             <post-body
                 :post="post"
@@ -66,12 +68,19 @@ function clickHandler() {
     display: flex;
     grid-gap: 10px;
     padding: 10px 15px;
-    cursor: pointer;
-    transition: background-color 0.15s;
 }
 
-.post-entity:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+.header {
+    display: flex;
+    align-items: center;
+    color: rgb(113, 118, 123);
+    line-height: 19px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.separator {
+    margin: 0 5px;
 }
 
 .content {

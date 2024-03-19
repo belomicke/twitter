@@ -7,17 +7,25 @@ import { IconNames } from '@/shared/ui/XIcon'
 defineProps({
     icon: {
         type: String as PropType<IconNames>,
-        required: true,
+        required: true
     },
     text: {
         type: String,
-        required: true,
+        required: true
     },
+    withUnderline: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 })
 </script>
 
 <template>
-    <div class="extra-status">
+    <div
+        class="extra-status"
+        v-bind="$attrs"
+    >
         <div class="icon">
             <x-icon
                 :icon="icon"
@@ -25,7 +33,12 @@ defineProps({
                 color="rgb(113, 118, 123)"
             />
         </div>
-        <div class="text">
+        <div
+            class="text"
+            :class="{
+                'with-underline': withUnderline
+            }"
+        >
             {{ text }}
         </div>
     </div>
@@ -51,5 +64,9 @@ defineProps({
     line-height: 16px;
     font-size: 13px;
     font-weight: 700;
+}
+
+.text.with-underline:hover {
+    text-decoration: underline;
 }
 </style>
