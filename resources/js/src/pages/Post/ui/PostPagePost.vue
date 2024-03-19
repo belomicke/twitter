@@ -7,6 +7,7 @@ import PostBody from '@/entities/Post/ui/PostBody.vue'
 import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import PostActions from '@/entities/Post/ui/PostActions.vue'
+import moment from 'moment'
 
 const props = defineProps({
     id: {
@@ -26,6 +27,22 @@ const user = computed(() => {
     if (!post.value) return undefined
 
     return userStore.getUserById(post.value.user_id)
+})
+
+const time = computed(() => {
+    if (!post.value) return ''
+
+    const n = moment(post.value.created_at)
+
+    return n.format('hh:mm:ss')
+})
+
+const date = computed(() => {
+    if (!post.value) return ''
+
+    const n = moment(post.value.created_at)
+
+    return n.format('DD MMM YYYY')
 })
 </script>
 
@@ -49,6 +66,9 @@ const user = computed(() => {
             :post="post"
             with-retweet
         />
+        <div class="publish-date">
+            {{ time }} · {{ date }}
+        </div>
         <div class="actions">
             <post-actions
                 :post="post"
@@ -69,6 +89,15 @@ const user = computed(() => {
 .post-header {
     display: flex;
     grid-gap: 10px;
+}
+
+.publish-date {
+    display: flex;
+    align-items: center;
+    color: rgb(113, 118, 123);
+    line-height: 19px;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .actions {

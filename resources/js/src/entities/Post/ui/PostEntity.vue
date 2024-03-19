@@ -6,6 +6,7 @@ import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import PostBody from '@/entities/Post/ui/PostBody.vue'
 import { IPost } from '@/shared/api/types/models/Post'
+import PostPublishDate from '@/entities/Post/ui/PostPublishDate.vue'
 
 const props = defineProps({
     post: {
@@ -50,7 +51,7 @@ function clickHandler() {
                     links
                 />
                 <span class="separator">·</span>
-                <span>7 ч.</span>
+                <post-publish-date :date="post.created_at" />
             </div>
             <post-body
                 :post="post"
