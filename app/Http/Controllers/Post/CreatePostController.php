@@ -18,6 +18,7 @@ class CreatePostController extends Controller
 
         if ($retweetedPostId !== null) {
             $retweetExists = Post::query()
+                ->where('user_id', Auth::id())
                 ->where('retweeted_post_id', $retweetedPostId)
                 ->where('text', $text)
                 ->exists();
