@@ -47,7 +47,7 @@ const date = computed(() => {
 
     const n = moment(post.value.created_at)
 
-    return n.format('DD MMM YYYY')
+    return n.format('D MMM YYYY')
 })
 </script>
 
