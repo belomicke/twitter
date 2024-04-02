@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
         children: [
             {
                 path: '/',
-                component: HomePage,
+                component: HomePage
             },
             {
                 path: '/profile/:username',
@@ -25,33 +25,40 @@ const routes: RouteRecordRaw[] = [
                 children: [
                     {
                         path: '',
-                        component: ProfilePosts,
+                        component: ProfilePosts
                     },
                     {
                         path: 'liked',
-                        component: ProfileLikedPosts,
-                    },
-                ],
+                        component: ProfileLikedPosts
+                    }
+                ]
             },
             {
                 path: '/post/:id',
-                component: PostPage,
+                component: PostPage
             },
             {
                 path: '/search',
-                component: SearchPage,
-            },
-        ],
+                component: SearchPage
+            }
+        ]
     },
     {
         path: '/welcome',
-        component: WelcomePage,
-    },
+        component: WelcomePage
+    }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    scrollBehavior: (to, from, savedPosition) => {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { top: 0 }
+        }
+    }
 })
 
 router.beforeEach((to) => {

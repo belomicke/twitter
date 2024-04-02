@@ -23,6 +23,7 @@ import LoaderIcon from '@/shared/ui/XIcon/icons/LoaderIcon.vue'
 import FeatherIcon from '@/shared/ui/XIcon/icons/FeatherIcon.vue'
 import RetweetIcon from '@/shared/ui/XIcon/icons/RetweetIcon.vue'
 import EditIcon from '@/shared/ui/XIcon/icons/EditIcon.vue'
+import CommentIcon from '@/shared/ui/XIcon/icons/CommentIcon.vue'
 
 const { icon } = defineProps({
     icon: {
@@ -63,7 +64,8 @@ const icons = {
     'loader-icon': LoaderIcon,
     'feather-icon': FeatherIcon,
     'retweet-icon': RetweetIcon,
-    'edit-icon': EditIcon
+    'edit-icon': EditIcon,
+    'comment-icon': CommentIcon
 }
 </script>
 

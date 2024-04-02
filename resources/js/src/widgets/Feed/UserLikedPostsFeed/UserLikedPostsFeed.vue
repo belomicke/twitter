@@ -20,7 +20,7 @@ const userStore = useUserStore()
 const { getUserByUsername } = storeToRefs(userStore)
 
 const feed = computed(() => {
-    return getFeedById.value(`user:${props.username}:liked_posts`)
+    return getFeedById.value(`user:${props.username}:favorited_posts`)
 })
 
 const user = computed(() => {
@@ -44,7 +44,7 @@ function fetch() {
         />
         <post-feed
             v-else
-            :id="`user:${username}:liked_posts`"
+            :id="`user:${username}:favorited_posts`"
             window
             @fetch="fetch"
         />

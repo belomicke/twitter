@@ -5,6 +5,7 @@ export const useCreatePostModel = defineStore('create-post', () => {
     // store
     const text = ref<string>('')
     const retweet_post_id = ref<number | null>(null)
+    const comment_for_post_id = ref<number | null>(null)
 
     // getters
     const getText = computed(() => {
@@ -19,6 +20,10 @@ export const useCreatePostModel = defineStore('create-post', () => {
         return retweet_post_id.value
     })
 
+    const getCommentForPostId = computed(() => {
+        return comment_for_post_id.value
+    })
+
     // actions
     function setText(value: string) {
         text.value = value
@@ -28,12 +33,19 @@ export const useCreatePostModel = defineStore('create-post', () => {
         retweet_post_id.value = value
     }
 
+    function setCommentForPostId(value: number | null) {
+        comment_for_post_id.value = value
+    }
+
     return {
         getText,
         getFormattedText,
         getRetweetPostId,
 
+        getCommentForPostId,
+        setCommentForPostId,
+
         setText,
-        setRetweetPostId,
+        setRetweetPostId
     }
 })

@@ -59,13 +59,21 @@ export const usePostStore = defineStore('posts', () => {
         posts.value = posts.value.filter(item => item.id !== post.id)
     }
 
+    function incrementCommentsCount(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.reply_count += 1
+    }
+
     function likePost(id: number) {
         const post = posts.value.find(item => item.id === id)
 
         if (!post) return
 
-        post.liked = true
-        post.likes_count += 1
+        post.favorited = true
+        post.favorite_count += 1
     }
 
     function unlikePost(id: number) {
@@ -73,8 +81,8 @@ export const usePostStore = defineStore('posts', () => {
 
         if (!post) return
 
-        post.liked = false
-        post.likes_count -= 1
+        post.favorited = false
+        post.favorite_count -= 1
     }
 
     function retweetPost(id: number) {
@@ -83,7 +91,7 @@ export const usePostStore = defineStore('posts', () => {
         if (!post) return
 
         post.retweeted = true
-        post.retweets_count += 1
+        post.retweet_count += 1
     }
 
     function undoRetweetPost(id: number) {
@@ -92,7 +100,7 @@ export const usePostStore = defineStore('posts', () => {
         if (!post) return
 
         post.retweeted = false
-        post.retweets_count -= 1
+        post.retweet_count -= 1
     }
 
     async function fetchPostById(id: number) {
@@ -118,6 +126,19 @@ export const usePostStore = defineStore('posts', () => {
                     }
                 }
             }
+
+            if (post.in_reply_to_post_id) {
+                const commentedPost = posts.value.find(item => item.id === post.in_reply_to_post_id)
+
+                if (!commentedPost) {
+                    const res = await api.posts.getPostById(post.in_reply_to_post_id)
+                    const data = res.data
+
+                    if (data.success) {
+                        postApiItemHandle(data.data)
+                    }
+                }
+            }
         }
     }
 
@@ -129,8 +150,12 @@ export const usePostStore = defineStore('posts', () => {
         deletePost,
         deletePostRetweet,
         fetchPostById,
+
+        incrementCommentsCount,
+
         likePost,
         unlikePost,
+
         retweetPost,
         undoRetweetPost
     }

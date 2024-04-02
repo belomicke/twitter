@@ -13,6 +13,11 @@ const props = defineProps({
     id: {
         type: Number,
         required: true
+    },
+    hasThread: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -50,6 +55,9 @@ const date = computed(() => {
     <div
         v-if="post && user"
         class="post"
+        :class="{
+            'has-thread': hasThread
+        }"
     >
         <div class="post-header">
             <user-avatar
@@ -83,7 +91,18 @@ const date = computed(() => {
     display: flex;
     flex-direction: column;
     grid-gap: 15px;
-    padding: 15px;
+    padding: 15px 15px 0;
+    position: relative;
+}
+
+.post.has-thread::before {
+    content: "";
+    width: 2px;
+    height: 8px;
+    position: absolute;
+    top: 0;
+    left: calc(15px + 19px);
+    background-color: var(--x-border-color);
 }
 
 .post-header {

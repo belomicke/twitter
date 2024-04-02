@@ -19,7 +19,7 @@ class PostFactory extends Factory
     {
         return [
             'text' => fake()->text(280),
-            'user_id' => 1
+            'author_id' => 1
         ];
     }
 }

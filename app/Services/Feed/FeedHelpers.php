@@ -4,24 +4,20 @@ namespace App\Services\Feed;
 
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Repository\UserRepository;
 
 class FeedHelpers
 {
-    public function postHandler(Builder|BelongsTo|BelongsToMany $postsQuery, int $lastPostId): array
-    {
-        $total = $postsQuery->count();
-        $postFromBuilder = $this->getPostsFromBuilder(
-            postsQuery: $postsQuery,
-            lastPostId: $lastPostId
-        );
+    public function __construct(
+        private readonly UserRepository $userRepository
+    ) {}
 
-        $posts = $postFromBuilder['posts'];
-        $users = $postFromBuilder['users'];
-        $retweetedPosts = $postFromBuilder['retweeted_posts'];
-        $retweetedPostsUsers = $postFromBuilder['retweeted_posts_users'];
+    public function commentsToJson($posts): array
+    {
+        $userIds = $posts->pluck('user_id');
+        $users = User::query()
+            ->whereIn('id', $userIds)
+            ->get();
 
         $items = [];
 
@@ -30,70 +26,15 @@ class FeedHelpers
                 ->where('id', $post->user_id)
                 ->first();
 
-            $retweetedPost = $retweetedPosts
-                ->where('id', $post->retweeted_post_id)
-                ->first();
-
-            if ($retweetedPost) {
-                $retweetedPostsUser = $retweetedPostsUsers
-                    ->where('id', $retweetedPost->user_id)
-                    ->first();
-            } else {
-                $retweetedPostsUser = null;
-            }
-
             $items[] = $this->getPostJson(
                 post: $post,
                 user: $user,
-                retweetedPost: $retweetedPost,
-                retweetedPostUser: $retweetedPostsUser
+                retweetedPost: null,
+                retweetedPostUser: null,
             );
         }
 
-        return [
-            'items' => $items,
-            'total' => $total
-        ];
-    }
-
-    private function getPostsFromBuilder(Builder|BelongsTo|BelongsToMany $postsQuery, int $lastPostId): array
-    {
-        if ($lastPostId !== 0) {
-            $posts = $postsQuery
-                ->where('id', '<', $lastPostId)
-                ->take(50)
-                ->get();
-        } else {
-            $posts = $postsQuery
-                ->take(50)
-                ->get();
-        }
-
-        $userIds = $posts->pluck('user_id');
-
-        $users = User::query()
-            ->whereIn('id', $userIds)
-            ->get();
-
-        $retweetsIds = $posts->pluck('retweeted_post_id');
-
-        $retweetedPosts = Post::query()
-            ->whereIn('id', $retweetsIds)
-            ->where('is_deleted', false)
-            ->get();
-
-        $retweetedPostsAuthorsIds = $retweetedPosts->pluck('user_id');
-
-        $retweetedPostsAuthors = User::query()
-            ->whereIn('id', $retweetedPostsAuthorsIds)
-            ->get();
-
-        return [
-            'posts' => $posts,
-            'users' => $users,
-            'retweeted_posts' => $retweetedPosts,
-            'retweeted_posts_users' => $retweetedPostsAuthors
-        ];
+        return $items;
     }
 
     public function postsToJson($posts): array
@@ -139,7 +80,7 @@ class FeedHelpers
                 post: $post,
                 user: $user,
                 retweetedPost: $retweetedPost,
-                retweetedPostUser: $retweetedPostsUser
+                retweetedPostUser: $retweetedPostsUser,
             );
         }
 
@@ -152,17 +93,24 @@ class FeedHelpers
         Post|null $retweetedPost,
         User|null $retweetedPostUser
     ): array {
+        $post->in_reply_to_username = null;
+
+        if ($post->in_reply_to_user_id) {
+            $user = $this->userRepository->getUserById(id: $post->in_reply_to_user_id);
+            $post->in_reply_to_username = $user->username;
+        }
+
         $item = [
             'post' => $post,
             'extensions' => [
-                'retweet' => null
+                'retweeted_post' => null
             ],
             'user' => $user
         ];
 
         if ($retweetedPost) {
-            $item['extensions']['retweet']['post'] = $retweetedPost;
-            $item['extensions']['retweet']['user'] = $retweetedPostUser;
+            $item['extensions']['retweeted_post']['post'] = $retweetedPost;
+            $item['extensions']['retweeted_post']['user'] = $retweetedPostUser;
         }
 
         return $item;

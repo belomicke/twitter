@@ -1,48 +1,59 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import PostPagePost from './ui/PostPagePost.vue'
+import { storeToRefs } from 'pinia'
+import PostPageContent from '@/pages/Post/PostPageContent.vue'
 import { usePostStore } from '@/entities/Post/store'
 import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
 
 const route = useRoute()
+const postStore = usePostStore()
+const { getPostById } = storeToRefs(postStore)
 
 const id = computed(() => {
     return Number(route.params.id)
 })
 
-const postStore = usePostStore()
+const post = computed(() => {
+    return getPostById.value(id.value)
+})
 
-watch(() => id.value, () => postStore.fetchPostById(id.value))
+const element = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
     postStore.fetchPostById(id.value)
+    getScrollElement()
 })
+
+function getScrollElement() {
+    const el = document.getElementById('scroll-element') as HTMLDivElement
+
+    if (el) {
+        element.value = el
+    }
+}
 </script>
 
 <template>
     <x-page-header with-go-to-back-button>
-        <div class="page-header-title">
+        <h3 class="page-header-title">
             Опубликованный пост
-        </div>
+        </h3>
     </x-page-header>
-    <div class="container">
-        <post-page-post :id="id" />
-    </div>
+    <post-page-content
+        v-if="element && post"
+        :post="post"
+        :element="element"
+    />
 </template>
 
 <style scoped>
 .page-header-title {
     display: flex;
     align-items: center;
-    font-size: 20px;
-    font-weight: 700;
     height: 100%;
+    color: rgb(231, 233, 234);
+    font-size: 19px;
+    font-weight: 700;
 }
-
-.container {
-    display: flex;
-    flex-direction: column;
-}
-
 </style>

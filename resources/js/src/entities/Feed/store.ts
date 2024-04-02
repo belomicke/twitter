@@ -15,6 +15,18 @@ export const useFeedStore = defineStore('feeds', () => {
     })
 
     // actions
+    function createFeed(id: string) {
+        if (!feeds.value.find(item => item.id === id)) {
+            feeds.value.push({
+                id,
+                data: {
+                    items: [],
+                    total: 0
+                }
+            })
+        }
+    }
+
     function addFeed(feed: IFeed<number>) {
         if (!feeds.value.find(item => item.id === feed.id)) {
             feeds.value.push(feed)
@@ -84,8 +96,114 @@ export const useFeedStore = defineStore('feeds', () => {
         postFeedResponseHandler(id, res)
     }
 
+    async function fetchPostCommentsFeed(postId: number) {
+        const id = `post:${postId}:comments`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset >= feed.data.total) return
+
+        const res = await api.feed.post.comments(postId, lastPostId)
+        const data = res.data
+
+        if (data.success) {
+            const items = data.data.items
+
+            items.forEach(item => {
+                postApiItemHandle(item)
+            })
+
+            const postIds = items.map(item => item.post.id)
+            const postThreadFeed = feeds.value.find(item => item.id === `post:${postId}:thread_history`)
+
+            if (postThreadFeed) {
+                const commentThreadItems = [postId, ...postThreadFeed.data.items]
+                const commentThreadTotal = postThreadFeed.data.total + 1
+
+                postIds.forEach(item => {
+                    addItemsOrCreateFeed(
+                        `post:${item}:thread_history`,
+                        commentThreadItems,
+                        commentThreadTotal
+                    )
+                })
+            }
+
+            addItemsOrCreateFeed(
+                id,
+                postIds,
+                data.data.total
+            )
+        }
+    }
+
+    async function fetchPostThreadHistoryFeed(postId: number) {
+        const id = `post:${postId}:thread_history`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset >= feed.data.total) return
+
+        const res = await api.feed.post.thread_history(postId, lastPostId)
+        const data = res.data
+
+        if (data.success) {
+            const items = data.data.items
+
+            items.forEach(item => {
+                postApiItemHandle(item)
+            })
+
+            const postIds = items.map(item => item.post.id)
+
+            addItemsOrCreateFeed(
+                `post:${postId}:thread_history`,
+                postIds,
+                data.data.total
+            )
+
+            for (let i = 0; i < postIds.length; i++) {
+                let total = data.data.total - offset - i - 1
+
+                addItemsOrCreateFeed(
+                    `post:${postIds[i]}:thread_history`,
+                    postIds.slice(i + 1, postIds.length),
+                    total
+                )
+
+                const totalComments = data.data.items.find(item => item.post.id === postIds[i])?.post.reply_count
+
+                if (totalComments) {
+                    addItemsOrCreateFeed(
+                        `post:${postIds[i]}:comments`,
+                        [i - 1 < 0 ? postId : postIds[i - 1]],
+                        totalComments
+                    )
+                }
+            }
+        }
+    }
+
+    async function fetchPostThreadFeed(postId: number) {
+        const id = `post:${postId}:thread`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset >= feed.data.total) return
+
+        const res = await api.feed.post.thread(postId, lastPostId)
+        postFeedResponseHandler(id, res)
+    }
+
     async function fetchUserLikedPostsFeed(username: string) {
-        const id = `user:${username}:liked_posts`
+        const id = `user:${username}:favorited_posts`
         const feed = feeds.value.find(item => item.id === id)
 
         const offset = feed ? feed.data.items.length : 0
@@ -149,8 +267,12 @@ export const useFeedStore = defineStore('feeds', () => {
         addItemToStartOfFeed,
         removeItemFromFeed,
         fetchUserPostsFeed,
+        fetchPostCommentsFeed,
+        fetchPostThreadHistoryFeed,
         fetchTimelineFeed,
         fetchUserLikedPostsFeed,
-        fetchPostsByQuery
+        fetchPostsByQuery,
+        fetchPostThreadFeed,
+        createFeed
     }
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, PropType, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFeedStore } from '../store'
 import PostFeedItem from './PostFeedItem.vue'
@@ -13,6 +13,16 @@ const props = defineProps({
         required: true
     },
     window: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    triggerSide: {
+        type: String as PropType<'top' | 'bottom'>,
+        required: false,
+        default: 'bottom'
+    },
+    noBorders: {
         type: Boolean,
         required: false,
         default: false
@@ -56,7 +66,9 @@ function load() {
         v-if="feed && !renderSlot"
         :items="feed.data.items"
         :total="feed.data.total ?? 0"
+        :trigger-side="triggerSide"
         :window="window"
+        :no-borders="noBorders"
         @fetch-next-page="load"
     >
         <template #item="{ virtualRow }">

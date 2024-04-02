@@ -2,24 +2,45 @@
 import { PropType } from 'vue'
 import { PostLikeActionButton } from '@/features/post/like-post'
 import { PostRetweetActionButton } from '@/features/post/retweet-post'
+import XIconButton from '@/shared/ui/XIconButton/XIconButton.vue'
 import { IPost } from '@/shared/api/types/models/Post'
+import { useAppModalPostCreatorStore } from '@/entities/App/store/AppModalPostCreatorStore'
+import { useCreatePostModel } from '@/features/post/create-post/model'
 
-defineProps({
+const props = defineProps({
     post: {
         type: Object as PropType<IPost>,
-        required: true,
+        required: true
     },
     iconSize: {
         type: Number,
         required: false,
-        default: 18,
-    },
+        default: 18
+    }
 })
 
+const modalPostCreatorStore = useAppModalPostCreatorStore()
+const createPostModel = useCreatePostModel()
+
+function commentPost() {
+    if (!props.post) return
+
+    modalPostCreatorStore.setModalPostCreatorIsOpen(true)
+    createPostModel.setCommentForPostId(props.post.id)
+}
 </script>
 
 <template>
     <div class="post-actions">
+        <div class="post-action-button">
+            <x-icon-button
+                icon="comment"
+                :size="iconSize"
+                color="30, 155, 240"
+                :count="post.reply_count"
+                @click.stop="commentPost"
+            />
+        </div>
         <div class="post-action-button">
             <post-retweet-action-button
                 :post="post"
@@ -38,7 +59,7 @@ defineProps({
 <style scoped>
 .post-actions {
     display: grid;
-    grid-template-columns: 80px 80px;
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 40px;
     justify-content: start;
     width: 100%;

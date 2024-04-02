@@ -1,58 +1,61 @@
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
-import { useCreatePost } from '../hook/useCreatePost'
 import XFillableCircle from '@/shared/ui/XFillableCircle/XFillableCircle.vue'
 import XButton from '@/shared/ui/XButton/XButton.vue'
-import { CreatePostDTO } from '@/features/post/create-post/types/CreatePostDTO'
 
-const props = defineProps({
-    createPostData: {
-        type: Object as PropType<CreatePostDTO>,
-        required: true,
+defineProps({
+    textLength: {
+        type: Number,
+        required: false,
+        default: 0
     },
+    isValid: {
+        type: Boolean,
+        required: true
+    },
+    submitButtonText: {
+        type: String,
+        required: false,
+        default: 'Опубликовать'
+    },
+    noBorders: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 })
 
 const emit = defineEmits(['publish'])
 
-const formIsValid = computed(() => {
-    const data = props.createPostData
-
-    if (!data) return
-
-    return data.text.length
-})
-
-const { mutate: createPost } = useCreatePost()
-
 function publish() {
-    createPost(props.createPostData)
     emit('publish')
 }
 </script>
 
 <template>
     <div
-        v-if="createPostData"
         class="footer"
+        :class="{
+            'no-border': noBorders
+        }"
     >
         <div class="footer-right-block">
             <div
-                v-if="createPostData.text.length"
+                v-if="textLength"
                 class="progress"
             >
                 <x-fillable-circle
-                    :value="createPostData.text.length"
+                    :value="textLength"
                     :max-value="280"
                 />
             </div>
             <x-button
                 class="publish"
-                :disabled="!formIsValid"
+                :disabled="!isValid"
                 type="primary"
                 rounded
                 @click="publish"
             >
-                Опубликовать
+                {{ submitButtonText }}
             </x-button>
         </div>
     </div>
@@ -65,6 +68,10 @@ function publish() {
     width: 100%;
     padding-top: 10px;
     border-top: 1px solid var(--x-border-color);
+}
+
+.footer.no-border {
+    border: 0;
 }
 
 .footer-right-block {

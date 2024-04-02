@@ -131,11 +131,11 @@ class User extends Authenticatable
         );
     }
 
-    public function liked_posts(): BelongsToMany
+    public function favorited_posts(): BelongsToMany
     {
         return $this->belongsToMany(
             Post::class,
-            'liked_posts',
+            'favorited_posts',
             'user_id',
             'post_id',
         )->withTimestamps();

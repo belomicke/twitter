@@ -8,7 +8,7 @@ export interface PostItem {
 }
 
 export interface IPostExtensions {
-    retweet: PostItem | null
+    retweeted_post: PostItem | null
 }
 
 export type PostApiItem = {
@@ -17,4 +17,4 @@ export type PostApiItem = {
     extensions: IPostExtensions
 }
 
-export type PostResponse = ApiResponse<PostApiItem>
+export type PostApiResponse = ApiResponse<PostApiItem>

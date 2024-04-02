@@ -10,14 +10,20 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
+use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 /**
  * @property int $id
  * @property string $text
  * @property int $user_id
  * @property int $retweeted_post_id
- * @property int $likes_count
- * @property int $retweets_count
+ * @property int $favorite_count
+ * @property int $retweet_count
+ * @property int $reply_count
+ *
+ * @property int $in_reply_to_post_id
+ * @property int $in_reply_to_user_id
+ * @property string $in_reply_to_username
  *
  * @property Collection $likers
  *
@@ -25,12 +31,25 @@ use Laravel\Scout\Searchable;
  */
 class Post extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory, Searchable, HasRecursiveRelationships;
+
+    public function getParentKeyName(): string
+    {
+        return 'in_reply_to_post_id';
+    }
+
+    public function getLocalKeyName(): string
+    {
+        return 'id';
+    }
 
     protected $fillable = [
         'text',
         'user_id',
-        'retweeted_post_id'
+        'retweeted_post_id',
+        'is_quote',
+        'in_reply_to_post_id',
+        'in_reply_to_user_id'
     ];
 
     protected $hidden = [
@@ -39,8 +58,12 @@ class Post extends Model
     ];
 
     protected $appends = [
-        'liked',
+        'favorited',
         'retweeted'
+    ];
+
+    protected $casts = [
+        'is_quote' => 'boolean'
     ];
 
     public function toSearchableArray(): array
@@ -50,9 +73,9 @@ class Post extends Model
         ];
     }
 
-    public function getLikedAttribute(): bool
+    public function getFavoritedAttribute(): bool
     {
-        return DB::table('liked_posts')
+        return DB::table('favorited_posts')
             ->where('post_id', $this->id)
             ->where('user_id', Auth::id())
             ->where('is_deleted', false)
@@ -78,7 +101,7 @@ class Post extends Model
     {
         return $this->belongsToMany(
             User::class,
-            'liked_posts',
+            'favorited_posts',
             'post_id',
             'user_id',
         )
@@ -91,6 +114,15 @@ class Post extends Model
         return $this->belongsTo(
             Post::class,
             'retweeted_post_id',
+            'id',
+        );
+    }
+
+    public function commented_post(): BelongsTo
+    {
+        return $this->belongsTo(
+            Post::class,
+            'in_reply_to_post_id',
             'id',
         );
     }

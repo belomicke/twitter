@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('text', 280);
+
             $table
                 ->foreignIdFor(User::class)
                 ->constrained()
@@ -29,12 +30,34 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
             $table
-                ->integer('likes_count')
+                ->foreignId('in_reply_to_post_id')
+                ->nullable()
+                ->constrained('posts')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table
+                ->foreignId('in_reply_to_user_id')
+                ->nullable()
+                ->constrained('posts')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table
+                ->integer('favorite_count')
                 ->default(0);
 
             $table
-                ->integer('retweets_count')
+                ->integer('retweet_count')
                 ->default(0);
+
+            $table
+                ->integer('reply_count')
+                ->default(0);
+
+            $table
+                ->boolean('is_quote')
+                ->default(false);
 
             $table
                 ->boolean('is_deleted')

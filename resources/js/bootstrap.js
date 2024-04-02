@@ -2,21 +2,21 @@ import axios from 'axios'
 
 window.axios = axios
 
-const token = localStorage.getItem('token')
-
-let csrf = document.head.querySelector('meta[name="csrf-token"]')
-
-if (csrf) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf.getAttribute('content')
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
-}
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 window.axios.defaults.headers.common['Accept'] = 'application/json'
 
+const token = localStorage.getItem('token')
+
 if (token) {
     window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+    let csrf = document.head.querySelector('meta[name="csrf-token"]')
+
+    if (csrf) {
+        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf.getAttribute('content')
+    } else {
+        console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token')
+    }
 }
 
 /**

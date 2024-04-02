@@ -6,10 +6,10 @@ const getPosts = async (username: string, lastPostId: number): Promise<PostFeedR
 }
 
 const getLikedPosts = async (username: string, lastPostId: number): Promise<PostFeedResponse> => {
-    return await makeRequest.get(`/api/feed/user/${username}/liked_posts`, { params: { last_post_id: lastPostId } })
+    return await makeRequest.get(`/api/feed/user/${username}/favorited_posts`, { params: { last_post_id: lastPostId } })
 }
 
 export const user = {
     getPosts,
-    getLikedPosts,
+    getLikedPosts
 }

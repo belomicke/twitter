@@ -1,31 +1,26 @@
 <script setup lang="ts">
-import {
-    nextTick,
-    onMounted,
-    ref,
-    watch,
-} from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 
 const { modelValue } = defineProps({
     modelValue: {
         type: String,
-        required: true,
+        required: true
     },
     placeholder: {
         type: String,
         required: false,
-        default: '',
+        default: ''
     },
     showWordLimit: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     noWrapper: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 
 const value = ref<string>(modelValue)
@@ -186,7 +181,6 @@ onMounted(() => resize())
     word-wrap: break-word;
     white-space: pre-wrap;
     overflow: auto;
-    min-height: 60px;
 }
 
 /* end textarea */

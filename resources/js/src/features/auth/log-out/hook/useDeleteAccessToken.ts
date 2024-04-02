@@ -9,7 +9,8 @@ export const useDeleteAccessToken = () => {
         },
         onSuccess() {
             localStorage.removeItem('token')
+            document.cookie = ''
             window.location.reload()
-        },
+        }
     })
 }

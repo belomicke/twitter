@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PostCreator } from '@/features/post/create-post'
-import XModal from '@/shared/ui/XModal/XModal.vue'
 import { useCreatePostModel } from '@/features/post/create-post/model'
 import { useAppModalPostCreatorStore } from '@/entities/App/store/AppModalPostCreatorStore'
+import XModal from '@/shared/ui/XModal/XModal.vue'
 
 const modal = ref<InstanceType<typeof XModal> | null>(null)
 const creator = ref<InstanceType<typeof PostCreator> | null>(null)
@@ -17,7 +17,7 @@ const appStore = useAppModalPostCreatorStore()
 const { getModalPostCreatorIsOpen } = storeToRefs(appStore)
 
 const createPostModel = useCreatePostModel()
-const { getRetweetPostId } = storeToRefs(createPostModel)
+const { getRetweetPostId, getCommentForPostId } = storeToRefs(createPostModel)
 
 watch(getModalPostCreatorIsOpen, (value) => {
     if (value) {
@@ -25,6 +25,14 @@ watch(getModalPostCreatorIsOpen, (value) => {
     } else {
         close()
     }
+})
+
+const commentForPostId = computed(() => {
+    return getCommentForPostId.value
+})
+
+const retweetedPostId = computed(() => {
+    return getRetweetPostId.value
 })
 
 function open() {
@@ -35,10 +43,10 @@ function open() {
 function close() {
     appStore.setModalPostCreatorIsOpen(false)
     createPostModel.setRetweetPostId(null)
+    createPostModel.setCommentForPostId(null)
     creator.value?.clear()
     modal.value?.close()
 }
-
 </script>
 
 <template>
@@ -56,6 +64,8 @@ function close() {
                 <post-creator
                     ref="creator"
                     :height="getRetweetPostId ? 60 : 96"
+                    :in-reply-to-post-id="commentForPostId"
+                    :retweet-for-post-id="retweetedPostId"
                     use-modal-data
                     @publish="close"
                 />
@@ -89,7 +99,7 @@ function close() {
     width: 100%;
     background-color: rgb(0, 0, 0);
     border-radius: 16px;
-    padding-top: 20px;
+    padding: 30px 15px 10px;
     position: relative;
     z-index: 100;
 }

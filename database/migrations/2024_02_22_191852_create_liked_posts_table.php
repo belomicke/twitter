@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,18 +12,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('liked_posts', function (Blueprint $table) {
+        Schema::create('favorited_posts', function (Blueprint $table) {
             $table->id();
 
             $table
-                ->foreignId('user_id')
-                ->constrained('users')
+                ->foreignIdFor(User::class)
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table
-                ->foreignId('post_id')
-                ->constrained('posts')
+                ->foreignIdFor(Post::class)
+                ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
@@ -38,6 +40,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('liked_posts');
+        Schema::dropIfExists('favorited_posts');
     }
 };

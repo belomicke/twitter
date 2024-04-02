@@ -22,7 +22,7 @@ defineProps({
             {{ post.text }}
         </div>
         <div
-            v-if="post.retweeted_post_id && withRetweet"
+            v-if="post.is_quote && post.retweeted_post_id && withRetweet"
             class="retweet"
         >
             <retweet-extensions
@@ -37,9 +37,12 @@ defineProps({
 .body {
     display: flex;
     flex-direction: column;
+    word-break: break-all;
+    width: 100%;
 }
 
 .text {
+    word-wrap: break-word;
     white-space: pre-wrap;
 }
 

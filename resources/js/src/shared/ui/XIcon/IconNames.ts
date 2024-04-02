@@ -21,5 +21,6 @@ type IconNames =
     | 'feather'
     | 'retweet'
     | 'edit'
+    | 'comment'
 
 export default IconNames

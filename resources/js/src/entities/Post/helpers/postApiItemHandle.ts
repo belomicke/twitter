@@ -9,8 +9,8 @@ export const postApiItemHandle = (item: PostApiItem) => {
     postStore.addPost(item.post)
     userStore.addUser(item.user)
 
-    if (item.extensions.retweet !== null) {
-        postStore.addPost(item.extensions.retweet.post)
-        userStore.addUser(item.extensions.retweet.user)
+    if (item.extensions.retweeted_post !== null) {
+        postStore.addPost(item.extensions.retweeted_post.post)
+        userStore.addUser(item.extensions.retweeted_post.user)
     }
 }

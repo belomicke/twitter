@@ -37,6 +37,7 @@ import XPageHeader from '@/shared/ui/XPageHeader/XPageHeader.vue'
 }
 
 .post-creator-container {
+    padding: 10px 15px;
     border-bottom: 1px solid var(--x-border-color);
 }
 </style>

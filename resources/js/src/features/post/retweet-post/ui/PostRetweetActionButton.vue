@@ -31,7 +31,7 @@ const isRetweeted = computed(() => {
 })
 
 const count = computed(() => {
-    return props.post?.retweets_count
+    return props.post?.retweet_count
 })
 
 const { mutate: retweet } = useRetweetPost()

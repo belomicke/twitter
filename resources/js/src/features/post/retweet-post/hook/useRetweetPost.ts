@@ -24,7 +24,7 @@ export const useRetweetPost = () => {
 
                 postStore.addPost(post)
 
-                const retweet = data.data.extensions.retweet
+                const retweet = data.data.extensions.retweeted_post
 
                 if (retweet) {
                     postStore.addPost(retweet.post)
@@ -39,6 +39,6 @@ export const useRetweetPost = () => {
                 const feedStore = useFeedStore()
                 feedStore.addItemToStartOfFeed(`user:${viewer?.username}:posts`, post.id)
             }
-        },
+        }
     })
 }
