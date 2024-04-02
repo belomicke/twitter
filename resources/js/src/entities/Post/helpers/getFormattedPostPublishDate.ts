@@ -8,7 +8,7 @@ export const getFormattedPostPublishDate = (date: string): string => {
     if (m.year() !== n.year()) {
         return m.format('yyyy-mm-DD')
     } else if (m.date() !== n.date()) {
-        return m.format('DD MMM')
+        return m.format('D MMM')
     } else if (m.hour() !== n.hour()) {
         return `${n.hour() - m.hour()} ч`
     } else if (m.minute() !== n.minute()) {
