@@ -7,7 +7,7 @@ export const useLikePost = () => {
     return useMutation({
         mutationKey: ['like-post'],
         mutationFn: async (id: number) => {
-            const res = await api.posts.like(id)
+            const res = await api.posts.favorite.add(id)
 
             return res.data
         },
@@ -19,6 +19,6 @@ export const useLikePost = () => {
                 const feedStore = useFeedStore()
                 feedStore.addItemToStartOfFeed(`user:${viewer?.username}:liked_posts`, variables)
             }
-        },
+        }
     })
 }

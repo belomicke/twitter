@@ -2,12 +2,13 @@
 
 namespace App\Repository;
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FavoritePostRepository
 {
-    public function favoritePost(int $id): void
+    public function add(int $id): void
     {
         DB::table('favorited_posts')
             ->where('post_id', $id)
@@ -21,14 +22,28 @@ class FavoritePostRepository
             ]);
     }
 
-    public function unfavoritePost(int $id): void
+    public function remove(int $id): void
     {
         DB::table('favorited_posts')
             ->where('post_id', $id)
             ->where('user_id', Auth::id())
+            ->where('is_deleted', false)
             ->update([
                 'is_deleted' => true,
                 'updated_at' => now()
             ]);
+    }
+
+    public function exists(Post $post): bool
+    {
+        if ($post->is_deleted) {
+            return false;
+        }
+
+        return DB::table('favorited_posts')
+            ->where('user_id', Auth::id())
+            ->where('post_id', $post->id)
+            ->where('is_deleted', false)
+            ->exists();
     }
 }

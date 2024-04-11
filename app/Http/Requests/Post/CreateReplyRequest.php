@@ -3,19 +3,15 @@
 namespace App\Http\Requests\Post;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Gate;
 
-class UnlikePostRequest extends FormRequest
+class CreateReplyRequest extends CreatePostRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $post = $this->route('post');
-
-        return Gate::allows('unlike', $post);
+        return false;
     }
 
     /**

@@ -28,7 +28,7 @@ use Laravel\Scout\Searchable;
  * @property string $link
  * @property bool $following
  * @property int $posts_count
- * @property int $favourites_count
+ * @property int $favorites_count
  * @property int $follows_count
  * @property int $followers_count
  * @property Collection $follows

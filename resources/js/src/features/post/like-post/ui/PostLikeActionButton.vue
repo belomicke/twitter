@@ -39,10 +39,10 @@ function likeHandler() {
 
     if (value) {
         postStore.likePost(props.post.id)
-        viewerStore.incrementFavouritesCount()
+        viewerStore.incrementfavoritesCount()
     } else {
         postStore.unlikePost(props.post.id)
-        viewerStore.decrementFavouritesCount()
+        viewerStore.decrementfavoritesCount()
     }
 
     debouncedLikeHandler(value)

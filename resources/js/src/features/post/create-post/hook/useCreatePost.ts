@@ -10,7 +10,15 @@ export const useCreatePost = () => {
     return useMutation({
         mutationKey: ['create-post'],
         mutationFn: async (data: CreatePostDTO) => {
-            return await api.posts.create(data)
+            if (data.retweeted_post_id !== null && data.text.length) {
+                return await api.posts.quote(data.retweeted_post_id, data.text)
+            }
+
+            if (data.in_reply_to_post_id !== null && data.text.length) {
+                return await api.posts.reply(data.in_reply_to_post_id, data.text)
+            }
+
+            return await api.posts.create(data.text)
         },
         onSuccess(data) {
             if (!data.data.success && data.data.message) {

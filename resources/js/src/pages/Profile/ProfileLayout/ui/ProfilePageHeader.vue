@@ -8,8 +8,8 @@ import { useRoute } from 'vue-router'
 const props = defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const route = useRoute()
@@ -20,7 +20,7 @@ const title = computed(() => {
     if (page === props.user.username) {
         return `${props.user.posts_count} постов`
     } else if (page === 'liked') {
-        return `${props.user.favourites_count} отметок «Нравится»`
+        return `${props.user.favorites_count} отметок «Нравится»`
     }
 
     return ''

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Helpers\PostHelpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
@@ -24,6 +26,8 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
  * @property int $in_reply_to_post_id
  * @property int $in_reply_to_user_id
  * @property string $in_reply_to_username
+ *
+ * @property bool $is_deleted
  *
  * @property Collection $likers
  *
@@ -65,6 +69,19 @@ class Post extends Model
     protected $casts = [
         'is_quote' => 'boolean'
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function ($post) {
+            $post->text = PostHelpers::formatText(text: $post->text);
+        });
+
+        static::updating(function ($post) {
+            $key = 'post:' . $post->id;
+
+            Cache::forget($key);
+        });
+    }
 
     public function toSearchableArray(): array
     {

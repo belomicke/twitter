@@ -43,7 +43,7 @@ export const useViewerStore = defineStore('viewer', () => {
 
         viewer.value = {
             ...viewer.value,
-            ...data,
+            ...data
         }
     }
 
@@ -58,7 +58,7 @@ export const useViewerStore = defineStore('viewer', () => {
 
         viewer.value = {
             ...user,
-            profile_picture: pictures,
+            profile_picture: pictures
         }
     }
 
@@ -73,7 +73,7 @@ export const useViewerStore = defineStore('viewer', () => {
 
         viewer.value = {
             ...user,
-            profile_banner: banners,
+            profile_banner: banners
         }
     }
 
@@ -97,24 +97,24 @@ export const useViewerStore = defineStore('viewer', () => {
         userStore.decrementPostsCount(user.id)
     }
 
-    function incrementFavouritesCount() {
+    function incrementfavoritesCount() {
         const user = viewer.value
 
         if (!user) return
 
         const userStore = useUserStore()
 
-        userStore.incrementFavouritesCount(user.id)
+        userStore.incrementfavoritesCount(user.id)
     }
 
-    function decrementFavouritesCount() {
+    function decrementfavoritesCount() {
         const user = viewer.value
 
         if (!user) return
 
         const userStore = useUserStore()
 
-        userStore.decrementFavouritesCount(user.id)
+        userStore.decrementfavoritesCount(user.id)
     }
 
     return {
@@ -129,7 +129,7 @@ export const useViewerStore = defineStore('viewer', () => {
         incrementPostsCount,
         decrementPostsCount,
 
-        incrementFavouritesCount,
-        decrementFavouritesCount,
+        incrementfavoritesCount,
+        decrementfavoritesCount
     }
 })

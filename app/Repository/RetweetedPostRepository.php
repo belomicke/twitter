@@ -14,6 +14,7 @@ class RetweetedPostRepository
             'retweeted_post_id' => $id,
             'user_id' => Auth::id()
         ]);
+
         $retweet->save();
         return $retweet;
     }
@@ -28,5 +29,19 @@ class RetweetedPostRepository
             ->first();
         $retweet->is_deleted = true;
         $retweet->save();
+    }
+
+    public function exists(Post $post): bool
+    {
+        if ($post->is_deleted) {
+            return false;
+        }
+
+        return Post::query()
+            ->where('retweeted_post_id', $post->id)
+            ->where('user_id', Auth::id())
+            ->where('text', '')
+            ->where('is_deleted', false)
+            ->exists();
     }
 }

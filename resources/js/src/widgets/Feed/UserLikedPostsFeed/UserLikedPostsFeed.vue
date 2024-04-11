@@ -30,7 +30,7 @@ const user = computed(() => {
 function fetch() {
     if (!user.value) return
 
-    if (user.value.favourites_count) {
+    if (user.value.favorites_count) {
         feedStore.fetchUserLikedPostsFeed(props.username)
     }
 }
@@ -39,7 +39,7 @@ function fetch() {
 <template>
     <template v-if="user">
         <user-liked-posts-empty-feed
-            v-if="user.favourites_count === 0 && !feed"
+            v-if="user.favorites_count === 0 && !feed"
             :username="username"
         />
         <post-feed

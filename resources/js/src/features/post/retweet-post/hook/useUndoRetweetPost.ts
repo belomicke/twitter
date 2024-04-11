@@ -8,7 +8,7 @@ export const useUndoRetweetPost = () => {
     return useMutation({
         mutationKey: ['undo-retweet-post'],
         mutationFn: async (id: number) => {
-            const res = await api.posts.undoRetweet(id)
+            const res = await api.posts.retweet.remove(id)
 
             return res.data
         },
@@ -29,6 +29,7 @@ export const useUndoRetweetPost = () => {
 
                 const feedStore = useFeedStore()
                 feedStore.removeItemFromFeed(`user:${viewer?.username}:posts`, retweet.id)
+                feedStore.removeItemFromFeed(`timeline`, retweet.id)
 
                 postStore.deletePostRetweet(variables)
             }

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Models\Post;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +12,7 @@ class PostRepository
 {
     private function getPostCacheKey(int $id): string
     {
-        return 'post:'.$id;
+        return 'post:' . $id;
     }
 
     public function getPostById(int $id): Builder|Model|Post
@@ -28,14 +27,43 @@ class PostRepository
         });
     }
 
-    public function incrementPostReplyCount(int $id): Post
+    public function incrementPostReplyCount(Post $post): Post
     {
-        $key = $this->getPostCacheKey(id: $id);
-
-        $post = $this->getPostById(id: $id);
         $post->reply_count += 1;
         $post->save();
-        Cache::set($key, $post, 60);
+
+        return $post;
+    }
+
+    public function incrementPostFavoriteCount(Post $post): Post
+    {
+        $post->favorite_count += 1;
+        $post->save();
+
+        return $post;
+    }
+
+    public function decrementPostFavoriteCount(Post $post): Post
+    {
+        $post->favorite_count -= 1;
+        $post->save();
+
+        return $post;
+    }
+
+    public function incrementPostRetweetCount(Post $post): Post
+    {
+        $post->retweet_count += 1;
+        $post->save();
+
+        return $post;
+    }
+
+    public function decrementPostRetweetCount(Post $post): Post
+    {
+        $post->retweet_count -= 1;
+        $post->save();
+
         return $post;
     }
 
@@ -48,43 +76,40 @@ class PostRepository
             ->exists();
     }
 
-    /**
-     * @throws Exception
-     */
-    public function createPost(
-        string $text,
-        int|null $retweetedPostId,
-        int|null $inReplyToPostId
-    ): Post|bool {
-        $formattedText = preg_replace("/\n+/", "\n\n", $text);
-        $isQuote = $retweetedPostId !== null && strlen($formattedText) > 0;
-
-        if ($isQuote) {
-            $exists = $this->checkIsQuoteExists(
-                id: $retweetedPostId,
-                text: $formattedText
-            );
-
-            if ($exists) {
-                throw new Exception('Вы уже писали об этом!');
-            }
-        }
-
-        $inReplyToUserId = null;
-
-        if ($inReplyToPostId !== null) {
-            $inReplyToPost = $this->getPostById(id: $inReplyToPostId);
-            $inReplyToUserId = $inReplyToPost->user_id;
-        }
-
+    public function createPost(string $text): Post
+    {
         $post = Post::create([
-            'text' => $formattedText,
-            'retweeted_post_id' => $retweetedPostId,
-            'in_reply_to_post_id' => $inReplyToPostId,
-            'in_reply_to_user_id' => $inReplyToUserId,
-            'is_quote' => $isQuote,
+            'text' => $text,
             'user_id' => Auth::id()
         ]);
+        $post->save();
+        return $post->fresh();
+    }
+
+    public function createQuote(
+        Post $post,
+        string $text
+    ): Post {
+        $post = Post::create([
+            'text' => $text,
+            'retweeted_post_id' => $post->id,
+            'is_quote' => true,
+            'user_id' => Auth::id()
+        ]);
+
+        $post->save();
+        return $post->fresh();
+    }
+
+    public function createReply(Post $post, string $text): ?Post
+    {
+        $post = Post::create([
+            'text' => $text,
+            'in_reply_to_post_id' => $post->id,
+            'in_reply_to_user_id' => $post->user_id,
+            'user_id' => Auth::id()
+        ]);
+
         $post->save();
         return $post->fresh();
     }

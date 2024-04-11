@@ -107,7 +107,7 @@ export const usePostStore = defineStore('posts', () => {
         const post = posts.value.find(item => item.id === id)
 
         if (!post) {
-            const res = await api.posts.getPostById(id)
+            const res = await api.posts.getById(id)
             const data = res.data
 
             if (data.success) {
@@ -118,7 +118,7 @@ export const usePostStore = defineStore('posts', () => {
                 const retweet = posts.value.find(item => item.id === post.retweeted_post_id)
 
                 if (!retweet) {
-                    const res = await api.posts.getPostById(post.retweeted_post_id)
+                    const res = await api.posts.getById(post.retweeted_post_id)
                     const data = res.data
 
                     if (data.success) {
@@ -131,7 +131,7 @@ export const usePostStore = defineStore('posts', () => {
                 const commentedPost = posts.value.find(item => item.id === post.in_reply_to_post_id)
 
                 if (!commentedPost) {
-                    const res = await api.posts.getPostById(post.in_reply_to_post_id)
+                    const res = await api.posts.getById(post.in_reply_to_post_id)
                     const data = res.data
 
                     if (data.success) {

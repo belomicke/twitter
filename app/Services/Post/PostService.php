@@ -2,108 +2,102 @@
 
 namespace App\Services\Post;
 
+use App\Exceptions\Quote\QuoteExistsException;
 use App\Models\Post;
 use App\Repository\FavoritePostRepository;
 use App\Repository\PostRepository;
 use App\Repository\RetweetedPostRepository;
-use Exception;
-use Illuminate\Support\Facades\Auth;
+use App\Repository\ViewerRepository;
+use Illuminate\Support\Facades\Gate;
 
 class PostService
 {
     public function __construct(
         private readonly PostRepository $postRepository,
         private readonly FavoritePostRepository $favoritePostRepository,
-        private readonly RetweetedPostRepository $retweetedPostRepository
+        private readonly RetweetedPostRepository $retweetedPostRepository,
+        private readonly ViewerRepository $viewerRepository
     ) {}
 
-    /**
-     * @throws Exception
-     */
-    public function createPost(
-        string $text,
-        int|null $retweetedPostId,
-        int|null $inReplyToPostId
-    ): Post {
+    public function createPost(string $text): Post
+    {
         $post = $this->postRepository->createPost(
             text: $text,
-            retweetedPostId: $retweetedPostId,
-            inReplyToPostId: $inReplyToPostId
         );
 
-        if ($inReplyToPostId === null) {
-            $user = Auth::user();
-            $user->posts_count += 1;
-            $user->save();
-        }
-
-        if ($inReplyToPostId !== null) {
-            $this->incrementCommentsCount(id: $inReplyToPostId);
-        }
+        $this->viewerRepository->incrementViewerPostCount();
 
         return $post;
     }
 
-    public function like(Post $post): bool
+    /**
+     * @throws QuoteExistsException
+     */
+    public function createQuote(
+        Post $post,
+        string $text
+    ): Post {
+        if (!Gate::allows('create-quote', [$post, $text])) {
+            throw new QuoteExistsException;
+        }
+
+        $post = $this->postRepository->createQuote(
+            post: $post,
+            text: $text,
+        );
+
+        $this->viewerRepository->incrementViewerPostCount();
+
+        return $post;
+    }
+
+    public function createReply(
+        Post $post,
+        string $text
+    ): Post {
+        $post = $this->postRepository->createReply(
+            post: $post,
+            text: $text,
+        );
+
+        $this->postRepository->incrementPostReplyCount(post: $post);
+
+        return $post;
+    }
+
+    public function addPostToFavorite(Post $post): bool
     {
-        $viewer = Auth::user();
-
-        $this->favoritePostRepository->favoritePost(id: $post->id);
-        $post->favorite_count += 1;
-        $post->save();
-
-        $viewer->favourites_count += 1;
-        $viewer->save();
+        $this->favoritePostRepository->add(id: $post->id);
+        $this->postRepository->incrementPostFavoriteCount(post: $post);
+        $this->viewerRepository->incrementViewerFavoritePostsCount();
 
         return true;
     }
 
-    public function unlike(Post $post): bool
+    public function removePostFromFavorite(Post $post): bool
     {
-        $viewer = Auth::user();
-
-        $this->favoritePostRepository->unfavoritePost(id: $post->id);
-        $post->favorite_count -= 1;
-        $post->save();
-
-        $viewer->favourites_count -= 1;
-        $viewer->save();
+        $this->favoritePostRepository->remove(id: $post->id);
+        $this->postRepository->decrementPostFavoriteCount(post: $post);
+        $this->viewerRepository->decrementViewerFavoritePostsCount();
 
         return true;
     }
 
     public function retweet(Post $post): Post
     {
-        $viewer = Auth::user();
-
         $retweet = $this->retweetedPostRepository->retweetPost(id: $post->id);
-
-        $post->retweet_count += 1;
-        $post->save();
-
-        $viewer->posts_count += 1;
-        $viewer->save();
+        $this->viewerRepository->incrementViewerPostCount();
+        $this->postRepository->incrementPostRetweetCount(post: $post);
 
         return $retweet;
     }
 
     public function undoRetweet(Post $post): bool
     {
-        $viewer = Auth::user();
-
         $this->retweetedPostRepository->unretweetPost(id: $post->id);
-
-        $post->retweet_count -= 1;
-        $post->save();
-
-        $viewer->posts_count -= 1;
-        $viewer->save();
+        $this->viewerRepository->decrementViewerPostCount();
+        $this->postRepository->decrementPostRetweetCount(post: $post);
 
         return true;
-    }
-
-    public function incrementCommentsCount(int $id): void
-    {
-        $this->postRepository->incrementPostReplyCount(id: $id);
     }
 }

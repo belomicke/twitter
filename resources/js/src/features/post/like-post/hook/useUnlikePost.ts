@@ -5,9 +5,9 @@ export const useUnlikePost = () => {
     return useMutation({
         mutationKey: ['unlike-post'],
         mutationFn: async (id: number) => {
-            const res = await api.posts.unlike(id)
+            const res = await api.posts.favorite.remove(id)
 
             return res.data
-        },
+        }
     })
 }
