@@ -106,7 +106,6 @@ function fetchNextPage() {
                     :key="items[virtualRow.key]"
                     :ref="measureElement"
                     :data-index="virtualRow.index"
-                    class="post"
                 >
                     <slot
                         :virtual-row="virtualRow"
@@ -131,10 +130,6 @@ function fetchNextPage() {
 
 .post-feed.scroll {
     overflow-y: auto;
-}
-
-.post {
-    border-bottom: 1px solid var(--x-border-color);
 }
 
 .loader {

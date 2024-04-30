@@ -27,7 +27,7 @@ class CreateAccountRequest extends FormRequest
             'email' => 'required|unique:users|email',
             'password' => 'required|min:8',
             'birth' => 'required|date',
-            'code' => 'required|min:6|max:6|exists:verification_codes'
+            'code' => 'required|min:6|max:6'
         ];
     }
 }

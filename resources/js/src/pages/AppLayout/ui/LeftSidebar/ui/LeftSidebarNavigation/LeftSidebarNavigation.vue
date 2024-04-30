@@ -19,8 +19,8 @@ interface ILink {
 const { user } = defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const creator = ref<InstanceType<typeof PostCreatorModal> | null>(null)
@@ -37,7 +37,7 @@ const links = computed((): ILink[] => {
             active: route.path === '/',
             clickHandler: () => {
                 router.push('/')
-            },
+            }
         },
         {
             id: 2,
@@ -46,7 +46,7 @@ const links = computed((): ILink[] => {
             active: route.path.startsWith(`/search`),
             clickHandler: () => {
                 router.push(`/search`)
-            },
+            }
         },
         {
             id: 3,
@@ -55,8 +55,8 @@ const links = computed((): ILink[] => {
             active: route.path.startsWith(`/profile/${user?.username}`),
             clickHandler: () => {
                 router.push(`/profile/${user?.username}`)
-            },
-        },
+            }
+        }
     ]
 })
 
@@ -108,7 +108,7 @@ function openPostCreator() {
     .nav {
         align-items: end;
     }
-    
+
     .button {
         width: 50px !important;
         padding: 12px !important;

@@ -7,7 +7,7 @@ import PostPageComment from './ui/PostPageComment.vue'
 import PostPageAnswer from './ui/PostPageAnswer.vue'
 import VirtualScroll from '@/pages/Post/ui/VirtualScroll.vue'
 import { useFeedStore } from '@/entities/Feed/store'
-import PostFeedItem from '@/entities/Feed/ui/PostFeedItem.vue'
+import PostFeedItem from '@/widgets/Post/PostFeedItem/PostFeedItem.vue'
 import { IPost } from '@/shared/api/types/models/Post'
 import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 

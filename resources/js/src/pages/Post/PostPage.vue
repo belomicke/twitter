@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import PostPageContent from '@/pages/Post/PostPageContent.vue'
@@ -23,6 +23,12 @@ const element = ref<HTMLDivElement | null>(null)
 onMounted(() => {
     postStore.fetchPostById(id.value)
     getScrollElement()
+})
+
+watch(id, () => {
+    if (!post.value) {
+        postStore.fetchPostById(id.value)
+    }
 })
 
 function getScrollElement() {

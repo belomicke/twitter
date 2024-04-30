@@ -23,13 +23,12 @@ class ChangeProfileBannerController extends Controller
             ]);
         }
 
-        $this->accountService->deletePreviousProfileBanner();
-        $bannerPaths = $this->accountService->saveBannerPicture($banner);
+        $banners = $this->accountService->saveProfileBanner($banner);
 
         return response()->json([
             'success' => true,
             'data' => [
-                'banners' => $bannerPaths
+                'banners' => $banners
             ]
         ]);
     }

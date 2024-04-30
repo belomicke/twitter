@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Policies\Post\CreateQuotePolicy;
+use App\Policies\Post\EditPostPolicy;
 use App\Policies\Post\Favorite\AddPostToFavoritePolicy;
 use App\Policies\Post\Favorite\RemovePostFromFavoritePolicy;
 use App\Policies\Post\Retweet\RetweetPostPolicy;
 use App\Policies\Post\Retweet\UndoRetweetPostPolicy;
+use App\Policies\User\Follows\FollowUserPolicy;
+use App\Policies\User\Follows\UnfollowUserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,11 +30,15 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('create-quote', CreateQuotePolicy::class);
+        Gate::define('edit-post', EditPostPolicy::class);
 
         Gate::define('add-post-to-favorite', AddPostToFavoritePolicy::class);
         Gate::define('remove-post-from-favorite', RemovePostFromFavoritePolicy::class);
 
         Gate::define('retweet-post', RetweetPostPolicy::class);
         Gate::define('undo-retweet-post', UndoRetweetPostPolicy::class);
+
+        Gate::define('follow-user', FollowUserPolicy::class);
+        Gate::define('unfollow-user', UnfollowUserPolicy::class);
     }
 }

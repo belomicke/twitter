@@ -18,11 +18,16 @@ return new class extends Migration {
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+
             $table
                 ->foreignId('follow_id')
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+
+            $table
+                ->boolean('is_deleted')
+                ->default(false);
 
             $table->timestamps();
         });

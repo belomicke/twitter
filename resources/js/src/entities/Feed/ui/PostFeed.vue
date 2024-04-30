@@ -2,7 +2,7 @@
 import { computed, onMounted, PropType, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFeedStore } from '../store'
-import PostFeedItem from './PostFeedItem.vue'
+import PostFeedItem from '../../../widgets/Post/PostFeedItem/PostFeedItem.vue'
 import XSpinner from '@/shared/ui/XSpinner/XSpinner.vue'
 import XVirtualScroll from '@/shared/ui/XVirtualScroll/XVirtualScroll.vue'
 import 'v3-infinite-loading/lib/style.css'
@@ -23,6 +23,11 @@ const props = defineProps({
         default: 'bottom'
     },
     noBorders: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    withPinnedPost: {
         type: Boolean,
         required: false,
         default: false
@@ -74,6 +79,8 @@ function load() {
         <template #item="{ virtualRow }">
             <post-feed-item
                 :id="feed.data.items[virtualRow.index]"
+                :can-be-pinned="withPinnedPost"
+                with-options
             />
         </template>
     </x-virtual-scroll>

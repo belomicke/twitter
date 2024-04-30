@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->string('email');
-            $table->integer('code');
+            $table->string('code');
 
             $table->timestamps();
         });

@@ -3,12 +3,12 @@ import XModal from '@/shared/ui/XModal/XModal.vue'
 import { ref } from 'vue'
 import XButton from '@/shared/ui/XButton/XButton.vue'
 import {
-    useDeleteProfilePicture,
+    useDeleteProfilePicture
 } from '@/features/account/edit-public-data/features/profile-avatar-changer/hook/useDeleteProfilePicture'
 
 defineExpose({
     open,
-    close,
+    close
 })
 
 const modal = ref<InstanceType<typeof XModal> | null>(null)
@@ -76,6 +76,7 @@ function confirmHandler() {
     padding: 20px;
     width: 100%;
     max-width: 300px;
+    margin: 0 auto;
 }
 
 .header {

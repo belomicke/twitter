@@ -36,7 +36,8 @@ function commentPost() {
             <x-icon-button
                 icon="comment"
                 :size="iconSize"
-                color="30, 155, 240"
+                color-hover="30, 155, 240"
+                background-color-hover="30, 155, 240"
                 :count="post.reply_count"
                 @click.stop="commentPost"
             />

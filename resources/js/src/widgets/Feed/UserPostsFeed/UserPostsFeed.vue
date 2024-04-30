@@ -41,6 +41,7 @@ function fetch() {
             v-else
             :id="`user:${username}:posts`"
             window
+            with-pinned-post
             @fetch="fetch"
         />
     </template>

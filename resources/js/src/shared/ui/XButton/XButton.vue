@@ -6,78 +6,78 @@ const props = defineProps({
     type: {
         type: String as PropType<'default' | 'primary' | 'info' | 'danger'>,
         required: false,
-        default: 'default',
+        default: 'default'
     },
     size: {
         type: String as PropType<'small' | 'default' | 'large' | 'extra-large'>,
         required: false,
-        default: 'default',
+        default: 'default'
     },
     rounded: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     active: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     disabled: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     bold: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     block: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     circle: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     text: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     icon: {
         type: String as PropType<IconNames>,
         required: false,
-        default: '',
+        default: ''
     },
     iconSize: {
         type: Number,
         required: false,
-        default: 24,
+        default: 24
     },
     iconIsFilled: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     textAlign: {
         type: String as PropType<'start' | 'center' | 'end'>,
         required: false,
-        default: 'center',
+        default: 'center'
     },
     noBorder: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     noPadding: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 
 const emit = defineEmits(['click'])

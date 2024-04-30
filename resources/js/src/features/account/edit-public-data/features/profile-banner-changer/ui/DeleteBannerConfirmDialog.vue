@@ -6,7 +6,7 @@ import XButton from '@/shared/ui/XButton/XButton.vue'
 
 defineExpose({
     open,
-    close,
+    close
 })
 
 const modal = ref<InstanceType<typeof XModal> | null>(null)
@@ -74,6 +74,7 @@ function confirmHandler() {
     padding: 20px;
     width: 100%;
     max-width: 300px;
+    margin: 0 auto;
 }
 
 .header {

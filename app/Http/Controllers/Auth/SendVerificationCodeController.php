@@ -4,21 +4,22 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\SendVerificationCodeRequest;
-use App\Jobs\VerificationCodeEmailJob;
-use App\Models\User;
-use App\Services\VerificationCode\VerificationCodeService;
+use App\Repository\User\UserRepository;
+use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 
 class SendVerificationCodeController extends Controller
 {
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly AuthService $authService
+    ) {}
+
     public function __invoke(SendVerificationCodeRequest $request): JsonResponse
     {
         $email = $request->input('email');
 
-        $userExists = User::query()
-            ->orWhere('email', $email)
-            ->exists();
+        $userExists = $this->userRepository->checkUserWithEmailExists(email: $email);
 
         if ($userExists) {
             return response()->json([
@@ -29,32 +30,10 @@ class SendVerificationCodeController extends Controller
             ]);
         }
 
-        $entity = DB::table('verification_codes')->where('email', $email)->first();
+        $this->authService->sendVerificationCode(email: $email);
 
-        if (!$entity) {
-            $code = VerificationCodeService::generateVerificationCode();
-
-            $entity = DB::table('verification_codes')->insert([
-                'email' => $email,
-                'code' => $code
-            ]);
-        } else {
-            $code = $entity->code;
-        }
-
-        if ($entity) {
-            VerificationCodeEmailJob::dispatch(
-                email: $email,
-                code: $code
-            );
-
-            return response()->json([
-                'success' => true,
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-            ]);
-        }
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

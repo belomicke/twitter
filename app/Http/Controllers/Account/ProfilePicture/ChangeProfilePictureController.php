@@ -23,7 +23,6 @@ class ChangeProfilePictureController extends Controller
             ]);
         }
 
-        $this->accountService->deletePreviousProfilePicture();
         $pictures = $this->accountService->saveProfilePicture($picture);
 
         return response()->json([

@@ -14,10 +14,14 @@ export interface IPost {
     updated_at: string
     created_at: string
 
+    is_pinned: boolean
+
     is_quote: boolean
     quote_count: number
 
     retweeted_post_id: number | null
     retweet_count: number
     retweeted: boolean
+
+    media_count: number
 }

@@ -4,7 +4,7 @@ namespace App\Policies\Post\Favorite;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Repository\FavoritePostRepository;
+use App\Repository\Post\FavoritePostRepository;
 
 class RemovePostFromFavoritePolicy
 {

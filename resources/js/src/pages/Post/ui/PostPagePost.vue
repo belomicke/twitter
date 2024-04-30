@@ -8,6 +8,7 @@ import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import PostActions from '@/entities/Post/ui/PostActions.vue'
 import moment from 'moment'
+import PostOptions from '@/entities/Post/ui/PostOptions/PostOptions.vue'
 
 const props = defineProps({
     id: {
@@ -60,15 +61,20 @@ const date = computed(() => {
         }"
     >
         <div class="post-header">
-            <user-avatar
-                :username="user.username"
-                :size="40"
-                rounded
-            />
-            <user-names
-                :user="user"
-                links
-            />
+            <div class="post-header-left">
+                <user-avatar
+                    :username="user.username"
+                    :size="40"
+                    rounded
+                />
+                <user-names
+                    :user="user"
+                    links
+                />
+            </div>
+            <div class="post-header-right">
+                <post-options :post="post" />
+            </div>
         </div>
         <post-body
             :post="post"
@@ -106,6 +112,12 @@ const date = computed(() => {
 }
 
 .post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-header-left {
     display: flex;
     grid-gap: 10px;
 }

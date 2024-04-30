@@ -8,11 +8,13 @@ import { useCreatePostModel } from '@/features/post/create-post/model'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
 import RetweetExtensions from '@/entities/Post/ui/RetweetExtensions.vue'
-import PostFeedItem from '@/entities/Feed/ui/PostFeedItem.vue'
 import UserUsername from '@/entities/User/ui/UserUsername.vue'
 import { usePostStore } from '@/entities/Post/store'
 import { useCreatePost } from '@/features/post/create-post/hook/useCreatePost'
 import { useUserStore } from '@/entities/User/store'
+import { useFilePicker } from '@/features/post/create-post/hook/useFilePicker'
+import PostCreatorMedia from '@/features/post/create-post/ui/PostCreatorMedia/PostCreatorMedia.vue'
+import PostEntity from '@/entities/Post/ui/PostEntity.vue'
 
 const props = defineProps({
     inReplyToPostId: {
@@ -104,12 +106,16 @@ const createPostData = computed(() => {
     return {
         text: formattedText.value,
         retweeted_post_id: props.retweetForPostId,
-        in_reply_to_post_id: props.inReplyToPostId
+        in_reply_to_post_id: props.inReplyToPostId,
+        media: files.value
     }
 })
 
 const formIsValid = computed(() => {
-    return Boolean(createPostData.value.text.length)
+    if (Boolean(createPostData.value.text.length)) return true
+    if (Boolean(files.value.length)) return true
+
+    return false
 })
 
 function clear() {
@@ -120,6 +126,8 @@ function clear() {
     } else {
         text.value = ''
     }
+
+    clearFilePicker()
 }
 
 function goToProfile() {
@@ -143,6 +151,18 @@ function publishHandler() {
     clear()
     emit('publish')
 }
+
+const {
+    files,
+    openFilePicker: openMediaFilePicker,
+    clearFilePicker,
+    deleteFile
+} = useFilePicker({ maxFiles: 4, maxSize: 4000000 })
+
+function deleteMediaHandler(index: number) {
+    deleteFile(index)
+}
+
 </script>
 
 <template>
@@ -151,22 +171,21 @@ function publishHandler() {
             v-if="inReplyToPostId && inReplyToPost && useModalData"
             class="answer"
         >
-            <post-feed-item
-                :id="inReplyToPostId"
-                is-thread
-                is-first-in-thread
-                no-actions
+            <post-entity
+                :post="inReplyToPost"
                 no-padding
-                no-answer
-                no-hover
-            />
-            <div
-                v-if="inReplyToUser"
-                class="answer-to"
+                with-thread-line-below
             >
-                В ответ
-                <user-username :username="inReplyToUser.username" />
-            </div>
+                <template #footer>
+                    <div
+                        v-if="inReplyToUser"
+                        class="answer-to"
+                    >
+                        В ответ
+                        <user-username :username="inReplyToUser.username" />
+                    </div>
+                </template>
+            </post-entity>
         </div>
         <div
             v-if="viewer"
@@ -188,21 +207,25 @@ function publishHandler() {
                         :height="height"
                         @update:model-value="onInput"
                     />
-                    <div
+                    <post-creator-media
+                        v-if="files.length"
+                        :media-files="files"
+                        @delete-media="deleteMediaHandler"
+                    />
+                    <retweet-extensions
                         v-if="retweetForPostId"
-                        class="retweet"
-                    >
-                        <retweet-extensions
-                            :id="retweetForPostId"
-                        />
-                    </div>
+                        :id="retweetForPostId"
+                        :compact="Boolean(files.length)"
+                    />
                 </div>
                 <post-creator-footer
                     :is-valid="formIsValid"
                     :text-length="formattedText.length"
                     :submit-button-text="submitButtonText"
                     :no-borders="noBorderInFooter"
+                    :disable-open-media-file-picker-button="files.length === 4"
                     @publish="publishHandler"
+                    @open-media-file-picker="openMediaFilePicker"
                 />
             </div>
         </div>
@@ -222,21 +245,8 @@ function publishHandler() {
     line-height: 19px;
     font-size: 14px;
     font-weight: 400;
-
-    padding-top: 10px;
-    padding-left: 50px;
     padding-bottom: 0;
     position: relative;
-}
-
-.answer-to::before {
-    content: "";
-    width: 2px;
-    background-color: var(--x-border-color);
-    height: 100%;
-    position: absolute;
-    left: 19px;
-    top: 0;
 }
 
 .post-creator {
@@ -258,14 +268,14 @@ function publishHandler() {
 .body {
     display: flex;
     flex-direction: column;
+    grid-gap: 10px;
     width: 100%;
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
     overflow: auto;
-}
-
-.retweet {
-    margin: 20px 0 10px;
 }
 </style>

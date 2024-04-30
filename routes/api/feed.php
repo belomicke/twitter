@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('feed')->middleware('auth:sanctum')->group(function () {
     Route::get('timeline', GetFollowsPostsController::class);
 
-    Route::get('user/{user:username}/posts', GetUserPostsController::class);
-    Route::get('user/{user:username}/favorited_posts', GetUserLikedPostsController::class);
+    Route::get('user/{username}/posts', GetUserPostsController::class);
+    Route::get('user/{username}/favorited_posts', GetUserLikedPostsController::class);
 
     Route::get('post/{post}/comments', GetPostCommentsController::class);
     Route::get('post/{post}/thread', GetPostThreadController::class);

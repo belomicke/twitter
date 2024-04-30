@@ -2,101 +2,100 @@
 
 namespace App\Services\Account;
 
+use App\Models\User;
+use App\Repository\Account\ViewerRepository;
+use App\Services\Storage\StorageService;
 use App\Services\User\UserHelpers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class AccountService
 {
-    private array $profile_picture_sizes = [
-        'small' => 128,
-        'default' => 200,
-        'large' => 400
-    ];
+    public function __construct(
+        private readonly StorageService $storageService,
+        private readonly ViewerRepository $viewerRepository,
+    ) {}
 
-    private array $profile_banner_sizes = [
-        'default' => [600, 200],
-        'large' => [1200, 600]
-    ];
+    public function editProfileInfo(
+        string $name,
+        string|null $bio,
+        string|null $location,
+        string|null $link
+    ): User {
+        $viewer = $this->viewerRepository->getViewer();
+
+        $viewer->name = $name;
+        $viewer->bio = $bio ?? '';
+        $viewer->location = $location ?? '';
+        $viewer->link = $link ?? '';
+
+        $viewer->save();
+
+        return $viewer;
+    }
 
     public function saveProfilePicture(UploadedFile $file): array
     {
-        $viewer = Auth::user();
-        $image = Image::make($file);
+        $viewer = $this->viewerRepository->getViewer();
 
-        $filename = Str::random().'.'.explode('/', $image->mime())[1];
-
-        foreach (array_keys($this->profile_picture_sizes) as $size) {
-            $path = "public/profile_pictures/$size/$viewer->id/$filename";
-
-            $image = Image::make($file)
-                ->fit(
-                    $this->profile_picture_sizes[$size],
-                    $this->profile_picture_sizes[$size],
-                    function ($constraint) {
-                        $constraint->upsize();
-                    }
-                )
-                ->encode('png');
-
-            Storage::put($path, $image);
+        if ($viewer->profile_picture_is_default) {
+            $this->storageService->deleteProfilePicture();
         }
 
+        $filename = $this->storageService->saveProfilePicture(file: $file);
         $viewer->profile_picture_filename = $filename;
         $viewer->save();
 
-        return UserHelpers::getProfilePicturePaths($viewer->id, $filename);
+        return UserHelpers::getProfilePicturePaths(
+            id: $viewer->id,
+            filename: $filename
+        );
     }
 
-    public function deletePreviousProfilePicture(): void
+    public function deleteProfilePicture(): array
     {
-        $viewer = Auth::user();
-        $filename = $viewer->profile_picture_filename;
+        $viewer = $this->viewerRepository->getViewer();
+        $profilePictureFilenameDefaultValue = UserHelpers::getDefaultProfilePictureFilenameValue();
 
-        foreach (array_keys($this->profile_picture_sizes) as $size) {
-            Storage::delete("public/profile_pictures/$size/$viewer->id/$filename");
-        }
+        $this->storageService->deleteProfilePicture();
+        $viewer->profile_picture_filename = $profilePictureFilenameDefaultValue;
+        $viewer->save();
+
+        return UserHelpers::getProfilePicturePaths(
+            id: Auth::id(),
+            filename: $profilePictureFilenameDefaultValue
+        );
     }
 
-    public function saveBannerPicture(UploadedFile $file): array
+    public function saveProfileBanner(UploadedFile $file): array
     {
-        $viewer = Auth::user();
-        $image = Image::make($file);
+        $viewer = $this->viewerRepository->getViewer();
 
-        $filename = Str::random().'.'.explode('/', $image->mime())[1];
-
-        foreach (array_keys($this->profile_banner_sizes) as $size) {
-            $path = "public/profile_banners/$size/$viewer->id/$filename";
-
-            $image = Image::make($file)
-                ->fit(
-                    $this->profile_banner_sizes[$size][0],
-                    $this->profile_banner_sizes[$size][1],
-                    function ($constraint) {
-                        $constraint->upsize();
-                    }
-                )
-                ->encode('png');
-
-            Storage::write($path, $image);
+        if ($viewer->profile_banner_filename !== '') {
+            $this->storageService->deleteProfileBanner();
         }
 
+        $filename = $this->storageService->saveProfileBanner(file: $file);
         $viewer->profile_banner_filename = $filename;
         $viewer->save();
 
-        return UserHelpers::getProfileBannerPaths($viewer->id, $filename);
+        return UserHelpers::getProfileBannerPaths(
+            id: $viewer->id,
+            filename: $filename
+        );
     }
 
-    public function deletePreviousProfileBanner(): void
+    public function deleteProfileBanner(): array
     {
-        $viewer = Auth::user();
-        $filename = $viewer->profile_banner_filename;
+        $viewer = $this->viewerRepository->getViewer();
 
-        foreach (array_keys($this->profile_banner_sizes) as $size) {
-            Storage::delete("public/profile_banners/$size/$viewer->id/$filename");
-        }
+        $this->storageService->deleteProfileBanner();
+        $viewer->profile_banner_filename = '';
+        $viewer->save();
+
+        return UserHelpers::getProfileBannerPaths(
+            id: Auth::id(),
+            filename: ''
+        );
     }
 }

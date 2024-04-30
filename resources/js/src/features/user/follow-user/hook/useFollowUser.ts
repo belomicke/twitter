@@ -22,7 +22,8 @@ export const useFollowUser = () => {
             const userStore = useUserStore()
 
             userStore.incrementFollowsCount(viewer.username)
-            userStore.incrementFollowersCount(variables)
-        },
+
+            userStore.followUser(variables)
+        }
     })
 }

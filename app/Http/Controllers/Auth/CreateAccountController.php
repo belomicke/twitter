@@ -2,37 +2,36 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\User\IncorrectVerificationCodeException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\CreateAccountRequest;
-use App\Services\User\UserService;
+use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 
 class CreateAccountController extends Controller
 {
     public function __construct(
-        private readonly UserService $userService
+        private readonly AuthService $authService
     ) {}
 
+    /**
+     * @throws IncorrectVerificationCodeException
+     */
     public function __invoke(CreateAccountRequest $request): JsonResponse
     {
         $username = $request->input('username');
         $email = $request->input('email');
         $password = $request->input('password');
         $birth = $request->input('birth');
+        $code = $request->input('code');
 
-        $user = $this->userService->create(
+        $this->authService->createAccount(
             username: $username,
             email: $email,
             password: $password,
-            birth: $birth
+            birth: $birth,
+            code: $code
         );
-        
-        $user->save();
-
-        DB::table('verification_codes')
-            ->where('email', $email)
-            ->delete();
 
         return response()->json([
             'success' => true

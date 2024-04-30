@@ -18,10 +18,14 @@ class GetPostCommentsController extends Controller
     {
         $lastPostId = $request->input('last_post_id');
 
-        $data = $this->feedService->getPostComments(
-            post: $post,
-            lastPostId: $lastPostId
-        );
+        if ($post->reply_count === 0) {
+            $data = [];
+        } else {
+            $data = $this->feedService->getPostReplies(
+                post: $post,
+                lastPostId: $lastPostId
+            );
+        }
 
         return response()->json([
             'success' => true,

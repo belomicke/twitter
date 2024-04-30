@@ -2,34 +2,35 @@
 
 namespace App\Models;
 
-use App\Helpers\PostHelpers;
+use App\Services\Post\PostHelpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 /**
- * @property int $id
- * @property string $text
- * @property int $user_id
- * @property int $retweeted_post_id
- * @property int $favorite_count
- * @property int $retweet_count
- * @property int $reply_count
+ * @property int id
+ * @property string text
+ * @property int user_id
+ * @property int retweeted_post_id
+ * @property int media_count
+ * @property int favorite_count
+ * @property int retweet_count
+ * @property int reply_count
  *
- * @property int $in_reply_to_post_id
- * @property int $in_reply_to_user_id
- * @property string $in_reply_to_username
+ * @property bool favorited
+ * @property bool retweeted
  *
- * @property bool $is_deleted
+ * @property int in_reply_to_post_id
+ * @property int in_reply_to_user_id
+ * @property string in_reply_to_username
  *
- * @property Collection $likers
+ * @property bool is_deleted
+ * @property bool is_pinned
+ * @property Collection likers
  *
  * @method static Post create (array $attributes = [])
  */
@@ -53,7 +54,10 @@ class Post extends Model
         'retweeted_post_id',
         'is_quote',
         'in_reply_to_post_id',
-        'in_reply_to_user_id'
+        'in_reply_to_user_id',
+        'media_count',
+        'is_pined',
+        'is_deleted'
     ];
 
     protected $hidden = [
@@ -61,25 +65,15 @@ class Post extends Model
         'is_deleted'
     ];
 
-    protected $appends = [
-        'favorited',
-        'retweeted'
-    ];
-
     protected $casts = [
-        'is_quote' => 'boolean'
+        'is_quote' => 'boolean',
+        'is_pinned' => 'boolean'
     ];
 
     protected static function booted(): void
     {
         static::creating(function ($post) {
             $post->text = PostHelpers::formatText(text: $post->text);
-        });
-
-        static::updating(function ($post) {
-            $key = 'post:' . $post->id;
-
-            Cache::forget($key);
         });
     }
 
@@ -88,25 +82,6 @@ class Post extends Model
         return [
             'text' => $this->text
         ];
-    }
-
-    public function getFavoritedAttribute(): bool
-    {
-        return DB::table('favorited_posts')
-            ->where('post_id', $this->id)
-            ->where('user_id', Auth::id())
-            ->where('is_deleted', false)
-            ->exists();
-    }
-
-    public function getRetweetedAttribute(): bool
-    {
-        return DB::table('posts')
-            ->where('retweeted_post_id', $this->id)
-            ->where('user_id', Auth::id())
-            ->where('is_deleted', false)
-            ->where('text', '=', '')
-            ->exists();
     }
 
     public function author(): BelongsTo
@@ -133,6 +108,16 @@ class Post extends Model
             'retweeted_post_id',
             'id',
         );
+    }
+
+    public function replies(): BelongsTo
+    {
+        return $this->belongsTo(
+            Post::class,
+            'id',
+            'in_reply_to_post_id',
+        )
+            ->where('is_deleted', false);
     }
 
     public function commented_post(): BelongsTo

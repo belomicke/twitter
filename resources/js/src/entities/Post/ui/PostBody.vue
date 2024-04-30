@@ -2,6 +2,7 @@
 import { PropType } from 'vue'
 import { IPost } from '@/shared/api/types/models/Post'
 import RetweetExtensions from '@/entities/Post/ui/RetweetExtensions.vue'
+import MediaPostExtension from '@/entities/Post/ui/MediaPostExtension/MediaPostExtension.vue'
 
 defineProps({
     post: {
@@ -12,14 +13,29 @@ defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    compact: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 </script>
 
 <template>
     <div class="body">
-        <div class="text">
+        <div
+            v-if="post.text.length"
+            class="text"
+        >
             {{ post.text }}
+        </div>
+        <div
+            v-if="post.media_count"
+            class="media"
+            :class="{ compact: compact }"
+        >
+            <media-post-extension :id="post.id" />
         </div>
         <div
             v-if="post.is_quote && post.retweeted_post_id && withRetweet"
@@ -37,6 +53,7 @@ defineProps({
 .body {
     display: flex;
     flex-direction: column;
+    grid-gap: 10px;
     word-break: break-all;
     width: 100%;
 }
@@ -48,6 +65,15 @@ defineProps({
 
 .retweet {
     cursor: pointer;
-    margin-top: 10px;
+}
+
+.media {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.media.compact {
+    border-radius: 0;
+    overflow: auto;
 }
 </style>

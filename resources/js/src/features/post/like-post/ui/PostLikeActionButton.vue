@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { PropType, ref, watch } from 'vue'
+import { computed, PropType, ref, watch } from 'vue'
 import _ from 'lodash'
 import { useLikePost } from '../hook/useLikePost'
 import { useUnlikePost } from '../hook/useUnlikePost'
@@ -39,10 +39,10 @@ function likeHandler() {
 
     if (value) {
         postStore.likePost(props.post.id)
-        viewerStore.incrementfavoritesCount()
+        viewerStore.incrementFavoritesCount()
     } else {
         postStore.unlikePost(props.post.id)
-        viewerStore.decrementfavoritesCount()
+        viewerStore.decrementFavoritesCount()
     }
 
     debouncedLikeHandler(value)
@@ -67,6 +67,16 @@ const debouncedLikeHandler = _.debounce((value: boolean) => {
         })
     }
 }, 500)
+
+const color = computed(() => {
+    if (!props.post) return undefined
+    
+    if (props.post.favorited) {
+        return '249, 24, 128'
+    } else {
+        return undefined
+    }
+})
 </script>
 
 <template>
@@ -75,7 +85,11 @@ const debouncedLikeHandler = _.debounce((value: boolean) => {
         :filled="post.favorited"
         :size="iconSize"
         :active="post.favorited"
-        color="249, 24, 128"
+
+        :color="color"
+        color-hover="249, 24, 128"
+
+        background-color-hover="249, 24, 128"
         :count="post.favorite_count"
         @click.stop="likeHandler"
     />

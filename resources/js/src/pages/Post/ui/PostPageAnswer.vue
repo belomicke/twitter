@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import PostFeedItem from '@/entities/Feed/ui/PostFeedItem.vue'
+import PostFeedItem from '@/widgets/Post/PostFeedItem/PostFeedItem.vue'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { useFeedStore } from '@/entities/Feed/store'

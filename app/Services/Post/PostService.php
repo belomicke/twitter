@@ -4,10 +4,12 @@ namespace App\Services\Post;
 
 use App\Exceptions\Quote\QuoteExistsException;
 use App\Models\Post;
-use App\Repository\FavoritePostRepository;
-use App\Repository\PostRepository;
-use App\Repository\RetweetedPostRepository;
-use App\Repository\ViewerRepository;
+use App\Repository\Account\ViewerRepository;
+use App\Repository\Media\MediaRepository;
+use App\Repository\Post\FavoritePostRepository;
+use App\Repository\Post\PinnedPostRepository;
+use App\Repository\Post\PostRepository;
+use App\Repository\Post\RetweetedPostRepository;
 use Illuminate\Support\Facades\Gate;
 
 class PostService
@@ -16,16 +18,26 @@ class PostService
         private readonly PostRepository $postRepository,
         private readonly FavoritePostRepository $favoritePostRepository,
         private readonly RetweetedPostRepository $retweetedPostRepository,
-        private readonly ViewerRepository $viewerRepository
+        private readonly ViewerRepository $viewerRepository,
+        private readonly MediaRepository $mediaRepository,
+        private readonly PinnedPostRepository $pinnedPostRepository
     ) {}
 
-    public function createPost(string $text): Post
+    public function createPost(string $text, array|null $media): Post
     {
         $post = $this->postRepository->createPost(
             text: $text,
+            mediaCount: $media ? count($media) : 0
         );
 
         $this->viewerRepository->incrementViewerPostCount();
+
+        if ($media) {
+            $this->mediaRepository->saveImages(
+                postId: $post->id,
+                files: $media
+            );
+        }
 
         return $post;
     }
@@ -35,7 +47,8 @@ class PostService
      */
     public function createQuote(
         Post $post,
-        string $text
+        string $text,
+        array|null $media
     ): Post {
         if (!Gate::allows('create-quote', [$post, $text])) {
             throw new QuoteExistsException;
@@ -44,25 +57,42 @@ class PostService
         $post = $this->postRepository->createQuote(
             post: $post,
             text: $text,
+            mediaCount: $media ? count($media) : 0
         );
 
         $this->viewerRepository->incrementViewerPostCount();
+
+        if ($media) {
+            $this->mediaRepository->saveImages(
+                postId: $post->id,
+                files: $media
+            );
+        }
 
         return $post;
     }
 
     public function createReply(
         Post $post,
-        string $text
+        string $text,
+        array|null $media
     ): Post {
-        $post = $this->postRepository->createReply(
+        $reply = $this->postRepository->createReply(
             post: $post,
             text: $text,
+            mediaCount: $media ? count($media) : 0
         );
 
         $this->postRepository->incrementPostReplyCount(post: $post);
 
-        return $post;
+        if ($media) {
+            $this->mediaRepository->saveImages(
+                postId: $reply->id,
+                files: $media
+            );
+        }
+
+        return $reply;
     }
 
     public function addPostToFavorite(Post $post): bool
@@ -99,5 +129,28 @@ class PostService
         $this->postRepository->decrementPostRetweetCount(post: $post);
 
         return true;
+    }
+
+    public function pinPost(Post $post): void
+    {
+        $viewer = $this->viewerRepository->getViewer();
+
+        $this->pinnedPostRepository->unpinUserPost(user: $viewer);
+        $this->pinnedPostRepository->pinPost(post: $post);
+    }
+
+    public function unpinPost(Post $post): void
+    {
+        $this->pinnedPostRepository->unpinPost(post: $post);
+    }
+
+    public function deletePost(Post $post): void
+    {
+        if ($this->retweetedPostRepository->exists(post: $post)) {
+            $this->viewerRepository->decrementViewerPostCount(count: 2);
+        } else {
+            $this->viewerRepository->decrementViewerPostCount(count: 1);
+        }
+        $this->postRepository->delete(post: $post);
     }
 }

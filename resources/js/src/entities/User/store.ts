@@ -120,7 +120,7 @@ export const useUserStore = defineStore('users', () => {
         user.posts_count -= 1
     }
 
-    function incrementfavoritesCount(id: number) {
+    function incrementFavoritesCount(id: number) {
         const user = users.value.find(item => item.id === id)
 
         if (!user) return
@@ -128,12 +128,34 @@ export const useUserStore = defineStore('users', () => {
         user.favorites_count += 1
     }
 
-    function decrementfavoritesCount(id: number) {
+    function decrementFavoritesCount(id: number) {
         const user = users.value.find(item => item.id === id)
 
         if (!user) return
 
         user.favorites_count -= 1
+    }
+
+    function followUser(username: string) {
+        const user = users.value.find(item => item.username === username)
+
+        if (!user) return
+
+        if (user.following === false) {
+            user.following = true
+            user.followers_count++
+        }
+    }
+
+    function unfollowUser(username: string) {
+        const user = users.value.find(item => item.username === username)
+
+        if (!user) return
+
+        if (user.following === true) {
+            user.following = false
+            user.followers_count--
+        }
     }
 
     return {
@@ -155,7 +177,10 @@ export const useUserStore = defineStore('users', () => {
         incrementPostsCount,
         decrementPostsCount,
 
-        incrementfavoritesCount,
-        decrementfavoritesCount
+        incrementFavoritesCount,
+        decrementFavoritesCount,
+
+        followUser,
+        unfollowUser
     }
 })

@@ -80,7 +80,6 @@ function close() {
     height: 100vh;
     max-width: 600px;
     width: 100%;
-    padding-top: 100px;
 }
 
 .background {
@@ -93,14 +92,15 @@ function close() {
 }
 
 .container {
-    display: flex;
-    justify-content: center;
+    margin-top: 100px;
     max-width: 600px;
     width: 100%;
+    max-height: 90vh;
     background-color: rgb(0, 0, 0);
     border-radius: 16px;
-    padding: 30px 15px 10px;
+    padding: 30px 15px 0;
     position: relative;
     z-index: 100;
+    overflow: auto;
 }
 </style>

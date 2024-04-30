@@ -43,7 +43,7 @@ const rowVirtualizerOptions = computed(() => {
     return {
         count: count.value,
         getScrollElement: () => props.element,
-        estimateSize: () => 200,
+        estimateSize: () => 1000,
         overscan: 5
     }
 })

@@ -11,8 +11,8 @@ import { useUnfollowUser } from '@/features/user/follow-user/hook/useUnfollowUse
 const props = defineProps({
     username: {
         type: String,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const { mutate: follow } = useFollowUser()
@@ -23,16 +23,17 @@ const userStore = useUserStore()
 const { getUserByUsername } = storeToRefs(userStore)
 
 const user = computed(() => {
+    console.log('computed')
     return getUserByUsername.value(props.username)
 })
 
 const isFollowing = ref<boolean | undefined>(user.value?.following ?? undefined)
 
-watch(() => user.value, (newValue) => {
+watch(user, (newValue) => {
     if (!newValue) return
 
     isFollowing.value = newValue.following
-})
+}, { deep: true })
 
 const ButtonType = computed(() => {
     return isFollowing.value ? 'default' : 'info'

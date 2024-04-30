@@ -30,6 +30,7 @@
     --color-pressed: 10, 135, 220;
 
     --x-color-primary: rgb(var(--color));
+    --x-color-primary-code: var(--color);
     --x-color-primary-opacity-1: rgba(var(--color), .1);
     --x-color-primary-opacity-2: rgba(var(--color), .2);
     --x-color-primary-opacity-3: rgba(var(--color), .3);
@@ -51,6 +52,7 @@
     --color-pressed: 100, 65, 235;
 
     --x-color-primary: rgb(var(--color));
+    --x-color-primary-code: var(--color);
     --x-color-primary-opacity-1: rgba(var(--color), .1);
     --x-color-primary-opacity-2: rgba(var(--color), .2);
     --x-color-primary-opacity-3: rgba(var(--color), .3);
@@ -87,7 +89,7 @@
     --x-color-warning-light-8: #3e301c;
     --x-color-warning-light-9: #292218;
     --x-color-warning-dark-2: #ebb563;
-    --x-color-danger: rgb(244, 33, 46);
+    --x-color-danger: rgb(229, 57, 53);
     --x-color-danger-light-3: #b25252;
     --x-color-danger-light-5: #854040;
     --x-color-danger-light-7: #582e2e;

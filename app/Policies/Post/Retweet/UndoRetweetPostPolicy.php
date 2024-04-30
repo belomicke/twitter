@@ -4,7 +4,7 @@ namespace App\Policies\Post\Retweet;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Repository\RetweetedPostRepository;
+use App\Repository\Post\RetweetedPostRepository;
 
 class UndoRetweetPostPolicy
 {

@@ -2,10 +2,10 @@
 
 namespace App\Policies\Post;
 
-use App\Helpers\PostHelpers;
 use App\Models\Post;
 use App\Models\User;
-use App\Repository\PostRepository;
+use App\Repository\Post\PostRepository;
+use App\Services\Post\PostHelpers;
 
 class CreateQuotePolicy
 {

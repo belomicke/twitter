@@ -103,6 +103,28 @@ export const usePostStore = defineStore('posts', () => {
         post.retweet_count -= 1
     }
 
+    function pinPost(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        const pinnedPost = posts.value.find(item => (item.is_pinned === true && item.user_id === post.user_id))
+
+        if (pinnedPost) {
+            pinnedPost.is_pinned = false
+        }
+
+        post.is_pinned = true
+    }
+
+    function unpinPost(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.is_pinned = false
+    }
+
     async function fetchPostById(id: number) {
         const post = posts.value.find(item => item.id === id)
 
@@ -157,6 +179,9 @@ export const usePostStore = defineStore('posts', () => {
         unlikePost,
 
         retweetPost,
-        undoRetweetPost
+        undoRetweetPost,
+
+        pinPost,
+        unpinPost
     }
 })

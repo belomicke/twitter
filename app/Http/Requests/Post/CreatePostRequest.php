@@ -23,7 +23,8 @@ class CreatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => 'required|max:280'
+            'text' => 'min:0|max:280',
+            'media[]' => 'image'
         ];
     }
 }

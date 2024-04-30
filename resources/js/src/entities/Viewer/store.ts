@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import IUser, { ProfileBanners, ProfilePictures } from '@/shared/api/types/models/User'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { api } from '@/shared/api/methods'
 import { useUserStore } from '@/entities/User/store'
 import EditViewerPublicDataDTO from '@/features/account/edit-public-data/types/EditPublicDataDTO'
@@ -9,6 +9,11 @@ export const useViewerStore = defineStore('viewer', () => {
     // store
     const viewer = ref<IUser | undefined>(undefined)
     const isLoading = ref<boolean>(true)
+
+    // getters
+    const getViewer = computed(() => {
+        return viewer.value
+    })
 
     // actions
     async function fetchViewer() {
@@ -97,28 +102,29 @@ export const useViewerStore = defineStore('viewer', () => {
         userStore.decrementPostsCount(user.id)
     }
 
-    function incrementfavoritesCount() {
+    function incrementFavoritesCount() {
         const user = viewer.value
 
         if (!user) return
 
         const userStore = useUserStore()
 
-        userStore.incrementfavoritesCount(user.id)
+        userStore.incrementFavoritesCount(user.id)
     }
 
-    function decrementfavoritesCount() {
+    function decrementFavoritesCount() {
         const user = viewer.value
 
         if (!user) return
 
         const userStore = useUserStore()
 
-        userStore.decrementfavoritesCount(user.id)
+        userStore.decrementFavoritesCount(user.id)
     }
 
     return {
         viewer,
+        getViewer,
         isLoading,
         fetchViewer,
         editViewer,
@@ -129,7 +135,7 @@ export const useViewerStore = defineStore('viewer', () => {
         incrementPostsCount,
         decrementPostsCount,
 
-        incrementfavoritesCount,
-        decrementfavoritesCount
+        incrementFavoritesCount,
+        decrementFavoritesCount
     }
 })

@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
-use App\Repository\PostRepository;
-use App\Services\Feed\FeedHelpers;
+use App\Repository\Post\PostRepository;
+use App\Services\Post\PostHelpers;
 use Illuminate\Http\JsonResponse;
 
 class GetPostByIdController extends Controller
 {
     public function __construct(
+        private readonly PostHelpers $postHelpers,
         private readonly PostRepository $postRepository,
-        private readonly FeedHelpers $feedHelpers
     ) {}
 
     public function __invoke(int $id): JsonResponse
     {
         $post = $this->postRepository->getPostById(id: $id);
-        $data = $this->feedHelpers->postToJson($post);
+        $data = $this->postHelpers->postToJson(post: $post);
 
-        return response()->json([
+        return response()->json(data: [
             'success' => true,
             'data' => $data
         ]);

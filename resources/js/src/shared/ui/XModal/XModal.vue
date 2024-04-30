@@ -5,20 +5,20 @@ defineProps({
     centered: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     maxContentWidth: {
         type: Number,
         required: false,
-        default: 600,
-    },
+        default: 600
+    }
 })
 
 defineEmits(['close'])
 
 defineExpose({
     open,
-    close,
+    close
 })
 
 const active = ref<boolean>(false)
@@ -50,7 +50,6 @@ function close() {
                     }"
                     :style="{
                         'max-width': `${maxContentWidth}px`,
-                        'width': '100%'
                     }"
                 >
                     <slot />
@@ -84,6 +83,7 @@ function close() {
 
 .content {
     position: relative;
+    width: 100%;
     z-index: 10002;
 }
 

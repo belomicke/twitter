@@ -22,7 +22,8 @@ export const useUnfollowUser = () => {
             const userStore = useUserStore()
 
             userStore.decrementFollowsCount(viewer.username)
-            userStore.decrementFollowersCount(variables)
-        },
+
+            userStore.unfollowUser(variables)
+        }
     })
 }

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import { usePostStore } from '@/entities/Post/store'
 import { useUserStore } from '@/entities/User/store'
-import UserNames from '@/entities/User/ui/UserNames.vue'
-import PostBody from '@/entities/Post/ui/PostBody.vue'
 import { useRouter } from 'vue-router'
+import MediaPostExtension from '@/entities/Post/ui/MediaPostExtension/MediaPostExtension.vue'
+import PostFeedItemHeaderTitle from '@/entities/Post/ui/PostFeedItemHeaderTitle.vue'
 
 const props = defineProps({
     id: {
@@ -14,6 +14,11 @@ const props = defineProps({
         required: true
     },
     goToPostOnClick: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    compact: {
         type: Boolean,
         required: false,
         default: false
@@ -43,6 +48,10 @@ function clickHandler() {
         router.push(`/post/${props.id}`)
     }
 }
+
+watch(() => props.id, () => {
+    postStore.fetchPostById(props.id)
+})
 </script>
 
 <template>
@@ -57,12 +66,24 @@ function clickHandler() {
                 :size="24"
                 rounded
             />
-            <user-names
-                :user="user"
-                inline
-            />
+            <post-feed-item-header-title :id="post.id" />
         </div>
-        <post-body :post="post" />
+        <div class="body">
+            <div
+                v-if="post.text.length"
+                class="text"
+            >
+                {{ post.text }}
+            </div>
+            <div
+                v-if="post.media_count"
+                class="media"
+            >
+                <media-post-extension
+                    :id="post.id"
+                />
+            </div>
+        </div>
     </div>
     <div
         v-else
@@ -76,12 +97,11 @@ function clickHandler() {
 .retweet-extension {
     display: flex;
     flex-direction: column;
-    grid-gap: 5px;
     border: 1px solid var(--x-border-color);
     background-color: var(--x-bg-color-page);
     border-radius: 15px;
-    padding: 10px;
     transition: background-color .15s;
+    overflow: hidden;
 }
 
 .retweet-extension:hover {
@@ -92,6 +112,25 @@ function clickHandler() {
     display: flex;
     align-items: center;
     grid-gap: 5px;
+    padding: 10px 10px 0;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
+    word-break: break-all;
+    width: 100%;
+}
+
+.text {
+    padding: 10px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.media {
+    padding-top: 10px;
 }
 
 .deleted {

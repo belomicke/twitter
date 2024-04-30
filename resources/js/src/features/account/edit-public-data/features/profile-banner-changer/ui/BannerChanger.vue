@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useChangeProfileBanner } from '../hook/useChangeProfileBanner'
 import DeleteBannerConfirmDialog from './DeleteBannerConfirmDialog.vue'
 import { useViewerStore } from '@/entities/Viewer/store'
 import UserBanner from '@/entities/User/ui/UserBanner.vue'
 import XButton from '@/shared/ui/XButton/XButton.vue'
+import { storeToRefs } from 'pinia'
 
 const viewerStore = useViewerStore()
-const viewer = viewerStore.viewer
+const { getViewer } = storeToRefs(viewerStore)
+
+const viewer = computed(() => getViewer.value)
 
 const input = ref<HTMLInputElement | null>(null)
 const dialog = ref<InstanceType<typeof DeleteBannerConfirmDialog> | null>(null)

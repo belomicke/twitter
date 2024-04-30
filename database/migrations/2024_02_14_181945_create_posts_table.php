@@ -44,6 +44,10 @@ return new class extends Migration {
                 ->cascadeOnDelete();
 
             $table
+                ->integer('media_count')
+                ->default(0);
+
+            $table
                 ->integer('favorite_count')
                 ->default(0);
 
@@ -54,6 +58,10 @@ return new class extends Migration {
             $table
                 ->integer('reply_count')
                 ->default(0);
+
+            $table
+                ->boolean('is_pinned')
+                ->default(false);
 
             $table
                 ->boolean('is_quote')

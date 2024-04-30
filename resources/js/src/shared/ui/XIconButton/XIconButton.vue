@@ -7,32 +7,63 @@ import XCounter from '@/shared/ui/XCounter/XCounter.vue'
 defineProps({
     icon: {
         type: String as PropType<IconNames>,
-        required: true,
+        required: true
     },
     color: {
         type: String,
-        required: true,
+        required: false,
+        default: '113, 118, 123'
+    },
+    colorHover: {
+        type: String,
+        required: false,
+        default: '113, 118, 123'
+    },
+    backgroundColor: {
+        type: String,
+        required: false,
+        default: 'transparent'
+    },
+    backgroundColorHover: {
+        type: String,
+        required: false,
+        default: '113, 118, 123'
+    },
+    backgroundOpacity: {
+        type: String,
+        required: false,
+        default: '.2'
     },
     filled: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     active: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     count: {
         type: Number,
         required: false,
-        default: 0,
+        default: 0
     },
     size: {
         type: Number,
         required: false,
-        default: 18,
+        default: 18
     },
+    padding: {
+        type: Number,
+        required: false,
+        default: 8
+    },
+    disable: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 })
 </script>
 
@@ -40,10 +71,19 @@ defineProps({
     <div
         class="x-icon-button"
         :class="{
-            active
+            active,
+            disable
         }"
         :style="{
-            '--x-action-color': color,
+            '--x-color': color,
+            '--x-color-hover': colorHover,
+
+            '--x-background-color': backgroundColor,
+            '--x-background-color-hover': backgroundColorHover,
+
+            '--x-background-opacity': backgroundOpacity,
+
+            '--x-padding': `${padding}px`,
             '--x-icon-size': `${size}px`
         }"
         v-bind="$attrs"
@@ -57,6 +97,7 @@ defineProps({
         </div>
         <x-counter
             v-if="count > 0"
+            class="count"
             :count="count"
         />
     </div>
@@ -64,7 +105,15 @@ defineProps({
 
 <style scoped>
 .x-icon-button {
-    --x-action-color: 113, 118, 123;
+    --x-color: 113, 118, 123;
+    --x-color-hover: 113, 118, 123;
+
+    --x-background-color: transparent;
+    --x-background-color-hover: 113, 118, 123;
+
+    --x-background-opacity: .75;
+
+    --x-padding: 8px;
     --x-icon-size: 18px;
 
     display: flex;
@@ -75,6 +124,17 @@ defineProps({
     cursor: pointer;
 }
 
+.x-icon-button svg {
+    position: relative;
+    z-index: 1;
+    transition: color .15s;
+}
+
+.x-icon-button.disable {
+    opacity: .7;
+    pointer-events: none;
+}
+
 .icon {
     display: flex;
     position: relative;
@@ -83,62 +143,53 @@ defineProps({
 
 .icon::after {
     content: "";
-    width: calc(var(--x-icon-size) + 16px);
-    height: calc(var(--x-icon-size) + 16px);
+    width: calc(var(--x-icon-size) + calc(var(--x-padding) * 2));
+    height: calc(var(--x-icon-size) + calc(var(--x-padding) * 2));
     position: absolute;
-    top: -8px;
-    left: -8px;
+    top: calc(0px - var(--x-padding));
+    left: calc(0px - var(--x-padding));
     border-radius: 50%;
+    z-index: 0;
     transition: background-color .15s;
 }
 
 .x-icon-button svg {
-    color: rgb(113, 118, 123) !important;
-    transition: color .15s;
+    color: rgb(var(--x-color)) !important;
 }
 
-.x-icon-button:hover > .icon::after,
-.x-icon-button:active > .icon::after {
-    background-color: rgba(var(--x-action-color), .2);
+.x-icon-button > .icon::after {
+    background-color: rgb(var(--x-background-color), var(--x-background-opacity));
 }
 
-.x-icon-button.active svg {
-    color: rgb(var(--x-action-color)) !important;
+.x-icon-button .count {
+    color: rgb(var(--x-color)) !important;
 }
 
-.x-icon-button:hover svg {
-    color: rgb(var(--x-action-color)) !important;
-}
+@media (hover: hover) {
+    .x-icon-button:hover svg {
+        color: rgb(var(--x-color-hover)) !important;
+    }
 
-.x-icon-button:hover .count,
-.x-icon-button.active .count {
-    color: rgb(var(--x-action-color)) !important;
+    .x-icon-button:hover > .icon::after {
+        background-color: rgba(var(--x-background-color-hover), var(--x-background-opacity));
+    }
+
+    .x-icon-button:hover .count {
+        color: rgb(var(--x-color-hover)) !important;
+    }
 }
 
 @media (hover: none) {
-    .x-icon-button:hover > .icon::after {
-        background-color: transparent;
+    .x-icon-button:active svg {
+        color: rgb(var(--x-color-hover)) !important;
     }
 
     .x-icon-button:active > .icon::after {
-        background-color: rgba(var(--x-action-color), .2);
+        background-color: rgba(var(--x-background-color-hover), var(--x-background-opacity));
     }
 
-    .x-icon-button.active svg {
-        color: rgb(var(--x-action-color)) !important;
-    }
-
-    .x-icon-button:hover svg {
-        background-color: transparent;
-    }
-
-    .x-icon-button:active svg {
-        color: rgb(var(--x-action-color)) !important;
-    }
-
-    .x-icon-button:hover .count,
-    .x-icon-button.active .count {
-        color: rgb(var(--x-action-color)) !important;
+    .x-icon-button:active .count {
+        color: rgb(var(--x-color-hover)) !important;
     }
 }
 </style>

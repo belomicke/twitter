@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import DeleteAvatarConfirmDialog from './DeleteAvatarConfirmDialog.vue'
+import { useChangeProfilePicture } from '../hook/useChangeProfilePicture'
 import { useViewerStore } from '@/entities/Viewer/store'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import XButton from '@/shared/ui/XButton/XButton.vue'
-import {
-    useChangeProfilePicture,
-} from '@/features/account/edit-public-data/features/profile-avatar-changer/hook/useChangeProfilePicture'
-import DeleteAvatarConfirmDialog from './DeleteAvatarConfirmDialog.vue'
+import { storeToRefs } from 'pinia'
 
 const viewerStore = useViewerStore()
-const viewer = viewerStore.viewer
+const { getViewer } = storeToRefs(viewerStore)
+
+const viewer = computed(() => getViewer.value)
 
 const input = ref<HTMLInputElement | null>(null)
 
 const { mutate: changeProfilePicture } = useChangeProfilePicture()
 
 const profilePictureIsDefault = computed(() => {
-    return viewer?.profile_picture.small.endsWith('default-profile-picture.png')
+    return viewer.value?.profile_picture.small.endsWith('default-profile-picture.png')
 })
 
 function openFilePicker() {
@@ -29,6 +30,7 @@ function changeAvatar(e: InputEvent) {
 
     if (file) {
         changeProfilePicture(file)
+        target.files = null
     }
 }
 

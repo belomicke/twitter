@@ -45,7 +45,7 @@ const author = computed(() => {
     display: flex;
     flex-direction: column;
     grid-gap: 5px;
-    padding: 5px 15px 15px;
+    padding: 5px 15px 0;
     border-bottom: 1px solid var(--x-border-color);
 }
 

@@ -4,13 +4,14 @@ namespace App\Services\Feed;
 
 use App\Models\Post;
 use App\Models\User;
-use App\Repository\FeedRepository;
+use App\Repository\Feed\FeedRepository;
+use App\Services\Post\PostHelpers;
 
 class FeedService
 {
     public function __construct(
+        private readonly PostHelpers $postHelpers,
         private readonly FeedRepository $feedRepository,
-        private readonly FeedHelpers $feedHelpers
     ) {}
 
     public function getUserPosts(User $user, int $lastPostId): array
@@ -21,20 +22,33 @@ class FeedService
         );
 
         return [
-            'items' => $this->feedHelpers->postsToJson($result['posts']),
+            'items' => $this->postHelpers->postsToJson($result['items']),
             'total' => $result['total']
         ];
     }
 
-    public function getPostComments(Post $post, int $lastPostId): array
+    public function getUserFavoritedPosts(User $user, int $lastPostId): array
     {
-        $result = $this->feedRepository->getPostComments(
+        $result = $this->feedRepository->getUserFavoritedPosts(
+            user: $user,
+            lastPostId: $lastPostId
+        );
+
+        return [
+            'items' => $this->postHelpers->postsToJson($result['items']),
+            'total' => $result['total']
+        ];
+    }
+
+    public function getPostReplies(Post $post, int $lastPostId): array
+    {
+        $result = $this->feedRepository->getPostReplies(
             post: $post,
             lastPostId: $lastPostId
         );
 
         return [
-            'items' => $this->feedHelpers->postsToJson($result['posts']),
+            'items' => $this->postHelpers->postsToJson($result['items']),
             'total' => $result['total']
         ];
     }
@@ -47,7 +61,7 @@ class FeedService
         );
 
         return [
-            'items' => $this->feedHelpers->postsToJson($result['posts']),
+            'items' => $this->postHelpers->postsToJson($result['items']),
             'total' => $result['total']
         ];
     }
@@ -60,7 +74,7 @@ class FeedService
         );
 
         return [
-            'items' => array_reverse($this->feedHelpers->commentsToJson($result['posts'])),
+            'items' => $this->postHelpers->commentsToJson($result['items']),
             'total' => $result['total']
         ];
     }
@@ -70,20 +84,7 @@ class FeedService
         $result = $this->feedRepository->getFollowUsersPosts(lastPostId: $lastPostId);
 
         return [
-            'items' => $this->feedHelpers->postsToJson($result['posts']),
-            'total' => $result['total']
-        ];
-    }
-
-    public function getUserLikedPosts(User $user, int $lastPostId): array
-    {
-        $result = $this->feedRepository->getUserLikedPosts(
-            user: $user,
-            lastPostId: $lastPostId
-        );
-
-        return [
-            'items' => $this->feedHelpers->postsToJson($result['posts']),
+            'items' => $this->postHelpers->postsToJson($result['items']),
             'total' => $result['total']
         ];
     }
@@ -96,7 +97,7 @@ class FeedService
         );
 
         return [
-            'items' => $this->feedHelpers->postsToJson($result['posts']),
+            'items' => $this->postHelpers->postsToJson($result['items']),
             'total' => $result['total']
         ];
     }

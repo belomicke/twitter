@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 
@@ -37,6 +38,8 @@ use Laravel\Scout\Searchable;
  * @property string $password
  * @property DateTime $created_at
  * @property DateTime $updated_at
+ *
+ * @property bool profile_picture_is_default
  *
  * @method static User create (array $attributes = [])
  */
@@ -87,6 +90,7 @@ class User extends Authenticatable
     protected $appends = [
         'profile_picture',
         'profile_banner',
+        'profile_picture_is_default',
         'following'
     ];
 
@@ -96,6 +100,16 @@ class User extends Authenticatable
             'name' => $this->name,
             'username' => $this->username
         ];
+    }
+
+    public function checkPassword(string $password): bool
+    {
+        return Hash::check($password, $this->password);
+    }
+
+    public function getProfilePictureIsDefaultAttribute(): bool
+    {
+        return $this->profile_picture_filename !== UserHelpers::getDefaultProfilePictureFilenameValue();
     }
 
     public function getProfilePictureAttribute(): array
@@ -116,9 +130,14 @@ class User extends Authenticatable
 
     public function getFollowingAttribute(): bool
     {
+        if (Auth::id() === $this->id) {
+            return false;
+        }
+
         return DB::table('follows')
             ->where('follower_id', Auth::id())
             ->where('follow_id', $this->id)
+            ->where('is_deleted', false)
             ->exists();
     }
 
@@ -128,7 +147,9 @@ class User extends Authenticatable
             Post::class,
             'id',
             'user_id'
-        );
+        )
+            ->where('is_deleted', false)
+            ->whereNull('in_reply_to_post_id');
     }
 
     public function favorited_posts(): BelongsToMany
@@ -138,17 +159,9 @@ class User extends Authenticatable
             'favorited_posts',
             'user_id',
             'post_id',
-        )->withTimestamps();
-    }
-
-    public function retweeted_posts(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Post::class,
-            'retweeted_posts',
-            'user_id',
-            'post_id',
-        )->withTimestamps();
+        )
+            ->wherePivot('is_deleted', false)
+            ->withTimestamps();
     }
 
     public function followers(): BelongsToMany
@@ -168,6 +181,8 @@ class User extends Authenticatable
             'follows',
             'follower_id',
             'follow_id',
-        )->withTimestamps();
+        )
+            ->where('is_deleted', false)
+            ->withTimestamps();
     }
 }

@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, PropType, ref } from 'vue'
 import { observePosition } from '@/shared/helpers/observePositionOfElement'
 import { observeSize } from '@/shared/helpers/observeSizeOfElement'
 
-defineProps({
+const props = defineProps({
     modelValue: {
         type: Boolean,
         required: false
+    },
+    xSide: {
+        type: String as PropType<'left' | 'right'>,
+        required: false,
+        default: 'right'
     }
 })
 
@@ -29,6 +34,7 @@ const xProperty = ref<number>(0)
 const yProperty = ref<number>(0)
 
 const ySide = ref<'top' | 'bottom'>('top')
+const xSide = ref<'left' | 'right'>(props.xSide)
 
 const elementRect = ref<DOMRect | null>(null)
 
@@ -60,13 +66,19 @@ function getRectOfElement() {
     let rect = el.getBoundingClientRect()
     elementRect.value = rect
 
-    ySide.value = rect.top + rect.height + dropdownContent.offsetHeight + 10 > window.innerHeight ? 'top' : 'bottom'
+    ySide.value = rect.top + rect.height + dropdownContent.offsetHeight + 10 < window.innerHeight ? 'top' : 'bottom'
 
     elementWidth.value = rect.width
     elementHeight.value = rect.height
 
     yProperty.value = rect.top
-    xProperty.value = rect.left
+    xProperty.value = xSide.value === 'left' ? rect.left : rect.left - dropdownContent.offsetWidth + elementWidth.value
+}
+
+function open() {
+    getRectOfElement()
+    dropdownIsOpen.value = true
+    emit('update:modelValue', true)
 }
 
 function close() {
@@ -75,11 +87,6 @@ function close() {
     emit('update:modelValue', false)
 }
 
-function open() {
-    getRectOfElement()
-    dropdownIsOpen.value = true
-    emit('update:modelValue', true)
-}
 </script>
 
 <template>
@@ -107,6 +114,8 @@ function open() {
                         'visible': dropdownIsOpen,
                         'top': ySide === 'top',
                         'bottom': ySide === 'bottom',
+                        'right': xSide === 'right',
+                        'left': xSide === 'left'
                     }"
                     :style="{
                         '--element-height': `${elementHeight}px`,
@@ -147,7 +156,9 @@ function open() {
     z-index: 1000;
     border-radius: 10px;
     border: 1px solid var(--x-border-color);
-    background-color: var(--x-bg-color-page);
+    background-color: rgb(33, 33, 33, .87);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 .25rem .5rem .125rem rgb(16, 16, 16, .612);
     opacity: 0;
     pointer-events: none;
     transition: transform .15s, opacity .15s;
@@ -158,21 +169,43 @@ function open() {
     pointer-events: auto;
 }
 
-.x-dropdown-content.top {
+/* top left */
+.x-dropdown-content.bottom {
     transform-origin: bottom left;
     transform: scale(.85) translateY(calc(-100% - 10px));
 }
 
-.x-dropdown-content.top.visible {
+.x-dropdown-content.bottom.visible {
     transform: scale(1) translateY(calc(-100% - 10px));
 }
 
-.x-dropdown-content.bottom {
+/* top right */
+.x-dropdown-content.bottom.right {
+    transform-origin: bottom right;
+    transform: scale(.85) translateY(calc(-100% - 10px));
+}
+
+.x-dropdown-content.bottom.right.visible {
+    transform: scale(1) translateY(calc(-100% - 10px));
+}
+
+/* top left */
+.x-dropdown-content.top {
     transform-origin: top left;
     transform: scale(.85) translateY(calc(var(--element-height) + 10px));
 }
 
-.x-dropdown-content.bottom.visible {
+.x-dropdown-content.top.visible {
+    transform: scale(1) translateY(calc(var(--element-height) + 10px));
+}
+
+/* top right */
+.x-dropdown-content.top.right {
+    transform-origin: top right;
+    transform: scale(.85) translateY(calc(var(--element-height) + 10px));
+}
+
+.x-dropdown-content.top.visible {
     transform: scale(1) translateY(calc(var(--element-height) + 10px));
 }
 </style>

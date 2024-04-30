@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\CheckEmailExistsRequest;
-use App\Repository\UserRepository;
+use App\Repository\User\UserRepository;
 use Illuminate\Http\JsonResponse;
 
 class CheckEmailExistsController extends Controller

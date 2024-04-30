@@ -7,16 +7,16 @@ import { IconNames } from '@/shared/ui/XIcon'
 defineProps({
     text: {
         type: String,
-        required: true,
+        required: true
     },
     icon: {
         type: String as PropType<IconNames>,
-        required: true,
+        required: true
     },
     active: {
         type: Boolean,
-        required: true,
-    },
+        required: true
+    }
 })
 
 defineEmits(['click'])

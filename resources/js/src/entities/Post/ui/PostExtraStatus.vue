@@ -13,6 +13,11 @@ defineProps({
         type: String,
         required: true
     },
+    iconIsFilled: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     withUnderline: {
         type: Boolean,
         required: false,
@@ -20,7 +25,7 @@ defineProps({
     }
 })
 </script>
-
+const router = useRouter()
 <template>
     <div
         class="extra-status"
@@ -29,6 +34,7 @@ defineProps({
         <div class="icon">
             <x-icon
                 :icon="icon"
+                :filled="iconIsFilled"
                 :size="16"
                 color="rgb(113, 118, 123)"
             />

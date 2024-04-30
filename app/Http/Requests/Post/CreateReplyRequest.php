@@ -11,7 +11,7 @@ class CreateReplyRequest extends CreatePostRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

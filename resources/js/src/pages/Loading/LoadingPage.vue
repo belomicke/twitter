@@ -7,7 +7,7 @@ import XIcon from '@/shared/ui/XIcon/XIcon.vue'
     <div class="loading-page-container">
         <x-icon
             icon="logo"
-            :size="512"
+            :size="128"
             color="rgb(255, 255, 255)"
         />
     </div>

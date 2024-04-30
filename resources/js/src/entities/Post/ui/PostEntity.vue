@@ -3,11 +3,10 @@ import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/entities/User/store'
-import UserNames from '@/entities/User/ui/UserNames.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import PostBody from '@/entities/Post/ui/PostBody.vue'
-import PostPublishDate from '@/entities/Post/ui/PostPublishDate.vue'
 import UserUsername from '@/entities/User/ui/UserUsername.vue'
+import PostFeedItemHeaderTitle from '@/entities/Post/ui/PostFeedItemHeaderTitle.vue'
 import { usePostStore } from '@/entities/Post/store'
 import { IPost } from '@/shared/api/types/models/Post'
 
@@ -27,6 +26,21 @@ const props = defineProps({
         default: false
     },
     noActions: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    withThreadLineAbove: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    withThreadLineBelow: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    noPadding: {
         type: Boolean,
         required: false,
         default: false
@@ -66,51 +80,78 @@ function goToPost() {
 
 <template>
     <div
-        v-if="author && answerForUserId !== undefined"
-        class="post-entity"
-        @click.stop="goToPost"
+        class="wrapper"
+        :class="{
+            'no-padding': noPadding
+        }"
     >
-        <div class="avatar">
-            <user-avatar
-                :username="author.username"
-                :size="40"
-                rounded
-            />
-        </div>
-        <div class="content">
-            <div class="header">
-                <div class="title">
-                    <user-names
-                        :user="author"
-                        inline
-                        links
-                    />
-                    <span class="separator">·</span>
-                    <post-publish-date :date="post.created_at" />
-                </div>
-                <div
-                    v-if="post.in_reply_to_username && !noAnswer"
-                    class="subtitle"
-                >
-                    Ответ
-                    <user-username :username="post.in_reply_to_username" />
-                </div>
+        <div
+            v-if="withThreadLineAbove"
+            class="thread-line above"
+        />
+        <div
+            v-if="withThreadLineBelow"
+            class="thread-line below"
+        />
+        <div
+            v-if="author && answerForUserId !== undefined"
+            class="post-entity"
+            @click.stop="goToPost"
+        >
+            <div class="avatar">
+                <user-avatar
+                    :username="author.username"
+                    :size="40"
+                    rounded
+                />
             </div>
-            <post-body
-                :post="post"
-                with-retweet
-            />
-            <div
-                v-if="!noActions"
-                class="actions"
-            >
-                <slot name="actions" />
+            <div class="content">
+                <div class="header container">
+                    <div class="header-left">
+                        <div class="title">
+                            <post-feed-item-header-title :id="post.id" />
+                        </div>
+                        <div
+                            v-if="post.in_reply_to_username && !noAnswer"
+                            class="subtitle"
+                        >
+                            Ответ
+                            <user-username :username="post.in_reply_to_username" />
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <slot name="header-right" />
+                    </div>
+                </div>
+                <post-body
+                    :post="post"
+                    with-retweet
+                />
+                <div
+                    v-if="!noActions"
+                    class="actions"
+                >
+                    <slot name="footer" />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+.wrapper {
+    --vertical-padding: 10px;
+    --horizontal-padding: 15px;
+
+    padding: var(--vertical-padding) var(--horizontal-padding);
+    position: relative;
+}
+
+.wrapper.no-padding {
+    --vertical-padding: 0px;
+    --horizontal-padding: 0px;
+}
+
 .post-entity {
     display: flex;
     grid-gap: 10px;
@@ -118,8 +159,19 @@ function goToPost() {
 
 .header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     margin-bottom: 5px;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .title {
@@ -141,10 +193,6 @@ function goToPost() {
     white-space: nowrap;
 }
 
-.separator {
-    margin: 0 5px;
-}
-
 .content {
     display: flex;
     flex-direction: column;
@@ -153,5 +201,24 @@ function goToPost() {
 
 .actions {
     padding-top: 10px;
+}
+
+.thread-line {
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    background-color: var(--x-border-color);
+    left: calc(var(--horizontal-padding) + 19px);
+    z-index: 0;
+}
+
+.thread-line.below {
+    bottom: 0;
+    height: calc(100% - var(--vertical-padding) - 40px - 5px);
+}
+
+.thread-line.above {
+    top: 0;
+    height: calc(10px - 5px);
 }
 </style>
