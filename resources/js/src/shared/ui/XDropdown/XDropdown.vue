@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, PropType, ref } from 'vue'
+import { onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { observePosition } from '@/shared/helpers/observePositionOfElement'
 import { observeSize } from '@/shared/helpers/observeSizeOfElement'
 
@@ -9,9 +9,14 @@ const props = defineProps({
         required: false
     },
     xSide: {
-        type: String as PropType<'left' | 'right'>,
+        type: String as PropType<'left' | 'right' | 'center'>,
         required: false,
-        default: 'right'
+        default: 'center'
+    },
+    ySide: {
+        type: String as PropType<'top' | 'bottom' | 'center'>,
+        required: false,
+        default: 'center'
     }
 })
 
@@ -33,8 +38,8 @@ const elementWidth = ref<number>(0)
 const xProperty = ref<number>(0)
 const yProperty = ref<number>(0)
 
-const ySide = ref<'top' | 'bottom'>('top')
-const xSide = ref<'left' | 'right'>(props.xSide)
+const ySide = ref<'top' | 'bottom' | 'center'>(props.ySide)
+const xSide = ref<'left' | 'right' | 'center'>(props.xSide)
 
 const elementRect = ref<DOMRect | null>(null)
 
@@ -57,6 +62,16 @@ onUnmounted(() => {
     document.getElementById('scroll-element')?.removeEventListener('scroll', getRectOfElement)
 })
 
+watch(() => props.xSide, () => {
+    xSide.value = props.xSide
+    getRectOfElement()
+})
+
+watch(() => props.ySide, () => {
+    ySide.value = props.ySide
+    getRectOfElement()
+})
+
 function getRectOfElement() {
     const el = element.value
     const dropdownContent = dropdownRef.value
@@ -66,13 +81,24 @@ function getRectOfElement() {
     let rect = el.getBoundingClientRect()
     elementRect.value = rect
 
-    ySide.value = rect.top + rect.height + dropdownContent.offsetHeight + 10 < window.innerHeight ? 'top' : 'bottom'
-
     elementWidth.value = rect.width
     elementHeight.value = rect.height
 
-    yProperty.value = rect.top
-    xProperty.value = xSide.value === 'left' ? rect.left : rect.left - dropdownContent.offsetWidth + elementWidth.value
+    if (props.ySide === 'center' && dropdownContent.offsetHeight < window.innerHeight) {
+        yProperty.value = rect.bottom
+    } else {
+        ySide.value = rect.top + rect.height + 10 + dropdownContent.offsetHeight > window.innerHeight ? 'top' : 'bottom'
+
+        yProperty.value = ySide.value === 'bottom' ? rect.bottom + 10 : rect.top - dropdownContent.offsetHeight - 10
+    }
+
+    if (props.xSide === 'center' && dropdownContent.offsetHeight < window.innerWidth) {
+        xProperty.value = rect.left
+    } else {
+        xSide.value = rect.right - dropdownContent.offsetWidth < 0 ? 'right' : 'left'
+
+        xProperty.value = xSide.value === 'left' ? rect.left - dropdownContent.offsetWidth + elementWidth.value : rect.left
+    }
 }
 
 function open() {
@@ -82,7 +108,6 @@ function open() {
 }
 
 function close() {
-    getRectOfElement()
     dropdownIsOpen.value = false
     emit('update:modelValue', false)
 }
@@ -105,6 +130,7 @@ function close() {
                 class="x-dropdown"
                 :class="{
                     'visible': dropdownIsOpen,
+                    'pointer-events': dropdownIsOpen ? 'all' : 'none'
                 }"
             >
                 <div
@@ -164,48 +190,43 @@ function close() {
     transition: transform .15s, opacity .15s;
 }
 
+.x-dropdown-content {
+    transform: scale(.85);
+}
+
 .x-dropdown-content.visible {
     opacity: 1;
     pointer-events: auto;
+    transform: scale(1);
 }
 
-/* top left */
+/* bottom */
 .x-dropdown-content.bottom {
-    transform-origin: bottom left;
-    transform: scale(.85) translateY(calc(-100% - 10px));
+    transform-origin: top;
 }
 
-.x-dropdown-content.bottom.visible {
-    transform: scale(1) translateY(calc(-100% - 10px));
+/* top */
+.x-dropdown-content.top {
+    transform-origin: bottom;
 }
 
-/* top right */
+/* bottom left */
+.x-dropdown-content.bottom.left {
+    transform-origin: top right;
+}
+
+/* bottom right */
 .x-dropdown-content.bottom.right {
-    transform-origin: bottom right;
-    transform: scale(.85) translateY(calc(-100% - 10px));
-}
-
-.x-dropdown-content.bottom.right.visible {
-    transform: scale(1) translateY(calc(-100% - 10px));
+    transform-origin: top left;
 }
 
 /* top left */
-.x-dropdown-content.top {
-    transform-origin: top left;
-    transform: scale(.85) translateY(calc(var(--element-height) + 10px));
-}
-
-.x-dropdown-content.top.visible {
-    transform: scale(1) translateY(calc(var(--element-height) + 10px));
+.x-dropdown-content.top.left {
+    transform-origin: bottom right;
 }
 
 /* top right */
 .x-dropdown-content.top.right {
-    transform-origin: top right;
-    transform: scale(.85) translateY(calc(var(--element-height) + 10px));
-}
-
-.x-dropdown-content.top.visible {
-    transform: scale(1) translateY(calc(var(--element-height) + 10px));
+    transform-origin: bottom left;
 }
 </style>

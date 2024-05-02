@@ -76,7 +76,8 @@ const isActive = computed(() => {
 <template>
     <x-dropdown
         v-model="dropdownIsOpen"
-        x-side="right"
+        x-side="left"
+        y-side="top"
     >
         <template #default>
             <x-icon-button

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType, ref } from 'vue'
+import { onMounted, onUnmounted, PropType, ref } from 'vue'
 import LeftSidebarFooterDropdown from './ui/LeftSidebarFooterDropdown.vue'
 import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import UserNames from '@/entities/User/ui/UserNames.vue'
@@ -10,15 +10,33 @@ import XDropdown from '@/shared/ui/XDropdown/XDropdown.vue'
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const isVisible = ref<boolean>(false)
+
+const xSide = ref<'right' | 'left' | 'center'>('center')
+
+onMounted(() => {
+    window.addEventListener('resize', getXSide)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', getXSide)
+})
+
+function getXSide() {
+    xSide.value = window.innerWidth < 1280 ? 'right' : 'center'
+}
 </script>
 
 <template>
-    <x-dropdown v-model="isVisible">
+    <x-dropdown
+        v-model="isVisible"
+        y-side="top"
+        :x-side="xSide"
+    >
         <div
             class="footer"
             :class="{ 'active': isVisible }"
