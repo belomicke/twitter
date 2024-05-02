@@ -20,7 +20,7 @@ const userStore = useUserStore()
 const { getUserByUsername } = storeToRefs(userStore)
 
 const feed = computed(() => {
-    return getFeedById.value(`user:${props.username}:favorited_posts`)
+    return getFeedById.value(`user:${props.username}:liked_posts`)
 })
 
 const user = computed(() => {
@@ -30,7 +30,7 @@ const user = computed(() => {
 function fetch() {
     if (!user.value) return
 
-    if (user.value.favorites_count) {
+    if (user.value.liked_posts_count) {
         feedStore.fetchUserLikedPostsFeed(props.username)
     }
 }
@@ -39,12 +39,12 @@ function fetch() {
 <template>
     <template v-if="user">
         <user-liked-posts-empty-feed
-            v-if="user.favorites_count === 0 && !feed"
+            v-if="user.liked_posts_count === 0 && !feed"
             :username="username"
         />
         <post-feed
             v-else
-            :id="`user:${username}:favorited_posts`"
+            :id="`user:${username}:liked_posts`"
             window
             @fetch="fetch"
         />

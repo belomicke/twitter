@@ -20,36 +20,36 @@ const props = defineProps({
     }
 })
 
-const isLiked = ref<boolean>(props.post?.favorited)
-const count = ref<number>(props.post?.favorite_count)
+const isLiked = ref<boolean>(props.post?.liked)
+const count = ref<number>(props.post?.like_count)
 
 const postStore = usePostStore()
 const viewerStore = useViewerStore()
 
 watch(() => props.post, (newPost) => {
-    isLiked.value = newPost?.favorited
-    count.value = Number(newPost?.favorite_count) ?? 0
+    isLiked.value = newPost?.liked
+    count.value = Number(newPost?.like_count) ?? 0
 })
 
 const { mutate: like } = useLikePost()
 const { mutate: unlike } = useUnlikePost()
 
 function likeHandler() {
-    const value = !props.post?.favorited
+    const value = !props.post?.liked
 
     if (value) {
         postStore.likePost(props.post.id)
-        viewerStore.incrementFavoritesCount()
+        viewerStore.incrementLikedPostsCount()
     } else {
         postStore.unlikePost(props.post.id)
-        viewerStore.decrementFavoritesCount()
+        viewerStore.decrementLikedPostsCount()
     }
 
     debouncedLikeHandler(value)
 }
 
 const debouncedLikeHandler = _.debounce((value: boolean) => {
-    if (isLiked.value === props.post?.favorited) return
+    if (isLiked.value === props.post?.liked) return
 
     if (value) {
         like(props.post?.id, {
@@ -70,8 +70,8 @@ const debouncedLikeHandler = _.debounce((value: boolean) => {
 
 const color = computed(() => {
     if (!props.post) return undefined
-    
-    if (props.post.favorited) {
+
+    if (props.post.liked) {
         return '249, 24, 128'
     } else {
         return undefined
@@ -82,15 +82,15 @@ const color = computed(() => {
 <template>
     <x-icon-button
         icon="heart"
-        :filled="post.favorited"
+        :filled="post.liked"
         :size="iconSize"
-        :active="post.favorited"
+        :active="post.liked"
 
         :color="color"
         color-hover="249, 24, 128"
 
         background-color-hover="249, 24, 128"
-        :count="post.favorite_count"
+        :count="post.like_count"
         @click.stop="likeHandler"
     />
 </template>

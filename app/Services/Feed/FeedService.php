@@ -27,9 +27,9 @@ class FeedService
         ];
     }
 
-    public function getUserFavoritedPosts(User $user, int $lastPostId): array
+    public function getUserLikedPosts(User $user, int $lastPostId): array
     {
-        $result = $this->feedRepository->getUserFavoritedPosts(
+        $result = $this->feedRepository->getUserLikedPosts(
             user: $user,
             lastPostId: $lastPostId
         );

@@ -72,8 +72,8 @@ export const usePostStore = defineStore('posts', () => {
 
         if (!post) return
 
-        post.favorited = true
-        post.favorite_count += 1
+        post.liked = true
+        post.like_count += 1
     }
 
     function unlikePost(id: number) {
@@ -81,8 +81,8 @@ export const usePostStore = defineStore('posts', () => {
 
         if (!post) return
 
-        post.favorited = false
-        post.favorite_count -= 1
+        post.liked = false
+        post.like_count -= 1
     }
 
     function retweetPost(id: number) {

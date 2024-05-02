@@ -17,11 +17,11 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
  * @property int user_id
  * @property int retweeted_post_id
  * @property int media_count
- * @property int favorite_count
+ * @property int like_count
  * @property int retweet_count
  * @property int reply_count
  *
- * @property bool favorited
+ * @property bool liked
  * @property bool retweeted
  *
  * @property int in_reply_to_post_id
@@ -93,7 +93,7 @@ class Post extends Model
     {
         return $this->belongsToMany(
             User::class,
-            'favorited_posts',
+            'liked_posts',
             'post_id',
             'user_id',
         )

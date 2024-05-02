@@ -3,8 +3,8 @@ export interface IPost {
     text: string
     user_id: number
 
-    favorite_count: number
-    favorited: boolean
+    like_count: number
+    liked: boolean
 
     in_reply_to_post_id: number | null
     in_reply_to_user_id: number | null

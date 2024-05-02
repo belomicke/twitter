@@ -12,7 +12,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('favorited_posts', function (Blueprint $table) {
+        Schema::create('liked_posts', function (Blueprint $table) {
             $table->id();
 
             $table
@@ -40,6 +40,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('favorited_posts');
+        Schema::dropIfExists('liked_posts');
     }
 };

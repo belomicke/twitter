@@ -48,7 +48,7 @@ return new class extends Migration {
                 ->default(0);
 
             $table
-                ->integer('favorite_count')
+                ->integer('like_count')
                 ->default(0);
 
             $table

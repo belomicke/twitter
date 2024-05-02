@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Post\Favorite;
+namespace App\Http\Controllers\Post\Like;
 
-use App\Exceptions\Post\Favorite\PostInFavoriteAlreadyException;
+use App\Exceptions\Post\Like\PostIsNotLikedYetException;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Services\Post\PostService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class AddPostToFavoriteController extends Controller
+class UnlikePostController extends Controller
 {
     public function __construct(
         private readonly PostService $postService
     ) {}
 
     /**
-     * @throws PostInFavoriteAlreadyException
+     * @throws PostIsNotLikedYetException
      */
     public function __invoke(Post $post): JsonResponse
     {
-        if (!Gate::allows('add-post-to-favorite', $post)) {
-            throw new PostInFavoriteAlreadyException;
+        if (!Gate::allows('unlike-post', $post)) {
+            throw new PostIsNotLikedYetException;
         }
 
-        $this->postService->addPostToFavorite(post: $post);
+        $this->postService->unlikePost(post: $post);
 
         return response()->json([
             'success' => true

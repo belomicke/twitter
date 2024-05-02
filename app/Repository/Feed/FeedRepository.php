@@ -47,14 +47,14 @@ class FeedRepository
         ];
     }
 
-    public function getUserFavoritedPosts(User $user, int $lastPostId): array
+    public function getUserLikedPosts(User $user, int $lastPostId): array
     {
         $baseQuery = $user
-            ->favorited_posts()
+            ->liked_posts()
             ->orderByPivot('id', 'desc');
 
         if ($lastPostId !== 0) {
-            $pivot = DB::table('favorited_posts')
+            $pivot = DB::table('liked_posts')
                 ->where('post_id', $lastPostId)
                 ->where('user_id', $user->id)
                 ->first();
@@ -64,7 +64,7 @@ class FeedRepository
 
         return [
             'items' => $baseQuery->take(50)->get(),
-            'total' => $user->favorites_count
+            'total' => $user->liked_posts_count
         ];
     }
 

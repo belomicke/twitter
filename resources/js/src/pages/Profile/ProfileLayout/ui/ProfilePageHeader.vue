@@ -15,12 +15,14 @@ const props = defineProps({
 const route = useRoute()
 
 const title = computed(() => {
+    if (!props.user) return ''
+
     const page = route.path.split('/').at(-1)
 
     if (page === props.user.username) {
         return `${props.user.posts_count} постов`
     } else if (page === 'liked') {
-        return `${props.user.favorites_count} отметок «Нравится»`
+        return `${props.user.liked_posts_count} отметок «Нравится»`
     }
 
     return ''

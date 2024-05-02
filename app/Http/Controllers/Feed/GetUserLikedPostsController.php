@@ -21,7 +21,7 @@ class GetUserLikedPostsController extends Controller
 
         $user = $this->userRepository->getUserByUsername(username: $username);
 
-        $data = $this->feedService->getUserFavoritedPosts(
+        $data = $this->feedService->getUserLikedPosts(
             user: $user,
             lastPostId: $lastPostId
         );

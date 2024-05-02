@@ -29,7 +29,7 @@ use Laravel\Scout\Searchable;
  * @property string $link
  * @property bool $following
  * @property int $posts_count
- * @property int $favorites_count
+ * @property int $liked_posts_count
  * @property int $follows_count
  * @property int $followers_count
  * @property Collection $follows
@@ -152,11 +152,11 @@ class User extends Authenticatable
             ->whereNull('in_reply_to_post_id');
     }
 
-    public function favorited_posts(): BelongsToMany
+    public function liked_posts(): BelongsToMany
     {
         return $this->belongsToMany(
             Post::class,
-            'favorited_posts',
+            'liked_posts',
             'user_id',
             'post_id',
         )

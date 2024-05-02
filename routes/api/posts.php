@@ -4,9 +4,9 @@ use App\Http\Controllers\Post\CreatePostController;
 use App\Http\Controllers\Post\CreateQuoteController;
 use App\Http\Controllers\Post\CreateReplyController;
 use App\Http\Controllers\Post\DeletePostController;
-use App\Http\Controllers\Post\Favorite\AddPostToFavoriteController;
-use App\Http\Controllers\Post\Favorite\RemovePostFromFavoriteController;
 use App\Http\Controllers\Post\GetPostByIdController;
+use App\Http\Controllers\Post\Like\LikePostController;
+use App\Http\Controllers\Post\Like\UnlikePostController;
 use App\Http\Controllers\Post\Pin\PinPostController;
 use App\Http\Controllers\Post\Pin\UnpinPostController;
 use App\Http\Controllers\Post\Retweet\RetweetPostController;
@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
     Route::get('{post}', GetPostByIdController::class);
 
-    Route::post('{post}/favorite', AddPostToFavoriteController::class);
-    Route::delete('{post}/favorite', RemovePostFromFavoriteController::class);
+    Route::post('{post}/like', LikePostController::class);
+    Route::post('{post}/unlike', UnlikePostController::class);
 
     Route::post('{post}/pin', PinPostController::class);
     Route::delete('{post}/pin', UnpinPostController::class);

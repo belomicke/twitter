@@ -27,17 +27,17 @@ class ViewerRepository
         $user->save();
     }
 
-    public function incrementViewerFavoritePostsCount(): void
+    public function incrementViewerLikedPostsCount(): void
     {
         $user = Auth::user();
-        $user->favorites_count += 1;
+        $user->liked_posts_count += 1;
         $user->save();
     }
 
-    public function decrementViewerFavoritePostsCount(): void
+    public function decrementViewerLikedPostsCount(): void
     {
         $user = Auth::user();
-        $user->favorites_count -= 1;
+        $user->liked_posts_count -= 1;
         $user->save();
     }
 }

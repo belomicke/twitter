@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Repository\Account\ViewerRepository;
 use App\Repository\Media\MediaRepository;
-use App\Repository\Post\FavoritePostRepository;
+use App\Repository\Post\LikedPostRepository;
 use App\Repository\Post\PostRepository;
 use App\Repository\Post\RetweetedPostRepository;
 use App\Repository\User\UserRepository;
@@ -21,7 +21,7 @@ class PostHelpers
         private readonly UserRepository $userRepository,
         private readonly PostRepository $postRepository,
         private readonly MediaRepository $mediaRepository,
-        private readonly FavoritePostRepository $favoritePostRepository,
+        private readonly LikedPostRepository $likedPostRepository,
         private readonly RetweetedPostRepository $retweetedPostRepository
     ) {}
 
@@ -41,7 +41,7 @@ class PostHelpers
         $authors = $this->userRepository->getUsersByIds(ids: $authorsIds);
 
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $postsIds);
-        $favoritedStatuses = $this->favoritePostRepository->getMultipleStatuses(ids: $postsIds);
+        $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $postsIds);
 
         $items = [];
 
@@ -57,9 +57,9 @@ class PostHelpers
 
         foreach ($posts as $post) {
             $retweeted = $retweetedStatuses->where('retweeted_post_id', $post->id)->first() !== null;
-            $favorited = $favoritedStatuses->where('post_id', $post->id)->first() !== null;
+            $liked = $likedStatuses->where('post_id', $post->id)->first() !== null;
 
-            $post->favorited = $favorited;
+            $post->liked = $liked;
             $post->retweeted = $retweeted;
 
             if ($post->in_reply_to_user_id) {
@@ -127,17 +127,17 @@ class PostHelpers
         // Получаем всех авторов
         $users = $this->userRepository->getUsersByIds(ids: $allUsersIds);
 
-        $favoritedStatuses = $this->favoritePostRepository->getMultipleStatuses(ids: $allPostIds);
+        $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $allPostIds);
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $allPostIds);
 
         $items = [];
 
         foreach ($posts as $post) {
             $retweeted = $retweetedStatuses->where('retweeted_post_id', $post->id)->first() !== null;
-            $favorited = $favoritedStatuses->where('post_id', $post->id)->first() !== null;
+            $liked = $likedStatuses->where('post_id', $post->id)->first() !== null;
 
             $post->retweeted = $retweeted;
-            $post->favorited = $favorited;
+            $post->liked = $liked;
 
             $user = $users
                 ->where('id', $post->user_id)
@@ -156,8 +156,8 @@ class PostHelpers
                     $retweeted = $retweetedStatuses->where('retweeted_post_id', $retweet->id)->first() !== null;
                     $retweet->retweeted = $retweeted;
 
-                    $favorited = $favoritedStatuses->where('post_id', $retweet->id)->first() !== null;
-                    $retweet->favorited = $favorited;
+                    $liked = $likedStatuses->where('post_id', $retweet->id)->first() !== null;
+                    $retweet->liked = $liked;
 
                     $retweetUser = $users
                         ->where('id', $retweet->user_id)
@@ -192,10 +192,10 @@ class PostHelpers
             $author = $this->userRepository->getUserById(id: $post->user_id);
         }
 
-        $favorited = $this->favoritePostRepository->getStatus(id: $post->id);
+        $liked = $this->likedPostRepository->getStatus(id: $post->id);
         $retweeted = $this->retweetedPostRepository->getStatus(id: $post->id);
 
-        $post->favorited = $favorited;
+        $post->liked = $liked;
         $post->retweeted = $retweeted;
 
         $item = $this->getPostInJson(

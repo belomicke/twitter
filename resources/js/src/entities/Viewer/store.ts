@@ -99,27 +99,27 @@ export const useViewerStore = defineStore('viewer', () => {
 
         const userStore = useUserStore()
 
-        userStore.decrementPostsCount(user.id)
+        userStore.decrementLikedPostsCount(user.id)
     }
 
-    function incrementFavoritesCount() {
+    function incrementLikedPostsCount() {
         const user = viewer.value
 
         if (!user) return
 
         const userStore = useUserStore()
 
-        userStore.incrementFavoritesCount(user.id)
+        userStore.incrementLikedPostsCount(user.id)
     }
 
-    function decrementFavoritesCount() {
+    function decrementLikedPostsCount() {
         const user = viewer.value
 
         if (!user) return
 
         const userStore = useUserStore()
 
-        userStore.decrementFavoritesCount(user.id)
+        userStore.decrementLikedPostsCount(user.id)
     }
 
     return {
@@ -135,7 +135,7 @@ export const useViewerStore = defineStore('viewer', () => {
         incrementPostsCount,
         decrementPostsCount,
 
-        incrementFavoritesCount,
-        decrementFavoritesCount
+        incrementLikedPostsCount,
+        decrementLikedPostsCount
     }
 })

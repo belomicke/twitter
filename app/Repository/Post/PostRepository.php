@@ -41,17 +41,17 @@ class PostRepository
         return $post;
     }
 
-    public function incrementPostFavoriteCount(Post $post): Post
+    public function incrementPostLikeCount(Post $post): Post
     {
-        $post->favorite_count += 1;
+        $post->like_count += 1;
         $post->save();
 
         return $post;
     }
 
-    public function decrementPostFavoriteCount(Post $post): Post
+    public function decrementPostLikeCount(Post $post): Post
     {
-        $post->favorite_count -= 1;
+        $post->like_count -= 1;
         $post->save();
 
         return $post;

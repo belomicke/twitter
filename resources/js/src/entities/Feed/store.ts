@@ -203,7 +203,7 @@ export const useFeedStore = defineStore('feeds', () => {
     }
 
     async function fetchUserLikedPostsFeed(username: string) {
-        const id = `user:${username}:favorited_posts`
+        const id = `user:${username}:liked_posts`
         const feed = feeds.value.find(item => item.id === id)
 
         const offset = feed ? feed.data.items.length : 0

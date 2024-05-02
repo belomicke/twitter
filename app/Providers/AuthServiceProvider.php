@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Policies\Post\CreateQuotePolicy;
 use App\Policies\Post\EditPostPolicy;
-use App\Policies\Post\Favorite\AddPostToFavoritePolicy;
-use App\Policies\Post\Favorite\RemovePostFromFavoritePolicy;
+use App\Policies\Post\Like\LikePostPolicy;
+use App\Policies\Post\Like\UnlikePostPolicy;
 use App\Policies\Post\Retweet\RetweetPostPolicy;
 use App\Policies\Post\Retweet\UndoRetweetPostPolicy;
 use App\Policies\User\Follows\FollowUserPolicy;
@@ -32,8 +32,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-quote', CreateQuotePolicy::class);
         Gate::define('edit-post', EditPostPolicy::class);
 
-        Gate::define('add-post-to-favorite', AddPostToFavoritePolicy::class);
-        Gate::define('remove-post-from-favorite', RemovePostFromFavoritePolicy::class);
+        Gate::define('like-post', LikePostPolicy::class);
+        Gate::define('unlike-post', UnlikePostPolicy::class);
 
         Gate::define('retweet-post', RetweetPostPolicy::class);
         Gate::define('undo-retweet-post', UndoRetweetPostPolicy::class);

@@ -7,11 +7,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class FavoritePostRepository
+class LikedPostRepository
 {
-    public function add(int $id): void
+    public function like(int $id): void
     {
-        DB::table('favorited_posts')
+        DB::table('liked_posts')
             ->where('post_id', $id)
             ->where('user_id', Auth::id())
             ->updateOrInsert([
@@ -23,9 +23,9 @@ class FavoritePostRepository
             ]);
     }
 
-    public function remove(int $id): void
+    public function unlike(int $id): void
     {
-        DB::table('favorited_posts')
+        DB::table('liked_posts')
             ->where('post_id', $id)
             ->where('user_id', Auth::id())
             ->where('is_deleted', false)
@@ -41,7 +41,7 @@ class FavoritePostRepository
             return false;
         }
 
-        return DB::table('favorited_posts')
+        return DB::table('liked_posts')
             ->where('user_id', Auth::id())
             ->where('post_id', $post->id)
             ->where('is_deleted', false)
@@ -50,7 +50,7 @@ class FavoritePostRepository
 
     public function getStatus(int $id): bool
     {
-        return DB::table('favorited_posts')
+        return DB::table('liked_posts')
             ->where('user_id', Auth::id())
             ->where('is_deleted', false)
             ->where('post_id', $id)
@@ -59,7 +59,7 @@ class FavoritePostRepository
 
     public function getMultipleStatuses(array $ids): Collection
     {
-        return DB::table('favorited_posts')
+        return DB::table('liked_posts')
             ->where('user_id', Auth::id())
             ->where('is_deleted', false)
             ->whereIn('post_id', $ids)

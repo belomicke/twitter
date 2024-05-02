@@ -7,7 +7,7 @@ export const useLikePost = () => {
     return useMutation({
         mutationKey: ['like-post'],
         mutationFn: async (id: number) => {
-            const res = await api.posts.favorite.add(id)
+            const res = await api.posts.like(id)
 
             return res.data
         },

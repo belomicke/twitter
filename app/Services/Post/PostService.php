@@ -6,7 +6,7 @@ use App\Exceptions\Quote\QuoteExistsException;
 use App\Models\Post;
 use App\Repository\Account\ViewerRepository;
 use App\Repository\Media\MediaRepository;
-use App\Repository\Post\FavoritePostRepository;
+use App\Repository\Post\LikedPostRepository;
 use App\Repository\Post\PinnedPostRepository;
 use App\Repository\Post\PostRepository;
 use App\Repository\Post\RetweetedPostRepository;
@@ -16,7 +16,7 @@ class PostService
 {
     public function __construct(
         private readonly PostRepository $postRepository,
-        private readonly FavoritePostRepository $favoritePostRepository,
+        private readonly LikedPostRepository $likedPostRepository,
         private readonly RetweetedPostRepository $retweetedPostRepository,
         private readonly ViewerRepository $viewerRepository,
         private readonly MediaRepository $mediaRepository,
@@ -95,20 +95,20 @@ class PostService
         return $reply;
     }
 
-    public function addPostToFavorite(Post $post): bool
+    public function likePost(Post $post): bool
     {
-        $this->favoritePostRepository->add(id: $post->id);
-        $this->postRepository->incrementPostFavoriteCount(post: $post);
-        $this->viewerRepository->incrementViewerFavoritePostsCount();
+        $this->likedPostRepository->like(id: $post->id);
+        $this->postRepository->incrementPostLikeCount(post: $post);
+        $this->viewerRepository->incrementViewerLikedPostsCount();
 
         return true;
     }
 
-    public function removePostFromFavorite(Post $post): bool
+    public function unlikePost(Post $post): bool
     {
-        $this->favoritePostRepository->remove(id: $post->id);
-        $this->postRepository->decrementPostFavoriteCount(post: $post);
-        $this->viewerRepository->decrementViewerFavoritePostsCount();
+        $this->likedPostRepository->unlike(id: $post->id);
+        $this->postRepository->decrementPostLikeCount(post: $post);
+        $this->viewerRepository->decrementViewerLikedPostsCount();
 
         return true;
     }

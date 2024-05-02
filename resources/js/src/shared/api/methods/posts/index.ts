@@ -1,6 +1,6 @@
 import FormData from 'form-data'
 import { pin } from './pin'
-import { favorite } from './favorite'
+import { like, unlike } from './like'
 import { retweet } from './retweet'
 import { makeRequest } from '@/shared/api/makeRequest'
 import { PostApiResponse } from '@/shared/api/types/response/post/PostResponse'
@@ -51,7 +51,9 @@ export const posts = {
     reply,
     deletePost,
 
+    like,
+    unlike,
+
     retweet,
-    favorite,
     pin
 }

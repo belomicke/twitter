@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Exceptions\Post\Favorite;
+namespace App\Exceptions\Post\Like;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-class PostNotInFavoriteAlreadyException extends Exception
+class PostIsLikedAlreadyException extends Exception
 {
     public function render(): JsonResponse
     {
         return response()->json([
             'success' => false,
-            'message' => 'Вы не лайкали этот пост!'
+            'message' => 'Вы уже лайкали этот пост!'
         ]);
     }
 }
