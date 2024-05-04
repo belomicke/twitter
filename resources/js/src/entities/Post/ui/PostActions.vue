@@ -16,6 +16,11 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 18
+    },
+    color: {
+        type: String,
+        required: false,
+        default: '113, 118, 123'
     }
 })
 
@@ -36,6 +41,7 @@ function commentPost() {
             <x-icon-button
                 icon="comment"
                 :size="iconSize"
+                :color="color"
                 color-hover="30, 155, 240"
                 background-color-hover="30, 155, 240"
                 :count="post.reply_count"
@@ -46,12 +52,14 @@ function commentPost() {
             <post-retweet-action-button
                 :post="post"
                 :icon-size="iconSize"
+                :color="color"
             />
         </div>
         <div class="post-action-button">
             <post-like-action-button
                 :post="post"
                 :icon-size="iconSize"
+                :color="color"
             />
         </div>
     </div>

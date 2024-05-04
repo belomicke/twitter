@@ -17,6 +17,11 @@ const props = defineProps({
     iconSize: {
         type: Number,
         required: true
+    },
+    color: {
+        type: String,
+        required: false,
+        default: '113, 118, 123'
     }
 })
 
@@ -74,7 +79,7 @@ const color = computed(() => {
     if (props.post.liked) {
         return '249, 24, 128'
     } else {
-        return undefined
+        return props.color
     }
 })
 </script>
@@ -90,6 +95,7 @@ const color = computed(() => {
         color-hover="249, 24, 128"
 
         background-color-hover="249, 24, 128"
+
         :count="post.like_count"
         @click.stop="likeHandler"
     />

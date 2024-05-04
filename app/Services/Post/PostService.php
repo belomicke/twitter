@@ -116,7 +116,7 @@ class PostService
     public function retweet(Post $post): Post
     {
         $retweet = $this->retweetedPostRepository->retweetPost(id: $post->id);
-        $this->viewerRepository->incrementViewerPostCount();
+        $this->viewerRepository->incrementViewerPostCount(count: 1);
         $this->postRepository->incrementPostRetweetCount(post: $post);
 
         return $retweet;
@@ -125,7 +125,7 @@ class PostService
     public function undoRetweet(Post $post): bool
     {
         $this->retweetedPostRepository->unretweetPost(id: $post->id);
-        $this->viewerRepository->decrementViewerPostCount();
+        $this->viewerRepository->decrementViewerPostCount(count: 1);
         $this->postRepository->decrementPostRetweetCount(post: $post);
 
         return true;

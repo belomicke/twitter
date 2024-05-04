@@ -44,6 +44,16 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    withMediaModal: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    clickableUsername: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 const router = useRouter()
@@ -76,6 +86,13 @@ function goToPost() {
 
     router.push(`/post/${props.post.id}`)
 }
+
+function goToAuthor() {
+    if (!props.clickableUsername) return
+    if (!author.value) return
+
+    router.push(`/profile/${author.value.username}`)
+}
 </script>
 
 <template>
@@ -103,13 +120,18 @@ function goToPost() {
                     :username="author.username"
                     :size="40"
                     rounded
+                    @click.stop="goToAuthor"
                 />
             </div>
             <div class="content">
                 <div class="header container">
                     <div class="header-left">
                         <div class="title">
-                            <post-feed-item-header-title :id="post.id" />
+                            <post-feed-item-header-title
+                                :id="post.id"
+                                :links="clickableUsername"
+                                @click.stop="goToAuthor"
+                            />
                         </div>
                         <div
                             v-if="post.in_reply_to_username && !noAnswer"
@@ -126,6 +148,7 @@ function goToPost() {
                 <post-body
                     :post="post"
                     with-retweet
+                    :with-media-modal="withMediaModal"
                 />
                 <div
                     v-if="!noActions"

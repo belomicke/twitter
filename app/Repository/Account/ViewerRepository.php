@@ -13,17 +13,17 @@ class ViewerRepository
         return Auth::user();
     }
 
-    public function incrementViewerPostCount(): void
+    public function incrementViewerPostCount(int $count = 1): void
     {
         $user = Auth::user();
-        $user->posts_count += 1;
+        $user->posts_count += $count;
         $user->save();
     }
 
-    public function decrementViewerPostCount(?int $count): void
+    public function decrementViewerPostCount(int $count = 1): void
     {
         $user = Auth::user();
-        $user->posts_count -= $count !== null ? $count : 1;
+        $user->posts_count -= $count;
         $user->save();
     }
 

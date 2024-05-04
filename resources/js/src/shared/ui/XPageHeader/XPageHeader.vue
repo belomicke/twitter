@@ -9,12 +9,12 @@ const props = defineProps({
     withGoToBackButton: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     onBack: {
         type: Function,
-        default: null,
-    },
+        default: null
+    }
 })
 
 const emit = defineEmits(['back'])
@@ -60,7 +60,7 @@ function goToBackHandler() {
     background-color: rgba(0, 0, 0, 0.65);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    z-index: 1000;
+    z-index: 999;
 }
 
 .x-page-header {

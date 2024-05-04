@@ -11,6 +11,11 @@ const props = defineProps({
     id: {
         type: Number,
         required: true
+    },
+    links: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -39,7 +44,7 @@ const user = computed(() => {
         <user-names
             :user="user"
             inline
-            links
+            :links="links"
         />
         <span class="separator">·</span>
         <post-publish-date :date="post.created_at" />

@@ -18,6 +18,11 @@ defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    withMediaModal: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 </script>
@@ -35,7 +40,10 @@ defineProps({
             class="media"
             :class="{ compact: compact }"
         >
-            <media-post-extension :id="post.id" />
+            <media-post-extension
+                :post="post"
+                :with-modal="withMediaModal"
+            />
         </div>
         <div
             v-if="post.is_quote && post.retweeted_post_id && withRetweet"

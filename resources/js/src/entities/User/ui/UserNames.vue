@@ -6,23 +6,23 @@ import UserName from '@/entities/User/ui/UserName.vue'
 defineProps({
     user: {
         type: Object as PropType<IUser>,
-        required: true,
+        required: true
     },
     fontSize: {
         type: Number as PropType<15 | 20>,
         required: false,
-        default: 15,
+        default: 15
     },
     inline: {
         type: Boolean,
         required: false,
-        default: false,
+        default: false
     },
     links: {
         type: Boolean,
         required: false,
-        default: false,
-    },
+        default: false
+    }
 })
 </script>
 

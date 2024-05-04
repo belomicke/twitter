@@ -53,6 +53,7 @@ function close() {
     <x-modal
         ref="modal"
         centered
+        z-index="var(--z-index-post-creator)"
         @close="close"
     >
         <div class="wrapper">

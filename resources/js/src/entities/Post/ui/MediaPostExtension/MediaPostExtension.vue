@@ -1,14 +1,20 @@
 <script setup lang="ts">
 
 import { useMediaStore } from '@/entities/Media/store'
-import { computed } from 'vue'
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import MediaPostItem from '@/entities/Post/ui/MediaPostExtension/MediaPostItem.vue'
+import { IPost } from '@/shared/api/types/models/Post'
 
 const props = defineProps({
-    id: {
-        type: Number,
+    post: {
+        type: Object as PropType<IPost>,
         required: true
+    },
+    withModal: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -16,7 +22,7 @@ const mediaStore = useMediaStore()
 const { getPostMediaById } = storeToRefs(mediaStore)
 
 const mediaList = computed(() => {
-    return getPostMediaById.value(props.id)
+    return getPostMediaById.value(props.post.id)
 })
 </script>
 
@@ -30,11 +36,15 @@ const mediaList = computed(() => {
             :class="{ 'multiple': mediaList.length >= 2 }"
         >
             <media-post-item
+                :post="post"
                 :media="mediaList[0]"
+                :with-modal="withModal"
             />
             <media-post-item
                 v-if="mediaList.length >= 2"
+                :post="post"
                 :media="mediaList[1]"
+                :with-modal="withModal"
             />
         </div>
         <div
@@ -44,11 +54,15 @@ const mediaList = computed(() => {
         >
             <media-post-item
                 v-if="mediaList.length >= 3"
+                :post="post"
                 :media="mediaList[2]"
+                :with-modal="withModal"
             />
             <media-post-item
                 v-if="mediaList.length === 4"
+                :post="post"
                 :media="mediaList[3]"
+                :with-modal="withModal"
             />
         </div>
     </div>

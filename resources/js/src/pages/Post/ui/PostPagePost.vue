@@ -9,6 +9,7 @@ import UserAvatar from '@/entities/User/ui/UserAvatar.vue'
 import PostActions from '@/entities/Post/ui/PostActions.vue'
 import moment from 'moment'
 import PostOptions from '@/entities/Post/ui/PostOptions/PostOptions.vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
     id: {
@@ -21,6 +22,8 @@ const props = defineProps({
         default: false
     }
 })
+
+const router = useRouter()
 
 const postStore = usePostStore()
 const userStore = useUserStore()
@@ -50,6 +53,12 @@ const date = computed(() => {
 
     return n.format('D MMM YYYY')
 })
+
+function goToAuthor() {
+    if (!user.value) return
+
+    router.push(`/profile/${user.value.username}`)
+}
 </script>
 
 <template>
@@ -66,6 +75,7 @@ const date = computed(() => {
                     :username="user.username"
                     :size="40"
                     rounded
+                    @click="goToAuthor"
                 />
                 <user-names
                     :user="user"

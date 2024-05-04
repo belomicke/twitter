@@ -80,7 +80,7 @@ watch(() => props.id, () => {
                 class="media"
             >
                 <media-post-extension
-                    :id="post.id"
+                    :post="post"
                 />
             </div>
         </div>
@@ -102,6 +102,7 @@ watch(() => props.id, () => {
     border-radius: 15px;
     transition: background-color .15s;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .retweet-extension:hover {

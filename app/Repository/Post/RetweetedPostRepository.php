@@ -17,7 +17,7 @@ class RetweetedPostRepository
         ]);
 
         $retweet->save();
-        return $retweet;
+        return $retweet->fresh();
     }
 
     public function unretweetPost(int $id): void

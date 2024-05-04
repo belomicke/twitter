@@ -11,6 +11,11 @@ defineProps({
         type: Number,
         required: false,
         default: 600
+    },
+    zIndex: {
+        type: String,
+        required: false,
+        default: ''
     }
 })
 
@@ -38,6 +43,9 @@ function close() {
             <div
                 v-if="active"
                 class="modal"
+                :style="{
+                    'z-index': zIndex
+                }"
             >
                 <div
                     class="background"

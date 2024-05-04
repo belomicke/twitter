@@ -16,6 +16,11 @@ const props = defineProps({
     iconSize: {
         type: Number,
         required: true
+    },
+    color: {
+        type: String,
+        required: false,
+        default: '113, 118, 123'
     }
 })
 
@@ -80,7 +85,7 @@ const color = computed(() => {
     if (isRetweeted.value) {
         return '0, 186, 124'
     } else {
-        return '113, 118, 123'
+        return props.color
     }
 })
 </script>

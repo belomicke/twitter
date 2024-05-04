@@ -7,7 +7,6 @@ import XInput from '@/shared/ui/XInput'
 import XButton from '@/shared/ui/XButton/XButton.vue'
 import XIcon from '@/shared/ui/XIcon/XIcon.vue'
 import XModalContainer from '@/shared/ui/modal/XModalContainer/XModalContainer.vue'
-import { useAppNotificationStore } from '@/entities/App/store/AppNotificationStore'
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -24,8 +23,6 @@ defineExpose({
     open,
     close
 })
-
-const appNotificationStore = useAppNotificationStore()
 
 const formIsValid = computed(() => {
     if (username.value.length < 4 || username.value.length > 32) return false

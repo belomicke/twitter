@@ -128,6 +128,8 @@ function clickHandler(e: MouseEvent) {
             :post="postToRender"
             :no-redirect="noHover"
             :no-actions="noActions"
+            with-media-modal
+            clickable-username
 
             :with-thread-line-above="Boolean(isThread && !isFirstInThread)"
             :with-thread-line-below="Boolean(isThread || isThreadIfHaveComments && post.reply_count)"

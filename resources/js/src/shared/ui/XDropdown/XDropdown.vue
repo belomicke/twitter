@@ -168,7 +168,7 @@ function close() {
     top: 0;
     left: 0;
     pointer-events: none;
-    z-index: 1001;
+    z-index: var(--z-index-dropdown);
 }
 
 .x-dropdown.visible {
@@ -179,7 +179,7 @@ function close() {
     --element-height: 0px;
 
     position: absolute;
-    z-index: 1000;
+    z-index: 10000;
     border-radius: 10px;
     border: 1px solid var(--x-border-color);
     background-color: rgb(33, 33, 33, .87);
