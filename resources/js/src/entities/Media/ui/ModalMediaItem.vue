@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, PropType, ref } from 'vue'
+import { onMounted, PropType, ref, watch } from 'vue'
 import { Media } from '@/shared/api/types/models/Media'
 import PostActions from '@/entities/Post/ui/PostActions.vue'
 import { IPost } from '@/shared/api/types/models/Post'
@@ -39,7 +39,11 @@ const originHeight = ref<number>(0)
 const width = ref<string>(props.media?.width > props.media?.height ? '100%' : 'unset')
 const height = ref<string>(props.media?.width > props.media?.height ? 'unset' : '100%')
 
+watch(isVisible, calculateImageWidthAndHeight)
+
 onMounted(() => {
+    calculateImageWidthAndHeight()
+
     window.addEventListener('resize', () => {
         calculateImageWidthAndHeight()
     })
@@ -74,9 +78,9 @@ function calculateImageWidthAndHeight() {
         setPriorityOnWidth()
     } else {
         if (originWidth.value > originHeight.value) {
-            setPriorityOnHeight()
-        } else {
             setPriorityOnWidth()
+        } else {
+            setPriorityOnHeight()
         }
     }
 }
