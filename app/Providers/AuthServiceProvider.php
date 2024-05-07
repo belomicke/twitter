@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Policies\Post\Bookmark\BookmarkPostPolicy;
+use App\Policies\Post\Bookmark\UnbookmarkPostPolicy;
 use App\Policies\Post\CreateQuotePolicy;
 use App\Policies\Post\EditPostPolicy;
 use App\Policies\Post\Like\LikePostPolicy;
@@ -31,6 +33,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         Gate::define('create-quote', CreateQuotePolicy::class);
         Gate::define('edit-post', EditPostPolicy::class);
+
+        Gate::define('bookmark-post', BookmarkPostPolicy::class);
+        Gate::define('unbookmark-post', UnbookmarkPostPolicy::class);
 
         Gate::define('like-post', LikePostPolicy::class);
         Gate::define('unlike-post', UnlikePostPolicy::class);

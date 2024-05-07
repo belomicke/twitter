@@ -6,6 +6,7 @@ import XIconButton from '@/shared/ui/XIconButton/XIconButton.vue'
 import { IPost } from '@/shared/api/types/models/Post'
 import { useAppModalPostCreatorStore } from '@/entities/App/store/AppModalPostCreatorStore'
 import { useCreatePostModel } from '@/features/post/create-post/model'
+import PostBookmarkActionButton from '@/features/post/bookmark-post/ui/PostBookmarkActionButton.vue'
 
 const props = defineProps({
     post: {
@@ -57,6 +58,13 @@ function commentPost() {
         </div>
         <div class="post-action-button">
             <post-like-action-button
+                :post="post"
+                :icon-size="iconSize"
+                :color="color"
+            />
+        </div>
+        <div class="post-action-button">
+            <post-bookmark-action-button
                 :post="post"
                 :icon-size="iconSize"
                 :color="color"

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Post\Bookmark\BookmarkPostController;
+use App\Http\Controllers\Post\Bookmark\UnbookmarkPostController;
 use App\Http\Controllers\Post\CreatePostController;
 use App\Http\Controllers\Post\CreateQuoteController;
 use App\Http\Controllers\Post\CreateReplyController;
@@ -18,6 +20,9 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
 
     Route::post('{post}/like', LikePostController::class);
     Route::post('{post}/unlike', UnlikePostController::class);
+
+    Route::post('{post}/bookmark', BookmarkPostController::class);
+    Route::delete('{post}/bookmark', UnbookmarkPostController::class);
 
     Route::post('{post}/pin', PinPostController::class);
     Route::delete('{post}/pin', UnpinPostController::class);

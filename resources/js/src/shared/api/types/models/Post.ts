@@ -16,6 +16,8 @@ export interface IPost {
 
     is_pinned: boolean
 
+    bookmarked: boolean
+
     is_quote: boolean
     quote_count: number
 

@@ -50,6 +50,15 @@ const links = computed((): ILink[] => {
         },
         {
             id: 3,
+            icon: 'bookmark',
+            text: 'Закладки',
+            active: route.path === '/bookmark',
+            clickHandler: () => {
+                router.push('/bookmark')
+            }
+        },
+        {
+            id: 4,
             icon: 'profile',
             text: 'Профиль',
             active: route.path.startsWith(`/profile/${user?.username}`),

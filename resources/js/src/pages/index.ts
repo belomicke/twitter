@@ -3,12 +3,10 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { AppLayout } from './AppLayout'
 import { HomePage } from './Home'
 import { WelcomePage } from './Welcome'
-import PostPage from '@/pages/Post/PostPage.vue'
-import ProfilePosts from '@/pages/Profile/ProfileLayout/pages/Posts/ProfilePosts.vue'
-import ProfilePage from '@/pages/Profile/ProfilePage.vue'
-
-import ProfileLikedPosts from '@/pages/Profile/ProfileLayout/pages/Posts/ProfileLikedPosts.vue'
-import SearchPage from '@/pages/Search/SearchPage.vue'
+import { BookmarkPage } from '@/pages/Bookmark'
+import { SearchPage } from '@/pages/Search'
+import { PostPage } from '@/pages/Post'
+import { ProfileLikedPosts, ProfilePage, ProfilePosts } from '@/pages/Profile'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -40,6 +38,10 @@ const routes: RouteRecordRaw[] = [
             {
                 path: '/search',
                 component: SearchPage
+            },
+            {
+                path: '/bookmark',
+                component: BookmarkPage
             }
         ]
     },

@@ -44,6 +44,14 @@ const deletePost = async (id: number): Promise<EmptyResponse> => {
     return await makeRequest.delete(`/api/posts/${id}`)
 }
 
+const bookmark = async (id: number): Promise<EmptyResponse> => {
+    return await makeRequest.post(`/api/posts/${id}/bookmark`)
+}
+
+const unbookmark = async (id: number): Promise<EmptyResponse> => {
+    return await makeRequest.delete(`/api/posts/${id}/bookmark`)
+}
+
 export const posts = {
     getById,
     create,
@@ -53,6 +61,9 @@ export const posts = {
 
     like,
     unlike,
+
+    bookmark,
+    unbookmark,
 
     retweet,
     pin

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Feed\GetBookmarkedPostsFeedController;
 use App\Http\Controllers\Feed\GetFollowsPostsController;
 use App\Http\Controllers\Feed\GetPostCommentsController;
 use App\Http\Controllers\Feed\GetPostsByQueryController;
@@ -18,6 +19,8 @@ Route::prefix('feed')->middleware('auth:sanctum')->group(function () {
     Route::get('post/{post}/comments', GetPostCommentsController::class);
     Route::get('post/{post}/thread', GetPostThreadController::class);
     Route::get('post/{post}/thread_history', GetPostThreadHistoryController::class);
+
+    Route::get('post/bookmarked', GetBookmarkedPostsFeedController::class);
 
     Route::get('query/posts', GetPostsByQueryController::class);
 });

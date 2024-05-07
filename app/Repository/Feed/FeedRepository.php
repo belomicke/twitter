@@ -68,10 +68,12 @@ class FeedRepository
         ];
     }
 
-    public function getPostReplies(Post $post, int $lastPostId): array
+    public function getBookmarkedPosts(int $lastPostId): array
     {
-        $baseQuery = $post
-            ->replies()
+        $viewer = $this->viewerRepository->getViewer();
+
+        $baseQuery = $viewer
+            ->bookmarked_posts()
             ->orderBy('id', 'desc');
 
         if ($lastPostId !== 0) {
@@ -80,7 +82,7 @@ class FeedRepository
 
         return [
             'items' => $baseQuery->take(50)->get(),
-            'total' => $post->reply_count
+            'total' => $viewer->bookmarked_posts_count
         ];
     }
 

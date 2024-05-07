@@ -28,5 +28,6 @@ type IconNames =
     | 'analytic'
     | 'follow'
     | 'unfollow'
+    | 'bookmark'
 
 export default IconNames

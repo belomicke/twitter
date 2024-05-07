@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Repository\Account\ViewerRepository;
 use App\Repository\Media\MediaRepository;
+use App\Repository\Post\BookmarkedPostRepository;
 use App\Repository\Post\LikedPostRepository;
 use App\Repository\Post\PostRepository;
 use App\Repository\Post\RetweetedPostRepository;
@@ -22,7 +23,8 @@ class PostHelpers
         private readonly PostRepository $postRepository,
         private readonly MediaRepository $mediaRepository,
         private readonly LikedPostRepository $likedPostRepository,
-        private readonly RetweetedPostRepository $retweetedPostRepository
+        private readonly RetweetedPostRepository $retweetedPostRepository,
+        private readonly BookmarkedPostRepository $bookmarkedPostRepository
     ) {}
 
     public static function formatText(string $text): string
@@ -42,6 +44,7 @@ class PostHelpers
 
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $postsIds);
         $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $postsIds);
+        $bookmarkedStatuses = $this->bookmarkedPostRepository->getMultipleStatuses(ids: $postsIds);
 
         $items = [];
 
@@ -58,9 +61,11 @@ class PostHelpers
         foreach ($posts as $post) {
             $retweeted = $retweetedStatuses->where('retweeted_post_id', $post->id)->first() !== null;
             $liked = $likedStatuses->where('post_id', $post->id)->first() !== null;
+            $bookmarked = $bookmarkedStatuses->where('post_id', $post->id)->first() !== null;
 
             $post->liked = $liked;
             $post->retweeted = $retweeted;
+            $post->bookmarked = $bookmarked;
 
             if ($post->in_reply_to_user_id) {
                 $inReplyToUsername = $inReplyToUsers->where('id', $post->in_reply_to_user_id)->first()->username;
@@ -129,13 +134,16 @@ class PostHelpers
 
         $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $allPostIds);
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $allPostIds);
+        $bookmarkedStatuses = $this->bookmarkedPostRepository->getMultipleStatuses(ids: $allPostIds);
 
         $items = [];
 
         foreach ($posts as $post) {
+            $bookmarked = $bookmarkedStatuses->where('post_id', $post->id)->first() !== null;
             $retweeted = $retweetedStatuses->where('retweeted_post_id', $post->id)->first() !== null;
             $liked = $likedStatuses->where('post_id', $post->id)->first() !== null;
 
+            $post->bookmarked = $bookmarked;
             $post->retweeted = $retweeted;
             $post->liked = $liked;
 
@@ -194,9 +202,11 @@ class PostHelpers
 
         $liked = $this->likedPostRepository->getStatus(id: $post->id);
         $retweeted = $this->retweetedPostRepository->getStatus(id: $post->id);
+        $bookmarked = $this->bookmarkedPostRepository->getStatus(id: $post->id);
 
         $post->liked = $liked;
         $post->retweeted = $retweeted;
+        $post->bookmarked = $bookmarked;
 
         $item = $this->getPostInJson(
             post: $post,

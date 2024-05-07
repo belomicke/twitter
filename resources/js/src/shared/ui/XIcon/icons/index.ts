@@ -27,6 +27,7 @@ import FavoriteIcon from './FavoriteIcon.vue'
 import AnalyticIcon from './AnalyticIcon.vue'
 import FollowIcon from './FollowIcon.vue'
 import UnfollowIcon from './UnfollowIcon.vue'
+import BookmarkIcon from './BookmarkIcon.vue'
 
 export {
     CheckIcon,
@@ -57,5 +58,6 @@ export {
     FavoriteIcon,
     AnalyticIcon,
     FollowIcon,
-    UnfollowIcon
+    UnfollowIcon,
+    BookmarkIcon
 }

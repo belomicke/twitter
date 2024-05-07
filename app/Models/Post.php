@@ -23,6 +23,7 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
  *
  * @property bool liked
  * @property bool retweeted
+ * @property bool bookmarked
  *
  * @property int in_reply_to_post_id
  * @property int in_reply_to_user_id

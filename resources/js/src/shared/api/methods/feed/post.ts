@@ -13,8 +13,13 @@ const thread_history = async (id: number, lastPostId: number): Promise<PostFeedR
     return await makeRequest.get(`/api/feed/post/${id}/thread_history`, { params: { last_post_id: lastPostId } })
 }
 
+const bookmarked = async (lastPostId: number): Promise<PostFeedResponse> => {
+    return await makeRequest.get('/api/feed/post/bookmarked', { params: { last_post_id: lastPostId } })
+}
+
 export const post = {
     comments,
     thread,
+    bookmarked,
     thread_history
 }

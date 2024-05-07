@@ -230,6 +230,20 @@ export const useFeedStore = defineStore('feeds', () => {
         postFeedResponseHandler(id, res)
     }
 
+    async function fetchBookmarkedPostsFeed() {
+        const id = 'bookmarked-posts'
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset > feed.data.total) return
+
+        const res = await api.feed.post.bookmarked(lastPostId)
+        postFeedResponseHandler(id, res)
+    }
+
     async function fetchPostsByQuery(query: string) {
         const id = `search:${query}`
         const feed = feeds.value.find(item => item.id === id)
@@ -273,6 +287,7 @@ export const useFeedStore = defineStore('feeds', () => {
         fetchUserLikedPostsFeed,
         fetchPostsByQuery,
         fetchPostThreadFeed,
-        createFeed
+        createFeed,
+        fetchBookmarkedPostsFeed
     }
 })

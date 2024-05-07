@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { computed, PropType, ref, watch } from 'vue'
 import _ from 'lodash'
 import { useLikePost } from '../hook/useLikePost'

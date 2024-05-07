@@ -5,6 +5,7 @@ import {
     AddPhotoIcon,
     AnalyticIcon,
     ArrowLeftIcon,
+    BookmarkIcon,
     CalendarIcon,
     CheckIcon,
     ChevronDownIcon,
@@ -79,7 +80,8 @@ const icons = {
     'favorite': FavoriteIcon,
     'analytic': AnalyticIcon,
     'follow': FollowIcon,
-    'unfollow': UnfollowIcon
+    'unfollow': UnfollowIcon,
+    'bookmark': BookmarkIcon
 }
 </script>
 

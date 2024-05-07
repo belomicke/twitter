@@ -11,8 +11,8 @@ import XAlert from '@/shared/ui/XAlert/XAlert.vue'
 const { credentials } = defineProps({
     credentials: {
         type: Object as PropType<CreateAccountDTO>,
-        required: true,
-    },
+        required: true
+    }
 })
 
 const emit = defineEmits(['submit', 'close'])
@@ -36,7 +36,7 @@ function submit() {
     isLoading.value = true
     const data: CreateAccountDTO = {
         ...credentials,
-        code: Number(code.value),
+        code: code.value
     }
 
     createAccount(data, {
@@ -53,7 +53,7 @@ function submit() {
             }, 5000)
 
             isLoading.value = false
-        },
+        }
     })
 }
 </script>

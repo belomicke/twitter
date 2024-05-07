@@ -6,6 +6,7 @@ use App\Exceptions\Quote\QuoteExistsException;
 use App\Models\Post;
 use App\Repository\Account\ViewerRepository;
 use App\Repository\Media\MediaRepository;
+use App\Repository\Post\BookmarkedPostRepository;
 use App\Repository\Post\LikedPostRepository;
 use App\Repository\Post\PinnedPostRepository;
 use App\Repository\Post\PostRepository;
@@ -20,7 +21,8 @@ class PostService
         private readonly RetweetedPostRepository $retweetedPostRepository,
         private readonly ViewerRepository $viewerRepository,
         private readonly MediaRepository $mediaRepository,
-        private readonly PinnedPostRepository $pinnedPostRepository
+        private readonly PinnedPostRepository $pinnedPostRepository,
+        private readonly BookmarkedPostRepository $bookmarkedPostRepository
     ) {}
 
     public function createPost(string $text, array|null $media): Post
@@ -109,6 +111,20 @@ class PostService
         $this->likedPostRepository->unlike(id: $post->id);
         $this->postRepository->decrementPostLikeCount(post: $post);
         $this->viewerRepository->decrementViewerLikedPostsCount();
+
+        return true;
+    }
+
+    public function bookmarkPost(Post $post): bool
+    {
+        $this->bookmarkedPostRepository->bookmark(id: $post->id);
+
+        return true;
+    }
+
+    public function unbookmarkPost(Post $post): bool
+    {
+        $this->bookmarkedPostRepository->unbookmark(id: $post->id);
 
         return true;
     }

@@ -26,6 +26,7 @@ return new class extends Migration {
 
             $table->integer('posts_count')->default(0);
             $table->integer('liked_posts_count')->default(0);
+            $table->integer('bookmarked_posts_count')->default(0);
             $table->integer('follows_count')->default(0);
             $table->integer('followers_count')->default(0);
 

@@ -85,6 +85,22 @@ export const usePostStore = defineStore('posts', () => {
         post.like_count -= 1
     }
 
+    function bookmarkPost(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.bookmarked = true
+    }
+
+    function unbookmarkPost(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.bookmarked = false
+    }
+
     function retweetPost(id: number) {
         const post = posts.value.find(item => item.id === id)
 
@@ -174,6 +190,9 @@ export const usePostStore = defineStore('posts', () => {
         fetchPostById,
 
         incrementCommentsCount,
+
+        bookmarkPost,
+        unbookmarkPost,
 
         likePost,
         unlikePost,

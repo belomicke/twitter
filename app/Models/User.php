@@ -18,26 +18,27 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $username
- * @property string $email
- * @property string $profile_picture_filename
- * @property string $profile_banner_filename
- * @property string $bio
- * @property string $location
- * @property string $link
- * @property bool $following
- * @property int $posts_count
- * @property int $liked_posts_count
- * @property int $follows_count
- * @property int $followers_count
- * @property Collection $follows
- * @property Collection $followers
- * @property Date $birth
- * @property string $password
- * @property DateTime $created_at
- * @property DateTime $updated_at
+ * @property int id
+ * @property string name
+ * @property string username
+ * @property string email
+ * @property string profile_picture_filename
+ * @property string profile_banner_filename
+ * @property string bio
+ * @property string location
+ * @property string link
+ * @property bool following
+ * @property int posts_count
+ * @property int liked_posts_count
+ * @property int bookmarked_posts_count
+ * @property int follows_count
+ * @property int followers_count
+ * @property Collection follows
+ * @property Collection followers
+ * @property Date birth
+ * @property string password
+ * @property DateTime created_at
+ * @property DateTime updated_at
  *
  * @property bool profile_picture_is_default
  *
@@ -69,6 +70,7 @@ class User extends Authenticatable
     protected $hidden = [
         'email',
         'pivot',
+        'bookmarked_posts_count',
         'email_verified_at',
         'updated_at',
         'password',
@@ -157,6 +159,18 @@ class User extends Authenticatable
         return $this->belongsToMany(
             Post::class,
             'liked_posts',
+            'user_id',
+            'post_id',
+        )
+            ->wherePivot('is_deleted', false)
+            ->withTimestamps();
+    }
+
+    public function bookmarked_posts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'bookmarked_posts',
             'user_id',
             'post_id',
         )

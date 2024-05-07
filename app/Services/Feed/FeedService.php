@@ -53,6 +53,18 @@ class FeedService
         ];
     }
 
+    public function getBookmarkedPosts(int $lastPostId): array
+    {
+        $result = $this->feedRepository->getBookmarkedPosts(
+            lastPostId: $lastPostId
+        );
+
+        return [
+            'items' => $this->postHelpers->postsToJson($result['items']),
+            'total' => $result['total']
+        ];
+    }
+
     public function getPostThread(Post $post, int $lastPostId): array
     {
         $result = $this->feedRepository->getPostThread(

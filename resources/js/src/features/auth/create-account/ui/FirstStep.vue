@@ -40,15 +40,15 @@ function submit() {
         username: username.value,
         email: email.value,
         password: password.value,
-        code: 0,
-        birth: `${selectedYear.value}-${selectedMonth.value}-${selectedDay.value}`,
+        code: '',
+        birth: `${selectedYear.value}-${selectedMonth.value}-${selectedDay.value}`
     }
 
     sendVerificationCode(email.value, {
         onSuccess: () => {
             isLoading.value = false
             emit('submit', data)
-        },
+        }
     })
 }
 
