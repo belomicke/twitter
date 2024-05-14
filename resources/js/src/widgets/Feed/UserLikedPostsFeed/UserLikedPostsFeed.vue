@@ -39,7 +39,7 @@ function fetch() {
 <template>
     <template v-if="user">
         <user-liked-posts-empty-feed
-            v-if="user.liked_posts_count === 0 && !feed"
+            v-if="user.liked_posts_count === 0"
             :username="username"
         />
         <post-feed

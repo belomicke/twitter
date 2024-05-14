@@ -44,18 +44,36 @@ class MediaRepository
         return $media->fresh();
     }
 
-    public function saveImages(int $postId, array $files): array
+    public function saveImages(int $postId, array $files): void
     {
         $media = [];
 
         foreach ($files as $file) {
-            $media[] = $this->saveImage(
-                postId: $postId,
-                file: $file
+            $id = Str::uuid()->toString();
+            $type = explode('/', $file->getMimeType())[1];
+            $filename = $id . '.' . $type;
+
+            $image = Image::read($file);
+
+            $width = $image->width();
+            $height = $image->height();
+
+            $media[] = [
+                'post_id' => $postId,
+                'filename' => $filename,
+                'width' => $width,
+                'height' => $height,
+                'mime_type' => $file->getMimeType(),
+            ];
+
+            $this->storageRepository->save(
+                file: $file,
+                filename: $filename,
+                folder: 'images',
             );
         }
 
-        return $media;
+        Media::insert($media);
     }
 
     public function getPostMedia(int $id): Collection|array

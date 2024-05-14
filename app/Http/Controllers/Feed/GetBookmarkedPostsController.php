@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Feed\FeedService;
 use Illuminate\Http\Request;
 
-class GetBookmarkedPostsFeedController extends Controller
+class GetBookmarkedPostsController extends Controller
 {
     public function __construct(
         private readonly FeedService $feedService

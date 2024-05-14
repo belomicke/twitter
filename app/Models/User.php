@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\User\UserHelpers;
+use App\Helpers\UserHelpers;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,9 +30,13 @@ use Laravel\Scout\Searchable;
  * @property bool following
  * @property int posts_count
  * @property int liked_posts_count
+ * @property int media_posts_count
  * @property int bookmarked_posts_count
+ * @property int favorite_posts_count
  * @property int follows_count
  * @property int followers_count
+ * @property int media_count
+ * @property Collection posts
  * @property Collection follows
  * @property Collection followers
  * @property Date birth
@@ -159,6 +163,18 @@ class User extends Authenticatable
         return $this->belongsToMany(
             Post::class,
             'liked_posts',
+            'user_id',
+            'post_id',
+        )
+            ->wherePivot('is_deleted', false)
+            ->withTimestamps();
+    }
+
+    public function favorite_posts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'favorite_posts',
             'user_id',
             'post_id',
         )

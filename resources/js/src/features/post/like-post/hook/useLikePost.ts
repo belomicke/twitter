@@ -13,6 +13,8 @@ export const useLikePost = () => {
         },
         onSuccess(data, variables) {
             if (data.success) {
+                if (!data.success) return
+
                 const viewerStore = useViewerStore()
                 const viewer = viewerStore.viewer
 

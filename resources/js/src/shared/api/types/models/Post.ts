@@ -15,6 +15,7 @@ export interface IPost {
     created_at: string
 
     is_pinned: boolean
+    is_favorite: boolean
 
     bookmarked: boolean
 
@@ -26,4 +27,6 @@ export interface IPost {
     retweeted: boolean
 
     media_count: number
+
+    is_deleted: boolean
 }

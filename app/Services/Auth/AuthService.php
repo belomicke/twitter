@@ -40,13 +40,13 @@ class AuthService
         $user = $this->userRepository->getUserByUsername($username);
 
         if (!$user) {
-            throw new IncorrectCredentialsException;
+            throw new IncorrectCredentialsException();
         }
 
         $passwordIsCorrect = $user->checkPassword(password: $password);
 
         if (!$passwordIsCorrect) {
-            throw new IncorrectCredentialsException;
+            throw new IncorrectCredentialsException();
         }
 
         $credentials = [
@@ -77,7 +77,7 @@ class AuthService
         );
 
         if (!$codeIsCorrect) {
-            throw new IncorrectVerificationCodeException;
+            throw new IncorrectVerificationCodeException();
         }
 
         $this->userRepository->create(

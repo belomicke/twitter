@@ -117,7 +117,7 @@ class PostHelpers
         // Получаем id всех публикаций (и постов, и ретвитов)
         $allPostIds = array_unique([...$postIds, ...$retweetsIds]);
 
-        // Получаем все медиа(картинки) которые испульзуются во всех публикациях
+        // Получаем все медиа(картинки) которые используются во всех публикациях
         $media = $this->mediaRepository->getMediaByPostIds(ids: $allPostIds);
 
         // Получаем id всех авторов (и постов, и ретвитов)
@@ -135,6 +135,14 @@ class PostHelpers
         $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $allPostIds);
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $allPostIds);
         $bookmarkedStatuses = $this->bookmarkedPostRepository->getMultipleStatuses(ids: $allPostIds);
+
+        $inReplyToUserIds = CollectionHelpers::getSetFromCollection($posts->pluck('in_reply_to_user_id'));
+
+        if (count($inReplyToUserIds)) {
+            $inReplyToUsers = $this->userRepository->getUsersByIds(ids: $inReplyToUserIds);
+        } else {
+            $inReplyToUsers = Collection::make();
+        }
 
         $items = [];
 
@@ -154,6 +162,11 @@ class PostHelpers
             $retweet = null;
             $retweetUser = null;
             $retweetMedia = null;
+
+            if ($post->in_reply_to_user_id) {
+                $inReplyToUsername = $inReplyToUsers->where('id', $post->in_reply_to_user_id)->first()->username;
+                $post->in_reply_to_username = $inReplyToUsername;
+            }
 
             if ($post->retweeted_post_id) {
                 $retweet = $retweetedPosts
@@ -190,7 +203,7 @@ class PostHelpers
         return $items;
     }
 
-    public function postToJson(Post $post): array
+    public function postToJson(Post $post, bool $freshPost = false, Post $retweetedPost = null): array
     {
         $viewer = $this->viewerRepository->getViewer();
 
@@ -200,9 +213,15 @@ class PostHelpers
             $author = $this->userRepository->getUserById(id: $post->user_id);
         }
 
-        $liked = $this->likedPostRepository->getStatus(id: $post->id);
-        $retweeted = $this->retweetedPostRepository->getStatus(id: $post->id);
-        $bookmarked = $this->bookmarkedPostRepository->getStatus(id: $post->id);
+        if ($freshPost) {
+            $liked = false;
+            $retweeted = false;
+            $bookmarked = false;
+        } else {
+            $liked = $this->likedPostRepository->getStatusById(id: $post->id);
+            $retweeted = $this->retweetedPostRepository->getStatusById(id: $post->id);
+            $bookmarked = $this->bookmarkedPostRepository->getStatusById(id: $post->id);
+        }
 
         $post->liked = $liked;
         $post->retweeted = $retweeted;
@@ -216,11 +235,13 @@ class PostHelpers
         if ($post->media_count > 0) {
             $media = $this->mediaRepository->getPostMedia(id: $post->id);
 
-            $item['extensions']['media'] = $media;
+            $item['extensions']['media'] = $media->toArray();
         }
 
         if ($post->retweeted_post_id) {
-            $retweetedPost = $this->postRepository->getPostById(id: $post->retweeted_post_id);
+            if (!$retweetedPost) {
+                $retweetedPost = $this->postRepository->getPostById(id: $post->retweeted_post_id);
+            }
             $retweetedPostUser = $this->userRepository->getUserById(id: $retweetedPost->user_id);
             $retweetedPostMedia = $this->mediaRepository->getPostMedia(id: $retweetedPost->id);
 
@@ -244,6 +265,23 @@ class PostHelpers
         User|null $retweetedPostUser,
         Collection|null $retweetedPostMedia
     ): array {
+        if ($post->is_deleted) {
+            $post->text = '';
+            $post->retweeted_post_id = null;
+            $post->media_count = 0;
+            $post->like_count = 0;
+            $post->reply_count = 0;
+
+            return [
+                'post' => $post,
+                'user' => $user,
+                'extensions' => [
+                    'retweeted_post' => null,
+                    'media' => null
+                ]
+            ];
+        }
+
         $item = [
             'post' => $post->toArray(),
             'user' => $user->toArray(),
@@ -256,7 +294,7 @@ class PostHelpers
         if ($retweetedPost) {
             $item['extensions']['retweeted_post']['post'] = $retweetedPost->toArray();
             $item['extensions']['retweeted_post']['user'] = $retweetedPostUser->toArray();
-            $item['extensions']['retweeted_post']['extensions']['media'] = $retweetedPostMedia;
+            $item['extensions']['retweeted_post']['extensions']['media'] = [...$retweetedPostMedia->toArray()];
             $item['extensions']['retweeted_post']['extensions']['retweeted_post'] = null;
         }
 

@@ -12,14 +12,14 @@ const props = defineProps({
 const feedStore = useFeedStore()
 
 function fetch() {
-    feedStore.fetchPostCommentsFeed(props.id)
+    feedStore.fetchPostRepliesFeed(props.id)
 }
 </script>
 
 <template>
-    <div class="post-comments-feed">
+    <div class="post-replies-feed">
         <post-feed
-            :id="`post:${id}:comments`"
+            :id="`post:${id}:replies`"
             window
             @fetch="fetch"
         />
@@ -27,7 +27,7 @@ function fetch() {
 </template>
 
 <style scoped>
-.post-comments-feed {
+.post-replies-feed {
     min-height: 600px;
 }
 </style>

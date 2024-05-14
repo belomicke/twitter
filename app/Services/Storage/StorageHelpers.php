@@ -13,6 +13,7 @@ class StorageHelpers
             separator: '/',
             string: $file->getMimeType()
         )[1];
+
         return Str::uuid()->toString() . '.' . $type;
     }
 }

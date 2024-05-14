@@ -120,6 +120,22 @@ export const useUserStore = defineStore('users', () => {
         user.posts_count -= 1
     }
 
+    function incrementFavoritePostsCount(id: number) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.favorite_posts_count += 1
+    }
+
+    function decrementFavoritePostsCount(id: number) {
+        const user = users.value.find(item => item.id === id)
+
+        if (!user) return
+
+        user.favorite_posts_count -= 1
+    }
+
     function incrementLikedPostsCount(id: number) {
         const user = users.value.find(item => item.id === id)
 
@@ -176,6 +192,9 @@ export const useUserStore = defineStore('users', () => {
 
         incrementPostsCount,
         decrementPostsCount,
+
+        incrementFavoritePostsCount,
+        decrementFavoritePostsCount,
 
         incrementLikedPostsCount,
         decrementLikedPostsCount,

@@ -2,7 +2,6 @@
 
 namespace App\Policies\Post;
 
-use App\Models\Post;
 use App\Models\User;
 use App\Repository\Post\PostRepository;
 use App\Services\Post\PostHelpers;
@@ -13,12 +12,12 @@ class CreateQuotePolicy
         private readonly PostRepository $postRepository
     ) {}
 
-    public function __invoke(User $user, Post $post, string $text): bool
+    public function __invoke(User $user, int $postId, string $text): bool
     {
         $text = PostHelpers::formatText(text: $text);
 
         return !$this->postRepository->checkIsQuoteExists(
-            id: $post->id,
+            id: $postId,
             text: $text
         );
     }

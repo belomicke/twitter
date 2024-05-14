@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { PropType } from 'vue'
 import UserLikedPostsFeed from '@/widgets/Feed/UserLikedPostsFeed/UserLikedPostsFeed.vue'
 import IUser from '@/shared/api/types/models/User'
@@ -15,7 +14,3 @@ defineProps({
 <template>
     <user-liked-posts-feed :username="user.username" />
 </template>
-
-<style scoped>
-
-</style>

@@ -6,6 +6,8 @@ use App\Http\Controllers\Post\CreatePostController;
 use App\Http\Controllers\Post\CreateQuoteController;
 use App\Http\Controllers\Post\CreateReplyController;
 use App\Http\Controllers\Post\DeletePostController;
+use App\Http\Controllers\Post\Favorite\AddPostToFavoriteListController;
+use App\Http\Controllers\Post\Favorite\RemovePostFromFavoriteListController;
 use App\Http\Controllers\Post\GetPostByIdController;
 use App\Http\Controllers\Post\Like\LikePostController;
 use App\Http\Controllers\Post\Like\UnlikePostController;
@@ -29,6 +31,9 @@ Route::prefix('posts')->middleware('auth:sanctum')->group(function () {
 
     Route::post('{post}/retweet', RetweetPostController::class);
     Route::delete('{post}/retweet', UndoRetweetPostController::class);
+
+    Route::post('{post}/favorite', AddPostToFavoriteListController::class);
+    Route::delete('{post}/favorite', RemovePostFromFavoriteListController::class);
 
     Route::post('create', CreatePostController::class);
     Route::post('{post}/quote', CreateQuoteController::class);

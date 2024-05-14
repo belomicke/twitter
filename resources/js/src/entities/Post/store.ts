@@ -59,6 +59,22 @@ export const usePostStore = defineStore('posts', () => {
         posts.value = posts.value.filter(item => item.id !== post.id)
     }
 
+    function addPostToFavoriteList(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.is_favorite = true
+    }
+
+    function removePostFromFavoriteList(id: number) {
+        const post = posts.value.find(item => item.id === id)
+
+        if (!post) return
+
+        post.is_favorite = false
+    }
+
     function incrementCommentsCount(id: number) {
         const post = posts.value.find(item => item.id === id)
 
@@ -183,6 +199,7 @@ export const usePostStore = defineStore('posts', () => {
     return {
         getPostById,
         getRetweetByPostId,
+
         addPost,
         addPosts,
         deletePost,
@@ -201,6 +218,9 @@ export const usePostStore = defineStore('posts', () => {
         undoRetweetPost,
 
         pinPost,
-        unpinPost
+        unpinPost,
+
+        addPostToFavoriteList,
+        removePostFromFavoriteList
     }
 })

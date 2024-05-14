@@ -23,6 +23,10 @@ const title = computed(() => {
         return `${props.user.posts_count} постов`
     } else if (page === 'liked') {
         return `${props.user.liked_posts_count} отметок «Нравится»`
+    } else if (page === 'media') {
+        return `${props.user.media_count} фото и видео`
+    } else if (page === 'favorite') {
+        return `${props.user.favorite_posts_count} избранных постов`
     }
 
     return ''

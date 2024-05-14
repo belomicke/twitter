@@ -81,6 +81,7 @@ watch(() => props.id, () => {
             >
                 <media-post-extension
                     :post="post"
+                    with-modal
                 />
             </div>
         </div>

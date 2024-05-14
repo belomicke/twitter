@@ -14,6 +14,6 @@ class UndoRetweetPostPolicy
 
     public function __invoke(User $user, Post $post): bool
     {
-        return $this->retweetedPostRepository->exists(post: $post);
+        return $this->retweetedPostRepository->getStatus(post: $post);
     }
 }

@@ -2,7 +2,7 @@
 import { computed, onMounted, PropType, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useFeedStore } from '../store'
-import PostFeedItem from '../../../widgets/Post/PostFeedItem/PostFeedItem.vue'
+import PostFeedItem from '@/widgets/Post/PostFeedItem/PostFeedItem.vue'
 import XSpinner from '@/shared/ui/XSpinner/XSpinner.vue'
 import XVirtualScroll from '@/shared/ui/XVirtualScroll/XVirtualScroll.vue'
 import 'v3-infinite-loading/lib/style.css'
@@ -51,8 +51,14 @@ const renderSlot = computed(() => {
     return feed.value && feed.value.data.items.length === 0 && feed.value.data.total === 0
 })
 
+const hasNextPage = computed(() => {
+    if (!feed.value) return false
+
+    return feed.value.data.items.length < feed.value.data.total
+})
+
 onMounted(() => {
-    if (Boolean(feed.value && feed.value?.data.items.length !== 0)) return
+    if (hasNextPage.value) return
 
     emit('fetch')
 })
@@ -60,7 +66,7 @@ onMounted(() => {
 function load() {
     if (!feed.value) return
 
-    if (Boolean(feed.value.data.items.length >= feed.value.data.total)) return
+    if (hasNextPage.value) return
 
     emit('fetch')
 }
@@ -70,10 +76,10 @@ function load() {
     <x-virtual-scroll
         v-if="feed && !renderSlot"
         :items="feed.data.items"
-        :total="feed.data.total ?? 0"
         :trigger-side="triggerSide"
         :window="window"
         :no-borders="noBorders"
+        :has-next-page="hasNextPage"
         @fetch-next-page="load"
     >
         <template #item="{ virtualRow }">

@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int width
  * @property int height
  * @property string mime_type
+ *
+ * @method static Media[] insert (array $models)
  */
 class Media extends Model
 {
@@ -37,6 +39,6 @@ class Media extends Model
 
     public function getPathAttribute(): string
     {
-        return 'storage/images/' . $this->filename;
+        return '/storage/images/' . $this->filename;
     }
 }

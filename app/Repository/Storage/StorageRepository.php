@@ -13,9 +13,9 @@ class StorageRepository
         string $filename,
         string|null $folder
     ): void {
-        $path = 'public/' . $folder . '/' . $filename;
-
-        if (!$folder) {
+        if ($folder) {
+            $path = 'public/' . $folder . '/' . $filename;
+        } else {
             $path = 'public/' . $filename;
         }
 

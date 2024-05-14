@@ -29,5 +29,6 @@ type IconNames =
     | 'follow'
     | 'unfollow'
     | 'bookmark'
+    | 'gallery'
 
 export default IconNames

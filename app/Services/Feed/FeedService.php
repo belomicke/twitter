@@ -27,6 +27,32 @@ class FeedService
         ];
     }
 
+    public function getUserMediaPosts(User $user, int $lastPostId): array
+    {
+        $result = $this->feedRepository->getUserMediaPosts(
+            user: $user,
+            lastPostId: $lastPostId
+        );
+
+        return [
+            'items' => $this->postHelpers->postsToJson($result['items']),
+            'total' => $result['total']
+        ];
+    }
+
+    public function getUserFavoritePosts(User $user, int $lastPostId): array
+    {
+        $result = $this->feedRepository->getUserFavoritePosts(
+            user: $user,
+            lastPostId: $lastPostId
+        );
+
+        return [
+            'items' => $this->postHelpers->postsToJson($result['items']),
+            'total' => $result['total']
+        ];
+    }
+
     public function getUserLikedPosts(User $user, int $lastPostId): array
     {
         $result = $this->feedRepository->getUserLikedPosts(
@@ -56,19 +82,6 @@ class FeedService
     public function getBookmarkedPosts(int $lastPostId): array
     {
         $result = $this->feedRepository->getBookmarkedPosts(
-            lastPostId: $lastPostId
-        );
-
-        return [
-            'items' => $this->postHelpers->postsToJson($result['items']),
-            'total' => $result['total']
-        ];
-    }
-
-    public function getPostThread(Post $post, int $lastPostId): array
-    {
-        $result = $this->feedRepository->getPostThread(
-            post: $post,
             lastPostId: $lastPostId
         );
 

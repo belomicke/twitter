@@ -2,10 +2,10 @@
 
 namespace App\Services\Account;
 
+use App\Helpers\UserHelpers;
 use App\Models\User;
 use App\Repository\Account\ViewerRepository;
 use App\Services\Storage\StorageService;
-use App\Services\User\UserHelpers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 

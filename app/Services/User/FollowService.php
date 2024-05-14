@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Follows;
+namespace App\Services\User;
 
 use App\Models\User;
 use App\Repository\User\FollowRepository;

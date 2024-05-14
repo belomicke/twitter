@@ -27,7 +27,7 @@ class CreatePostController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $this->postHelpers->postToJson(post: $post)
+            'data' => $this->postHelpers->postToJson(post: $post, freshPost: true)
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 
 class PinnedPostRepository
 {
@@ -29,10 +30,10 @@ class PinnedPostRepository
         $post->save();
     }
 
-    public function unpinUserPost(User $user): void
+    public function unpinViewerPost(): void
     {
         Post::query()
-            ->where('user_id', $user->id)
+            ->where('user_id', Auth::id())
             ->where('is_pinned', true)
             ->update([
                 'is_pinned' => false

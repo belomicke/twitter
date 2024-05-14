@@ -4,7 +4,6 @@ import { storeToRefs } from 'pinia'
 import PostPagePost from './ui/PostPagePost.vue'
 import CommentCreator from './ui/CommentCreator.vue'
 import PostPageComment from './ui/PostPageComment.vue'
-import PostPageAnswer from './ui/PostPageAnswer.vue'
 import VirtualScroll from '@/pages/Post/ui/VirtualScroll.vue'
 import { useFeedStore } from '@/entities/Feed/store'
 import PostFeedItem from '@/widgets/Post/PostFeedItem/PostFeedItem.vue'
@@ -34,7 +33,7 @@ const threadHistoryFeed = computed(() => {
 })
 
 const commentsFeed = computed(() => {
-    return getFeedById.value(`post:${props.post.id}:comments`)
+    return getFeedById.value(`post:${props.post.id}:replies`)
 })
 
 const topTriggerIsVisible = computed(() => {
@@ -103,30 +102,6 @@ function restoreScrollPosition() {
     vScroll.scrollToIndex(indexToScroll, { align: 'start' })
 }
 
-function showAnswers(id: number) {
-    commentsWithShowedAnswers.value.push(id)
-}
-
-function getIsLastAnswerAttribute(index: number) {
-    if (!items.value[index + 1]) return true
-
-    return Boolean(items.value[index + 1].indexOf('answer') === -1)
-}
-
-function getRootPostInThreadId(id: string) {
-    const index = items.value.indexOf(id)
-    let rootPostInThreadId = 0
-
-    for (let i = index; i >= 0; i--) {
-        if (items.value[i].indexOf('answer') === -1) {
-            rootPostInThreadId = Number(items.value[i].split(':')[1])
-            break
-        }
-    }
-
-    return rootPostInThreadId
-}
-
 function topTriggerHandler() {
     const feed = threadHistoryFeed.value
 
@@ -145,7 +120,7 @@ function bottomTriggerHandler() {
 
     if (!feed || !pageIsVisible.value) return
 
-    feedStore.fetchPostCommentsFeed(props.post.id)
+    feedStore.fetchPostRepliesFeed(props.post.id)
 }
 
 async function fetchThreadHistoryFeedOnMounted() {
@@ -169,10 +144,9 @@ async function fetchThreadHistoryFeedOnMounted() {
 }
 
 function pageInitHandler() {
-    commentsWithShowedAnswers.value = []
     fetchThreadHistoryFeedOnMounted().then(() => {
         if (props.post?.reply_count) {
-            feedStore.fetchPostCommentsFeed(props.post.id)
+            feedStore.fetchPostRepliesFeed(props.post.id)
         }
     })
 }
@@ -194,32 +168,31 @@ function pageInitHandler() {
             @bottom-handler="bottomTriggerHandler"
         >
             <template #default="{ virtualRow }">
-                <post-page-post
+                <div
                     v-if="items[virtualRow.index] === 'page-post'"
-                    :id="post.id"
-                    :has-thread="Boolean(items[virtualRow.index - 1])"
-                />
-                <comment-creator
-                    v-else-if="items[virtualRow.index] === 'comment-creator'"
-                    :post="post"
-                />
+                    class="page-post"
+                >
+                    <post-page-post
+                        :id="post.id"
+                        :has-thread="Boolean(items[virtualRow.index - 1])"
+                    />
+                    <comment-creator
+                        :post="post"
+                    />
+                </div>
                 <post-feed-item
                     v-else-if="items[virtualRow.index].startsWith('thread_history')"
                     :id="Number(items[virtualRow.index].split(':')[1])"
                     is-thread
+                    :with-thread-line-above="items.indexOf(items[virtualRow.index]) > 0"
+                    with-thread-line-below
                     no-answer
-                    :is-first-in-thread="items.indexOf(items[virtualRow.index]) === 0"
-                />
-                <post-page-answer
-                    v-else-if="items[virtualRow.index].endsWith('answer')"
-                    :id="Number(items[virtualRow.index].split(':')[1])"
-                    :root-post-in-thread-id="getRootPostInThreadId(items[virtualRow.index])"
-                    :is-last="getIsLastAnswerAttribute(virtualRow.index)"
+                    no-border
+                    can-be-deleted
                 />
                 <post-page-comment
                     v-else-if="items[virtualRow.index].startsWith('comment')"
                     :id="Number(items[virtualRow.index].split(':')[1])"
-                    @show-comments="showAnswers"
                 />
             </template>
         </virtual-scroll>

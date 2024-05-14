@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Account;
 
+use App\Helpers\UserHelpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\EditAccountPublicDataRequest;
 use App\Services\Account\AccountService;
-use App\Services\User\UserHelpers;
 use Illuminate\Http\JsonResponse;
 
 class EditAccountPublicData extends Controller

@@ -10,6 +10,8 @@ import { useUnfollowUser } from '@/features/user/follow-user/hook/useUnfollowUse
 import { useFollowUser } from '@/features/user/follow-user/hook/useFollowUser'
 import { usePinPost, useUnpinPost } from '@/features/post/pin-post'
 import DeletePostDialog from '@/features/post/delete-post/ui/DeletePostDialog.vue'
+import { useAddPostToFavoriteList } from "@/features/post/favorite-post/hook/useAddPostToFavoriteList"
+import { useRemovePostFromFavoriteList } from "@/features/post/favorite-post/hook/useRemovePostFromFavoriteList"
 
 const props = defineProps({
     post: {
@@ -41,10 +43,14 @@ const author = computed(() => {
 const { mutate: pinPost } = usePinPost()
 const { mutate: unpinPost } = useUnpinPost()
 
+const { mutate: addToFavorite } = useAddPostToFavoriteList()
+const { mutate: removeFromFavorite } = useRemovePostFromFavoriteList()
+
 const optionsUsedIfViewerIsAnAuthorOfThisPost = computed((): XDropdownIconButtonOption[] => {
     if (!props.post) return []
 
     const isPinned = props.post.is_pinned
+    const isFavorite = props.post.is_favorite
 
     return [
         {
@@ -65,8 +71,8 @@ const optionsUsedIfViewerIsAnAuthorOfThisPost = computed((): XDropdownIconButton
         },
         {
             icon: 'favorite',
-            label: 'Добавить в избранное в вашем профиле',
-            action: () => console.log('favorite')
+            label: isFavorite ? 'Убрать из избранного в вашем профиле' : 'Добавить в избранное в вашем профиле',
+            action: () => isFavorite ? removeFromFavorite(props.post.id) : addToFavorite(props.post.id)
         }
     ]
 })

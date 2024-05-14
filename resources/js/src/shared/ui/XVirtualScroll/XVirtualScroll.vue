@@ -1,23 +1,31 @@
 <script setup lang="ts">
 import { computed, onMounted, PropType, ref } from 'vue'
-
-import InfiniteLoading from 'v3-infinite-loading'
-
 import { useVirtualizer } from '@tanstack/vue-virtual'
+import XSpinner from "@/shared/ui/XSpinner/XSpinner.vue"
 
 const props = defineProps({
     items: {
         type: Array as PropType<number[]>,
         required: true
     },
-    total: {
-        type: Number,
+    hasNextPage: {
+        type: Boolean,
         required: true
     },
     window: {
         type: Boolean,
         required: false,
         default: false
+    },
+    noBorders: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    triggerSide: {
+        type: String as PropType<'top' | 'bottom'>,
+        required: false,
+        default: 'bottom'
     }
 })
 
@@ -64,14 +72,10 @@ onMounted(() => {
     parentOffsetRef.value = parentRef.value?.offsetTop ?? 0
 })
 
-const hasNextPage = computed(() => {
-    return count.value < props.total
-})
-
-function fetchNextPage() {
-    if (!hasNextPage.value) return
-
-    emit('fetch-next-page')
+function fetchTriggerHandler(isVisible: boolean) {
+    if (isVisible) {
+        emit('fetch-next-page')
+    }
 }
 </script>
 
@@ -114,18 +118,21 @@ function fetchNextPage() {
                 </div>
             </div>
         </div>
-        <div
-            v-if="hasNextPage"
-            class="loader"
-        >
-            <infinite-loading @infinite="fetchNextPage" />
-        </div>
+    </div>
+    <div
+        v-if="hasNextPage"
+        v-observe-visibility="fetchTriggerHandler"
+        class="loader"
+    >
+        <x-spinner
+            :size="30"
+        />
     </div>
 </template>
 
 <style scoped>
 .post-feed {
-    padding-bottom: 10px;
+    padding-bottom: 15px;
 }
 
 .post-feed.scroll {
@@ -135,6 +142,5 @@ function fetchNextPage() {
 .loader {
     display: flex;
     justify-content: center;
-    padding-top: 14px;
 }
 </style>

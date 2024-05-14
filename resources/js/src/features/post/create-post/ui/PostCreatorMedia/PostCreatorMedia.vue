@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, PropType, ref } from 'vue'
+import { computed, PropType, ref, watch } from 'vue'
 import PostCreatorMediaItem from './PostCreatorMediaItem.vue'
 import PostCreatorMediaSlideButton from './PostCreatorMediaSlideButton.vue'
 
@@ -13,7 +13,17 @@ const props = defineProps({
 
 const emit = defineEmits(['delete-media'])
 
-const page = ref<number>(0)
+const page = ref<0 | 1 | 2>(0)
+
+watch(() => props.mediaFiles, () => {
+    if (!props.mediaFiles) return
+
+    if (props.mediaFiles.length === 3) {
+        page.value = 1
+    } else if (props.mediaFiles.length === 4) {
+        page.value = 2
+    }
+}, { deep: true })
 
 function goToPrevPage() {
     if (page.value !== 0) {

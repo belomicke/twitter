@@ -7,6 +7,7 @@ use App\Repository\Account\ViewerRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository
@@ -28,19 +29,15 @@ class UserRepository
 
     public function getUserByUsername(string $username): User|Model|Builder|null
     {
-        $viewer = $this->viewerRepository->getViewer();
-
-        if ($viewer && $viewer->username === $username) {
-            return $viewer;
-        }
-
         return User::query()->where('username', $username)->first();
     }
 
     public function getUsersByIds(array $ids): Collection
     {
         if (count($ids) === 1) {
-            return Collection::make(items: [$this->getUserById(id: $ids[0])]);
+            if (array_values($ids)[0] === Auth::id()) {
+                return Collection::make([Auth::user()]);
+            }
         }
 
         return User::query()->whereIn('id', $ids)->get();

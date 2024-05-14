@@ -3,27 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Repository\Account\ViewerRepository;
-use App\Repository\User\UserRepository;
+use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class GetUserByUsernameController extends Controller
 {
     public function __construct(
-        private readonly ViewerRepository $viewerRepository,
-        private readonly UserRepository $userRepository
+        private readonly UserService $userService
     ) {}
 
-    public function __invoke(Request $request, string $username): JsonResponse
+    public function __invoke(string $username): JsonResponse
     {
-        $viewer = $this->viewerRepository->getViewer();
-
-        if ($viewer->username === $username) {
-            $user = $viewer;
-        } else {
-            $user = $this->userRepository->getUserByUsername(username: $username);
-        }
+        $user = $this->userService->getUserByUsername(username: $username);
 
         return response()->json([
             'success' => true,

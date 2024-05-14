@@ -6,6 +6,7 @@ use App\Exceptions\Post\Like\PostIsNotLikedYetException;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Services\Post\PostService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
@@ -20,8 +21,12 @@ class UnlikePostController extends Controller
      */
     public function __invoke(Post $post): JsonResponse
     {
+        if ($post->is_deleted) {
+            throw new ModelNotFoundException();
+        }
+
         if (!Gate::allows('unlike-post', $post)) {
-            throw new PostIsNotLikedYetException;
+            throw new PostIsNotLikedYetException();
         }
 
         $this->postService->unlikePost(post: $post);

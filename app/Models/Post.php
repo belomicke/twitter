@@ -31,13 +31,18 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
  *
  * @property bool is_deleted
  * @property bool is_pinned
+ * @property bool is_favorite
+ *
+ *
  * @property Collection likers
  *
  * @method static Post create (array $attributes = [])
  */
 class Post extends Model
 {
-    use HasFactory, Searchable, HasRecursiveRelationships;
+    use HasFactory;
+    use HasRecursiveRelationships;
+    use Searchable;
 
     public function getParentKeyName(): string
     {
@@ -63,12 +68,15 @@ class Post extends Model
 
     protected $hidden = [
         'pivot',
-        'is_deleted'
+        'depth',
+        'path'
     ];
 
     protected $casts = [
+        'is_deleted' => 'boolean',
         'is_quote' => 'boolean',
-        'is_pinned' => 'boolean'
+        'is_pinned' => 'boolean',
+        'is_favorite' => 'boolean'
     ];
 
     protected static function booted(): void
@@ -87,7 +95,10 @@ class Post extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(
+            User::class,
+            'user_id'
+        );
     }
 
     public function likers(): BelongsToMany
@@ -100,6 +111,16 @@ class Post extends Model
         )
             ->wherePivot('is_deleted', false)
             ->withTimestamps();
+    }
+
+    public function retweeters(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'posts',
+            'retweeted_post_id',
+            'user_id',
+        );
     }
 
     public function retweet(): BelongsTo

@@ -64,6 +64,10 @@ return new class extends Migration {
                 ->default(false);
 
             $table
+                ->boolean('is_favorite')
+                ->default(false);
+
+            $table
                 ->boolean('is_quote')
                 ->default(false);
 

@@ -5,6 +5,7 @@ import RetweetedPostFeedItem from './RetweetedPostFeedItem.vue'
 import PinnedPostFeedItem from './PinnedPostFeedItem.vue'
 import { usePostStore } from '@/entities/Post/store'
 import { storeToRefs } from 'pinia'
+import DeletedPost from "@/entities/Post/ui/DeletedPost.vue"
 
 const props = defineProps({
     id: {
@@ -20,7 +21,28 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
-    }
+    },
+    noBorder: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    canBeDeleted: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+
+    withThreadLineAbove: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    withThreadLineBelow: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
 })
 
 const postStore = usePostStore()
@@ -37,41 +59,55 @@ const retweetedPost = computed(() => {
     return getPostById.value(post.value.retweeted_post_id)
 })
 
-const isDefaultPost = computed(() => {
-    if (!post.value) return false
-    if (post.value && post.value.retweeted_post_id !== null) return false
-
-    return true
-})
-
 const isRetweet = computed(() => {
-    return post.value && retweetedPost.value && post.value.retweeted_post_id !== 0 && post.value.media_count === 0 && post.value.text === ''
+    return post.value &&
+        retweetedPost.value &&
+        post.value.retweeted_post_id !== 0 &&
+        post.value.media_count === 0 &&
+        post.value.text === ''
 })
 
 const isPinned = computed(() => {
-    return props.canBePinned && post.value && post.value.is_pinned
+    return props.canBePinned &&
+        post.value &&
+        post.value.is_pinned
 })
 </script>
 
 <template>
     <div
-        v-if="Boolean(isDefaultPost || isRetweet)"
+        v-if="post"
         class="post-feed-item"
+        :class="{
+            'no-border': noBorder
+        }"
     >
         <pinned-post-feed-item
             v-if="isPinned"
             :id="id"
             :with-options="withOptions"
+            v-bind="$attrs"
         />
         <retweeted-post-feed-item
             v-else-if="isRetweet"
             :id="id"
             :with-options="withOptions"
+            v-bind="$attrs"
+        />
+        <deleted-post
+            v-else-if="canBeDeleted && post && post.is_deleted"
+            :post="post"
+            :with-thread-line-above="withThreadLineAbove"
+            :with-thread-line-below="withThreadLineBelow"
+            v-bind="$attrs"
         />
         <post-feed-item-entity
             v-else
             :id="id"
             :with-options="withOptions"
+            :with-thread-line-above="withThreadLineAbove"
+            :with-thread-line-below="withThreadLineBelow"
+            v-bind="$attrs"
         />
     </div>
 </template>
@@ -79,5 +115,9 @@ const isPinned = computed(() => {
 <style scoped>
 .post-feed-item {
     border-bottom: 1px solid var(--x-border-color);
+}
+
+.post-feed-item.no-border {
+    border-bottom: 0;
 }
 </style>

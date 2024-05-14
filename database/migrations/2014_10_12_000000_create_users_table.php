@@ -25,8 +25,13 @@ return new class extends Migration {
             $table->string('link', 100)->default('');
 
             $table->integer('posts_count')->default(0);
+            $table->integer('media_posts_count')->default(0);
             $table->integer('liked_posts_count')->default(0);
             $table->integer('bookmarked_posts_count')->default(0);
+            $table->integer('favorite_posts_count')->default(0);
+
+            $table->integer('media_count')->default(0);
+
             $table->integer('follows_count')->default(0);
             $table->integer('followers_count')->default(0);
 

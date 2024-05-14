@@ -99,7 +99,7 @@ function close() {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(calc(-50% - 32px), -50%);
+    transform: translate(-50%, -50%);
 }
 
 .v-enter-active.modal,
@@ -119,12 +119,12 @@ function close() {
 
 .v-enter-from .content,
 .v-leave-to .content {
-    transform: translate(calc(-50% - 32px), -50%) scale(.85);
+    transform: translate(-50%, -50%) scale(.85);
 }
 
 .v-enter-to .content,
 .v-leave-from .content {
-    transform: translate(calc(-50% - 32px), -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
 @media (max-width: 1280px) {

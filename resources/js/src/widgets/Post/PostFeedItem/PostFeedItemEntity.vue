@@ -63,7 +63,23 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
-    }
+    },
+    canBeDeleted: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+
+    withThreadLineAbove: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    withThreadLineBelow: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
 })
 
 const postStore = usePostStore()
@@ -131,8 +147,8 @@ function clickHandler(e: MouseEvent) {
             with-media-modal
             clickable-username
 
-            :with-thread-line-above="Boolean(isThread && !isFirstInThread)"
-            :with-thread-line-below="Boolean(isThread || isThreadIfHaveComments && post.reply_count)"
+            :with-thread-line-above="withThreadLineAbove"
+            :with-thread-line-below="withThreadLineBelow"
         >
             <template #header-right>
                 <post-options :post="post" />

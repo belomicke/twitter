@@ -12,6 +12,7 @@ export const postApiItemHandle = (item: PostApiItem) => {
     userStore.addUser(item.user)
 
     if (item.extensions.media !== null) {
+        console.log(item.extensions.media)
         item.extensions.media.forEach(media => mediaStore.addMedia(media))
     }
 

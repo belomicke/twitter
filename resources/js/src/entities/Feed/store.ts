@@ -50,6 +50,14 @@ export const useFeedStore = defineStore('feeds', () => {
         feed.data.total -= 1
     }
 
+    function containFeedItem(id: string, item: number) {
+        const feed = feeds.value.find(item => item.id === id)
+
+        if (!feed) return false
+
+        return feed.data.items.indexOf(item) !== -1
+    }
+
     function addItemToStartOfFeed(id: string, item: number) {
         const feed = feeds.value.find(item => item.id === id)
 
@@ -96,8 +104,8 @@ export const useFeedStore = defineStore('feeds', () => {
         postFeedResponseHandler(id, res)
     }
 
-    async function fetchPostCommentsFeed(postId: number) {
-        const id = `post:${postId}:comments`
+    async function fetchUserFavoritePostsFeed(username: string) {
+        const id = `user:${username}:favorite_posts`
         const feed = feeds.value.find(item => item.id === id)
 
         const offset = feed ? feed.data.items.length : 0
@@ -106,7 +114,21 @@ export const useFeedStore = defineStore('feeds', () => {
 
         if (feed && offset >= feed.data.total) return
 
-        const res = await api.feed.post.comments(postId, lastPostId)
+        const res = await api.feed.user.getFavoritePosts(username, lastPostId)
+        postFeedResponseHandler(id, res)
+    }
+
+    async function fetchPostRepliesFeed(postId: number) {
+        const id = `post:${postId}:replies`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset >= feed.data.total) return
+
+        const res = await api.feed.post.replies(postId, lastPostId)
         const data = res.data
 
         if (data.success) {
@@ -180,7 +202,7 @@ export const useFeedStore = defineStore('feeds', () => {
 
                 if (totalComments) {
                     addItemsOrCreateFeed(
-                        `post:${postIds[i]}:comments`,
+                        `post:${postIds[i]}:replies`,
                         [i - 1 < 0 ? postId : postIds[i - 1]],
                         totalComments
                     )
@@ -213,6 +235,20 @@ export const useFeedStore = defineStore('feeds', () => {
         if (feed && offset >= feed.data.total) return
 
         const res = await api.feed.user.getLikedPosts(username, lastPostId)
+        postFeedResponseHandler(id, res)
+    }
+
+    async function fetchUserMediaPostsFeed(username: string) {
+        const id = `user:${username}:media_posts`
+        const feed = feeds.value.find(item => item.id === id)
+
+        const offset = feed ? feed.data.items.length : 0
+
+        const lastPostId = feed ? Number(feed.data.items.at(-1)) : 0
+
+        if (feed && offset >= feed.data.total) return
+
+        const res = await api.feed.user.getMediaPosts(username, lastPostId)
         postFeedResponseHandler(id, res)
     }
 
@@ -278,16 +314,19 @@ export const useFeedStore = defineStore('feeds', () => {
 
     return {
         getFeedById,
+        containFeedItem,
         addItemToStartOfFeed,
         removeItemFromFeed,
         fetchUserPostsFeed,
-        fetchPostCommentsFeed,
+        fetchPostRepliesFeed,
         fetchPostThreadHistoryFeed,
         fetchTimelineFeed,
         fetchUserLikedPostsFeed,
         fetchPostsByQuery,
         fetchPostThreadFeed,
         createFeed,
-        fetchBookmarkedPostsFeed
+        fetchBookmarkedPostsFeed,
+        fetchUserMediaPostsFeed,
+        fetchUserFavoritePostsFeed
     }
 })

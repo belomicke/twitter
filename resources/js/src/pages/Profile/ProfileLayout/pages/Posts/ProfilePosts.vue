@@ -15,7 +15,3 @@ defineProps({
 <template>
     <user-posts-feed :username="user.username" />
 </template>
-
-<style scoped>
-
-</style>

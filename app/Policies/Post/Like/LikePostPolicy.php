@@ -14,6 +14,6 @@ class LikePostPolicy
 
     public function __invoke(User $user, Post $post): bool
     {
-        return !$this->likedPostRepository->exists(post: $post);
+        return !$this->likedPostRepository->getStatus(post: $post);
     }
 }

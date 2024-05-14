@@ -6,7 +6,7 @@ import { WelcomePage } from './Welcome'
 import { BookmarkPage } from '@/pages/Bookmark'
 import { SearchPage } from '@/pages/Search'
 import { PostPage } from '@/pages/Post'
-import { ProfileLikedPosts, ProfilePage, ProfilePosts } from '@/pages/Profile'
+import { ProfileFavoritePosts, ProfileLikedPosts, ProfileMediaPosts, ProfilePage, ProfilePosts } from '@/pages/Profile'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -26,8 +26,16 @@ const routes: RouteRecordRaw[] = [
                         component: ProfilePosts
                     },
                     {
+                        path: 'favorite',
+                        component: ProfileFavoritePosts
+                    },
+                    {
                         path: 'liked',
                         component: ProfileLikedPosts
+                    },
+                    {
+                        path: 'media',
+                        component: ProfileMediaPosts
                     }
                 ]
             },

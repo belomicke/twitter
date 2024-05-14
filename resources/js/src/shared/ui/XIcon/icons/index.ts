@@ -28,6 +28,7 @@ import AnalyticIcon from './AnalyticIcon.vue'
 import FollowIcon from './FollowIcon.vue'
 import UnfollowIcon from './UnfollowIcon.vue'
 import BookmarkIcon from './BookmarkIcon.vue'
+import GalleryIcon from "./GalleryIcon.vue"
 
 export {
     CheckIcon,
@@ -59,5 +60,6 @@ export {
     AnalyticIcon,
     FollowIcon,
     UnfollowIcon,
-    BookmarkIcon
+    BookmarkIcon,
+    GalleryIcon
 }

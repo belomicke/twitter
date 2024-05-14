@@ -2,8 +2,8 @@
 
 namespace App\Services\Storage;
 
+use App\Helpers\UserHelpers;
 use App\Repository\Storage\StorageRepository;
-use App\Services\User\UserHelpers;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Encoders\JpegEncoder;

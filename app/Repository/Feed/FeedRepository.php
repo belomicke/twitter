@@ -8,7 +8,6 @@ use App\Repository\Account\ViewerRepository;
 use App\Repository\Post\PinnedPostRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class FeedRepository
 {
@@ -51,20 +50,69 @@ class FeedRepository
     {
         $baseQuery = $user
             ->liked_posts()
-            ->orderByPivot('id', 'desc');
+            ->where('posts.is_deleted', false)
+            ->orderBy('id', 'desc');
 
         if ($lastPostId !== 0) {
-            $pivot = DB::table('liked_posts')
-                ->where('post_id', $lastPostId)
-                ->where('user_id', $user->id)
-                ->first();
-
-            $baseQuery = $baseQuery->wherePivot('id', '<', $pivot->id);
+            $baseQuery = $baseQuery->where('id', '<', $lastPostId);
         }
 
         return [
             'items' => $baseQuery->take(50)->get(),
             'total' => $user->liked_posts_count
+        ];
+    }
+
+    public function getUserMediaPosts(User $user, int $lastPostId): array
+    {
+        $baseQuery = $user
+            ->posts()
+            ->where('media_count', '>', 0)
+            ->orderBy('id', 'desc');
+
+        if ($lastPostId !== 0) {
+            $baseQuery = $baseQuery->where('id', '<', $lastPostId);
+        }
+
+        return [
+            'items' => $baseQuery->take(50)->get(),
+            'total' => $user->media_posts_count
+        ];
+    }
+
+    public function getUserFavoritePosts(User $user, int $lastPostId): array
+    {
+        $baseQuery = $user
+            ->favorite_posts()
+            ->where('posts.is_deleted', false)
+            ->orderByPivot('id', 'desc');
+
+        if ($lastPostId !== 0) {
+            $baseQuery = $baseQuery->where('id', '<', $lastPostId);
+        }
+
+        return [
+            'items' => $baseQuery->take(50)->get(),
+            'total' => $user->favorite_posts_count
+        ];
+    }
+
+    public function getPostReplies(Post $post, int $lastPostId): array
+    {
+        $baseQuery = $post
+            ->replies()
+            ->where('posts.is_deleted', false)
+            ->orderBy('id');
+
+        $total = $post->reply_count;
+
+        if ($lastPostId !== 0) {
+            $baseQuery = $baseQuery->where('id', '>', $lastPostId);
+        }
+
+        return [
+            'items' => $baseQuery->take(50)->get(),
+            'total' => $total
         ];
     }
 
@@ -74,6 +122,7 @@ class FeedRepository
 
         $baseQuery = $viewer
             ->bookmarked_posts()
+            ->where('posts.is_deleted', false)
             ->orderBy('id', 'desc');
 
         if ($lastPostId !== 0) {
@@ -86,30 +135,10 @@ class FeedRepository
         ];
     }
 
-    public function getPostThread(Post $post, int $lastPostId): array
-    {
-        $baseQuery = $post
-            ->descendants()
-            ->where('is_deleted', false)
-            ->orderBy('id');
-
-        $total = $baseQuery->count();
-
-        if ($lastPostId !== 0) {
-            $baseQuery = $baseQuery->where('id', '>', $lastPostId);
-        }
-
-        return [
-            'items' => $baseQuery->take(50)->get(),
-            'total' => $total
-        ];
-    }
-
     public function getPostThreadHistory(Post $post, int $lastPostId): array
     {
         $baseQuery = $post
             ->ancestors()
-            ->where('is_deleted', false)
             ->orderBy('id', 'desc');
 
         $total = $baseQuery->count();

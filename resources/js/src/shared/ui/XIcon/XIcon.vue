@@ -17,6 +17,7 @@ import {
     FavoriteIcon,
     FeatherIcon,
     FollowIcon,
+    GalleryIcon,
     HeartIcon,
     HomeIcon,
     LinkIcon,
@@ -81,7 +82,8 @@ const icons = {
     'analytic': AnalyticIcon,
     'follow': FollowIcon,
     'unfollow': UnfollowIcon,
-    'bookmark': BookmarkIcon
+    'bookmark': BookmarkIcon,
+    'gallery': GalleryIcon
 }
 </script>
 

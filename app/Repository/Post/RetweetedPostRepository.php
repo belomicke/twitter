@@ -10,34 +10,28 @@ class RetweetedPostRepository
 {
     public function retweetPost(int $id): Post
     {
-        $retweet = Post::create([
+        return Post::create([
             'text' => '',
             'retweeted_post_id' => $id,
             'user_id' => Auth::id()
-        ]);
-
-        $retweet->save();
-        return $retweet->fresh();
+        ])
+            ->fresh();
     }
 
-    public function unretweetPost(int $id): void
+    public function undoRetweetPost(int $id): void
     {
-        $retweet = Post::query()
+        Post::query()
             ->where('user_id', Auth::id())
             ->where('retweeted_post_id', $id)
             ->where('text', '')
             ->where('is_deleted', false)
-            ->first();
-        $retweet->is_deleted = true;
-        $retweet->save();
+            ->update([
+                'is_deleted' => true
+            ]);
     }
 
-    public function exists(Post $post): bool
+    public function getStatus(Post $post): bool
     {
-        if ($post->is_deleted) {
-            return false;
-        }
-
         return Post::query()
             ->where('retweeted_post_id', $post->id)
             ->where('user_id', Auth::id())
@@ -46,23 +40,23 @@ class RetweetedPostRepository
             ->exists();
     }
 
-    public function getStatus(int $id): bool
+    public function getStatusById(int $id): bool
     {
         return Post::query()
-            ->where('user_id', Auth::id())
-            ->where('is_deleted', false)
-            ->where('text', '')
             ->where('retweeted_post_id', $id)
+            ->where('user_id', Auth::id())
+            ->where('text', '')
+            ->where('is_deleted', false)
             ->exists();
     }
 
     public function getMultipleStatuses(array $ids): Collection
     {
         return Post::query()
-            ->where('user_id', Auth::id())
-            ->where('is_deleted', false)
-            ->where('text', '')
             ->whereIn('retweeted_post_id', $ids)
+            ->where('user_id', Auth::id())
+            ->where('text', '')
+            ->where('is_deleted', false)
             ->get();
     }
 }

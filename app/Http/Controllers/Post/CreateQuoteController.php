@@ -8,7 +8,9 @@ use App\Http\Requests\Post\CreateQuoteRequest;
 use App\Models\Post;
 use App\Services\Post\PostHelpers;
 use App\Services\Post\PostService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class CreateQuoteController extends Controller
 {
@@ -22,18 +24,30 @@ class CreateQuoteController extends Controller
      */
     public function __invoke(CreateQuoteRequest $request, Post $post): JsonResponse
     {
+        if ($post->is_deleted) {
+            throw new ModelNotFoundException();
+        }
+
         $text = $request->input('text') ?? '';
         $files = $request->allFiles() ?? [];
 
-        $post = $this->postService->createQuote(
-            post: $post,
+        if (!Gate::allows('create-quote', [$post->id, $text])) {
+            throw new QuoteExistsException();
+        }
+
+        $quote = $this->postService->createQuote(
+            postId: $post->id,
             text: $text,
             media: $files['media'] ?? null
         );
 
         return response()->json([
             'success' => true,
-            'data' => $this->postHelpers->postToJson(post: $post)
+            'data' => $this->postHelpers->postToJson(
+                post: $quote,
+                freshPost: true,
+                retweetedPost: $post
+            )
         ]);
     }
 }

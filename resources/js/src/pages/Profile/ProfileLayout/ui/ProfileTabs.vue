@@ -20,9 +20,19 @@ const tabs = computed(() => {
             onClick: () => router.push(`/profile/${username.value}`),
         },
         {
+            text: 'Избранное',
+            active: route.fullPath === `/profile/${username.value}/favorite`,
+            onClick: () => router.push(`/profile/${username.value}/favorite`),
+        },
+        {
             text: 'Понравившиеся',
             active: route.fullPath === `/profile/${username.value}/liked`,
             onClick: () => router.push(`/profile/${username.value}/liked`),
+        },
+        {
+            text: 'Медиа',
+            active: route.fullPath === `/profile/${username.value}/media`,
+            onClick: () => router.push(`/profile/${username.value}/media`),
         },
     ]
 })

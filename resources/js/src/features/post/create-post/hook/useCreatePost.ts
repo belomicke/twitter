@@ -36,23 +36,30 @@ export const useCreatePost = () => {
             const postStore = usePostStore()
             postStore.addPost(post)
 
-            const viewerStore = useViewerStore()
-            const viewer = viewerStore.viewer
-
-            if (!viewer) return
-
-            viewerStore.incrementPostsCount()
-
             const feedStore = useFeedStore()
 
             if (post.in_reply_to_post_id) {
-                feedStore.createFeed(`post:${post.in_reply_to_post_id}:comments`)
-                feedStore.addItemToStartOfFeed(`post:${post.in_reply_to_post_id}:comments`, post.id)
-                postStore.incrementCommentsCount(post.in_reply_to_post_id)
+                const inReplyToPost = postStore.getPostById(post.in_reply_to_post_id)
+
+                if (inReplyToPost) {
+                    postStore.incrementCommentsCount(post.in_reply_to_post_id)
+
+                    if (inReplyToPost.reply_count === 0) {
+                        feedStore.createFeed(`post:${post.in_reply_to_post_id}:replies`)
+                    }
+
+                    feedStore.addItemToStartOfFeed(`post:${post.in_reply_to_post_id}:replies`, post.id)
+                }
             } else {
-                console.log(post)
-                feedStore.addItemToStartOfFeed(`user:${viewer.username}:posts`, post.id)
                 feedStore.addItemToStartOfFeed('timeline', post.id)
+
+                const viewerStore = useViewerStore()
+                const viewer = viewerStore.viewer
+
+                if (!viewer) return
+
+                feedStore.addItemToStartOfFeed(`user:${viewer.username}:posts`, post.id)
+                viewerStore.incrementPostsCount()
             }
 
             if (data.data.data.extensions.media !== null) {

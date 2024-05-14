@@ -1,8 +1,8 @@
 import { makeRequest } from '../../makeRequest'
 import { PostFeedResponse } from '@/shared/api/types/response/feed/PostFeedResponse'
 
-const comments = async (id: number, lastPostId: number): Promise<PostFeedResponse> => {
-    return await makeRequest.get(`/api/feed/post/${id}/comments`, { params: { last_post_id: lastPostId } })
+const replies = async (id: number, lastPostId: number): Promise<PostFeedResponse> => {
+    return await makeRequest.get(`/api/feed/post/${id}/replies`, { params: { last_post_id: lastPostId } })
 }
 
 const thread = async (id: number, lastPostId: number): Promise<PostFeedResponse> => {
@@ -18,7 +18,7 @@ const bookmarked = async (lastPostId: number): Promise<PostFeedResponse> => {
 }
 
 export const post = {
-    comments,
+    replies,
     thread,
     bookmarked,
     thread_history

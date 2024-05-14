@@ -7,6 +7,7 @@ use App\Exceptions\Post\YouAreNotAnAuthorOfThisPostException;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Services\Post\PostService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -23,12 +24,16 @@ class PinPostController extends Controller
      */
     public function __invoke(Request $request, Post $post): JsonResponse
     {
+        if ($post->is_deleted) {
+            throw new ModelNotFoundException();
+        }
+
         if (!Gate::allows('edit-post', $post)) {
-            throw new YouAreNotAnAuthorOfThisPostException;
+            throw new YouAreNotAnAuthorOfThisPostException();
         }
 
         if ($post->is_pinned) {
-            throw new PostIsPinnedAlreadyException;
+            throw new PostIsPinnedAlreadyException();
         }
 
         $this->postService->pinPost(post: $post);

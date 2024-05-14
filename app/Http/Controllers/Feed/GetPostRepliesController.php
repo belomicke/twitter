@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Services\Feed\FeedService;
 use Illuminate\Http\JsonResponse;
 
-class GetPostCommentsController extends Controller
+class GetPostRepliesController extends Controller
 {
     public function __construct(
         private readonly FeedService $feedService
