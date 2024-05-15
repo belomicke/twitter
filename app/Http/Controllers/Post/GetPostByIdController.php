@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Helpers\PostHelpers;
 use App\Http\Controllers\Controller;
 use App\Repository\Post\PostRepository;
-use App\Services\Post\PostHelpers;
 use Illuminate\Http\JsonResponse;
 
 class GetPostByIdController extends Controller

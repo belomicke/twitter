@@ -16,13 +16,13 @@ class PostService
 {
     public function __construct(
         private readonly PostRepository $postRepository,
-        private readonly LikedPostRepository $likedPostRepository,
-        private readonly RetweetedPostRepository $retweetedPostRepository,
-        private readonly ViewerRepository $viewerRepository,
         private readonly MediaRepository $mediaRepository,
+        private readonly ViewerRepository $viewerRepository,
+        private readonly LikedPostRepository $likedPostRepository,
         private readonly PinnedPostRepository $pinnedPostRepository,
+        private readonly FavoritePostRepository $favoritePostRepository,
+        private readonly RetweetedPostRepository $retweetedPostRepository,
         private readonly BookmarkedPostRepository $bookmarkedPostRepository,
-        private readonly FavoritePostRepository $favoritePostRepository
     ) {}
 
     public function createPost(string $text, array|null $media): Post

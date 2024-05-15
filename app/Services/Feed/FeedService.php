@@ -2,10 +2,10 @@
 
 namespace App\Services\Feed;
 
+use App\Helpers\PostHelpers;
 use App\Models\Post;
 use App\Models\User;
 use App\Repository\Feed\FeedRepository;
-use App\Services\Post\PostHelpers;
 
 class FeedService
 {

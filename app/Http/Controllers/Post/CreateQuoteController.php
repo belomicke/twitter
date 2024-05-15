@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Post;
 
 use App\Exceptions\Quote\QuoteExistsException;
+use App\Helpers\PostHelpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\CreateQuoteRequest;
 use App\Models\Post;
-use App\Services\Post\PostHelpers;
 use App\Services\Post\PostService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;

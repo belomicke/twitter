@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Services\Post;
+namespace App\Helpers;
 
-use App\Helpers\ArrayHelpers;
-use App\Helpers\CollectionHelpers;
 use App\Models\Post;
 use App\Models\User;
 use App\Repository\Account\ViewerRepository;
@@ -12,19 +10,19 @@ use App\Repository\Post\BookmarkedPostRepository;
 use App\Repository\Post\LikedPostRepository;
 use App\Repository\Post\PostRepository;
 use App\Repository\Post\RetweetedPostRepository;
-use App\Repository\User\UserRepository;
+use App\Services\User\UserService;
 use Illuminate\Database\Eloquent\Collection;
 
 class PostHelpers
 {
     public function __construct(
         private readonly ViewerRepository $viewerRepository,
-        private readonly UserRepository $userRepository,
         private readonly PostRepository $postRepository,
         private readonly MediaRepository $mediaRepository,
         private readonly LikedPostRepository $likedPostRepository,
         private readonly RetweetedPostRepository $retweetedPostRepository,
-        private readonly BookmarkedPostRepository $bookmarkedPostRepository
+        private readonly BookmarkedPostRepository $bookmarkedPostRepository,
+        private readonly UserService $userService
     ) {}
 
     public static function formatText(string $text): string
@@ -40,7 +38,7 @@ class PostHelpers
 
         $postsIds = CollectionHelpers::getSetFromCollection($posts->pluck('id'));
         $authorsIds = CollectionHelpers::getSetFromCollection($posts->pluck('user_id'));
-        $authors = $this->userRepository->getUsersByIds(ids: $authorsIds);
+        $authors = $this->userService->getUsersByIds(ids: $authorsIds);
 
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $postsIds);
         $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $postsIds);
@@ -53,7 +51,7 @@ class PostHelpers
         $inReplyToUserIds = CollectionHelpers::getSetFromCollection($posts->pluck('in_reply_to_user_id'));
 
         if (count($inReplyToUserIds)) {
-            $inReplyToUsers = $this->userRepository->getUsersByIds(ids: $inReplyToUserIds);
+            $inReplyToUsers = $this->userService->getUsersByIds(ids: $inReplyToUserIds);
         } else {
             $inReplyToUsers = Collection::make();
         }
@@ -107,7 +105,7 @@ class PostHelpers
         $retweetsIds = ArrayHelpers::removeNullsFromArray(array: $retweetsIds);
 
         // Получаем ретвитнутые посты, не включая те, которые могли быть удалены
-        $retweetedPosts = $this->postRepository->getPostsByIds(ids: $retweetsIds);
+        $retweetedPosts = $this->postRepository->getPostsById(ids: $retweetsIds);
 
         // Получаем id только тех ретвитнутых постов, которые не удалены
         $retweetsIds = CollectionHelpers::getSetFromCollection(
@@ -130,7 +128,7 @@ class PostHelpers
         $allUsersIds = array_unique([...$userIds, ...$retweetedPostsUserIds]);
 
         // Получаем всех авторов
-        $users = $this->userRepository->getUsersByIds(ids: $allUsersIds);
+        $users = $this->userService->getUsersByIds(ids: $allUsersIds);
 
         $likedStatuses = $this->likedPostRepository->getMultipleStatuses(ids: $allPostIds);
         $retweetedStatuses = $this->retweetedPostRepository->getMultipleStatuses(ids: $allPostIds);
@@ -139,7 +137,7 @@ class PostHelpers
         $inReplyToUserIds = CollectionHelpers::getSetFromCollection($posts->pluck('in_reply_to_user_id'));
 
         if (count($inReplyToUserIds)) {
-            $inReplyToUsers = $this->userRepository->getUsersByIds(ids: $inReplyToUserIds);
+            $inReplyToUsers = $this->userService->getUsersByIds(ids: $inReplyToUserIds);
         } else {
             $inReplyToUsers = Collection::make();
         }
@@ -210,7 +208,7 @@ class PostHelpers
         if ($post->user_id === $viewer->id) {
             $author = $viewer;
         } else {
-            $author = $this->userRepository->getUserById(id: $post->user_id);
+            $author = $this->userService->getUserById(id: $post->user_id);
         }
 
         if ($freshPost) {
@@ -242,7 +240,7 @@ class PostHelpers
             if (!$retweetedPost) {
                 $retweetedPost = $this->postRepository->getPostById(id: $post->retweeted_post_id);
             }
-            $retweetedPostUser = $this->userRepository->getUserById(id: $retweetedPost->user_id);
+            $retweetedPostUser = $this->userService->getUserById(id: $retweetedPost->user_id);
             $retweetedPostMedia = $this->mediaRepository->getPostMedia(id: $retweetedPost->id);
 
             $retweetedPostJson = $this->getPostInJson(

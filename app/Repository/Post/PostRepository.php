@@ -6,7 +6,6 @@ use App\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -14,19 +13,13 @@ class PostRepository
 {
     public function getPostById(int $id): Builder|Model|Post
     {
-        $post = Post::query()
+        return Post::query()
             ->where('id', $id)
             ->where('is_deleted', false)
-            ->first();
-
-        if ($post === null) {
-            throw new ModelNotFoundException();
-        }
-
-        return $post;
+            ->firstOrFail();
     }
 
-    public function getPostsByIds(array $ids): Collection
+    public function getPostsById(array $ids): Collection
     {
         return Post::query()
             ->whereIn('id', $ids)
@@ -34,47 +27,37 @@ class PostRepository
             ->get();
     }
 
-    public function incrementPostReplyCount(Post $post): Post
+    public function incrementPostReplyCount(Post $post): void
     {
         $post->reply_count += 1;
         $post->save();
-
-        return $post;
     }
 
-    public function incrementPostLikeCount(Post $post): Post
+    public function incrementPostLikeCount(Post $post): void
     {
         $post->like_count += 1;
         $post->save();
-
-        return $post;
     }
 
-    public function decrementPostLikeCount(Post $post): Post
+    public function decrementPostLikeCount(Post $post): void
     {
         $post->like_count -= 1;
         $post->save();
-
-        return $post;
     }
 
-    public function incrementPostRetweetCount(Post $post): Post
+    public function incrementPostRetweetCount(Post $post): void
     {
         $post->retweet_count += 1;
         $post->save();
-
-        return $post;
     }
 
-    public function decrementPostRetweetCount(Post $post): Post
+    public function decrementPostRetweetCount(Post $post): void
     {
         $post->retweet_count -= 1;
         $post->save();
-
-        return $post;
     }
 
-    public function checkIsQuoteExists(int $id, string $text): bool
+    public function getQuoteExistsStatus(int $id, string $text): bool
     {
         return Post::query()
             ->where('user_id', Auth::id())
@@ -124,7 +107,8 @@ class PostRepository
             DB::table('liked_posts')
                 ->where('post_id', $post->id)
                 ->update([
-                    'is_deleted' => true
+                    'is_deleted' => true,
+                    'updated_at' => now()
                 ]);
         }
 

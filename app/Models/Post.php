@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\Post\PostHelpers;
+use App\Helpers\PostHelpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

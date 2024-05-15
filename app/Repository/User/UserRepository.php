@@ -3,27 +3,15 @@
 namespace App\Repository\User;
 
 use App\Models\User;
-use App\Repository\Account\ViewerRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
-    public function __construct(
-        private readonly ViewerRepository $viewerRepository
-    ) {}
-
     public function getUserById(int $id): User|Model|Builder|null
     {
-        $viewer = $this->viewerRepository->getViewer();
-
-        if ($viewer && $viewer->id === $id) {
-            return $viewer;
-        }
-
         return User::query()->where('id', $id)->first();
     }
 
@@ -34,12 +22,6 @@ class UserRepository
 
     public function getUsersByIds(array $ids): Collection
     {
-        if (count($ids) === 1) {
-            if (array_values($ids)[0] === Auth::id()) {
-                return Collection::make([Auth::user()]);
-            }
-        }
-
         return User::query()->whereIn('id', $ids)->get();
     }
 
@@ -64,17 +46,14 @@ class UserRepository
         string $password,
         string $birth
     ): User|null {
-        $user = User::create(attributes: [
+        return User::create(attributes: [
             'name' => $username,
             'username' => $username,
             'email' => $email,
             'email_verified_at' => now(),
             'password' => Hash::make(value: $password),
             'birth' => $birth
-        ]);
-        $user->save();
-
-        return $user->fresh();
+        ])->fresh();
     }
 
     public function incrementFollowersCount(int $id): void

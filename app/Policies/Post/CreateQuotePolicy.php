@@ -2,9 +2,9 @@
 
 namespace App\Policies\Post;
 
+use App\Helpers\PostHelpers;
 use App\Models\User;
 use App\Repository\Post\PostRepository;
-use App\Services\Post\PostHelpers;
 
 class CreateQuotePolicy
 {
@@ -16,7 +16,7 @@ class CreateQuotePolicy
     {
         $text = PostHelpers::formatText(text: $text);
 
-        return !$this->postRepository->checkIsQuoteExists(
+        return !$this->postRepository->getQuoteExistsStatus(
             id: $postId,
             text: $text
         );

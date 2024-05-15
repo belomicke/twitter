@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Helpers\PostHelpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\CreatePostRequest;
-use App\Services\Post\PostHelpers;
 use App\Services\Post\PostService;
 use Illuminate\Http\JsonResponse;
 
